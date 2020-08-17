@@ -122,12 +122,35 @@ namespace xdelta3_cross_gui
             }
         }
 
+        public bool ShowTerminal { get => Options.ShowTerminal;
+            set
+            { 
+                Options.ShowTerminal = value;
+                try
+                {
+                    if (value)
+                    {
+                        this.Console.Show();
+                    }
+                    else
+                    {
+                        this.Console.Hide();
+                    }
+                }
+                catch (Exception e) { Debug.WriteLine(e);
+                    this._Console = new Console();
+                }
+            }
+        }
+
         private bool _AllOldFilesSelected = false;
         private bool _AllNewFilesSelected = false;
 
+        private Console _Console = new Console();
+        public Console Console { get => _Console; }
 
-        private Options _options = new Options();
-        public Options Options { get { return this._options; } }
+        private Options _Options = new Options();
+        public Options Options { get { return this._Options; } }
 
         Button btn_ToggleAllOldFilesSelection;
         Button btn_ToggleAllNewFilesSelection;
@@ -624,6 +647,13 @@ namespace xdelta3_cross_gui
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            this.Console.CanClose = true;
+            this.Console.Close();
+            base.OnClosing(e);
         }
 
     }

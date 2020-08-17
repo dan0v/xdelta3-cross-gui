@@ -165,7 +165,7 @@
       <Grid ColumnDefinitions="Auto,*,Auto">
         <TextBlock Grid.Column="0" Text="Progress" Margin="10,5,10,5"></TextBlock>
         <ProgressBar x:Name="pb_Progress" Value="{Binding PatchProgress}" IsIndeterminate="{Binding PatchProgressIsIndeterminate}" Grid.Column="1"  Margin="0,5,10,5"> </ProgressBar>
-        <CheckBox Grid.Column="2" Content="Show terminal window" Margin="0,0,10,0" IsChecked="{Binding Options.ShowTerminal}"></CheckBox>
+        <CheckBox Grid.Column="2" Content="Show terminal window" Margin="0,0,10,0" IsChecked="{Binding ShowTerminal}"></CheckBox>
       </Grid>
     </Border>
   </Grid>

@@ -1,0 +1,19 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="xdelta3_cross_gui.Console"
+        Title="Console"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        Height="500" Width="500"
+        >
+  
+  <Border BorderThickness="2,2,2,2" BorderBrush="Gray">
+    <Grid RowDefinitions="*">
+      <ScrollViewer Grid.Row="1" Background="Black" x:Name="sv_ScrollConsole" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+        <TextBlock x:Name="txt_blk_Output" Foreground="White" Margin="5" TextWrapping="Wrap"></TextBlock>
+      </ScrollViewer>
+    </Grid>
+  </Border>
+</Window>
