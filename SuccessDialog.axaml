@@ -1,0 +1,17 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="350" d:DesignHeight="150"
+        x:Class="xdelta3_cross_gui.SuccessDialog"
+        Title="SuccessDialog"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        Height="150" Width="350">
+  
+  <Grid RowDefinitions="*,Auto,Auto">
+    <TextBlock Grid.Row="0" HorizontalAlignment="Center" Text="Success" FontWeight="Bold" Margin="10"></TextBlock>
+    <TextBlock Grid.Row="1" TextWrapping="Wrap" Margin="10" TextAlignment="Center" Text="Your xDelta3 patches, or patch batches, have been successfuly created."></TextBlock>
+    <Button x:Name="btn_OpenDestination" Grid.Row="2" Content="Open output directory" HorizontalAlignment="Left" Margin="10" Width="140"></Button>
+    <Button x:Name="btn_Dismiss" Grid.Row="2" Content="Dismiss" HorizontalAlignment="Right" Margin="10" Width="80"></Button>
+  </Grid>
+</Window>
