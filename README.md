@@ -1,5 +1,5 @@
 # xDelta3 Cross GUI
-A cross-platform GUI for creating xDelta3 patches which can also be applied on all three major platforms, inspired by [Moodkiller/xdelta3-gui-2.0](https://github.com/Moodkiller/xdelta3-gui-2.0), now available for Windows, Linux, and MacOS.
+A cross-platform GUI for creating xDelta3 patches, inspired by [Moodkiller/xdelta3-gui-2.0](https://github.com/Moodkiller/xdelta3-gui-2.0), now available for Windows, Linux, and MacOS. Output patches can also be applied on all three major platforms without requiring the GUI.
 
 ## Features
 - Compatible with Windows, Linux, and MacOS
