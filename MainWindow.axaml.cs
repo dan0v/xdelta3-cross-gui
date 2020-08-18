@@ -20,7 +20,7 @@ namespace xdelta3_cross_gui
     public class MainWindow : Window, INotifyPropertyChanged
     {
         public static string VERSION = GetVersion();
-        public static string TITLE = "xDelta Cross GUI " + VERSION;
+        public static string TITLE = "xDelta3 Cross GUI " + VERSION;
         public static string XDELTA3_PATH = "";
 
         public const string XDELTA3_BINARY_WINDOWS = "xdelta3_x86_64_win.exe";
