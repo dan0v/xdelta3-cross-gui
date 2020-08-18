@@ -315,15 +315,21 @@ namespace xdelta3_cross_gui
         }
         public async void AddOldFile(object sender, RoutedEventArgs args)
         {
-            string[] url = await this.OpenFileBrowser();
-            if (url.Length > 0)
+            try
             {
-                foreach (string path in url)
+                string[] url = await this.OpenFileBrowser();
+                if (url.Length > 0)
                 {
-                    this.OldFilesList.Add(new PathFileComponent(this, path, this.OldFilesList.Count, FileVersion.Old));
+                    foreach (string path in url)
+                    {
+                        this.OldFilesList.Add(new PathFileComponent(this, path, this.OldFilesList.Count, FileVersion.Old));
+                    }
+                    this.ReloadOldFiles();
+                    this.CheckFileCounts();
                 }
-                this.ReloadOldFiles();
-                this.CheckFileCounts();
+            } catch (Exception e)
+            {
+                Debug.WriteLine(e);
             }
         }
         public void MoveOldFileUp(object sender, RoutedEventArgs args)
@@ -413,20 +419,26 @@ namespace xdelta3_cross_gui
         }
         public async void AddNewFile(object sender, RoutedEventArgs args)
         {
-            string[] url = await this.OpenFileBrowser();
-            if (url.Length > 0)
+            try
             {
-                foreach (string path in url)
+                string[] url = await this.OpenFileBrowser();
+                if (url.Length > 0)
                 {
-                    this.NewFilesList.Add(new PathFileComponent(this, path, this.NewFilesList.Count, FileVersion.New));
+                    foreach (string path in url)
+                    {
+                        this.NewFilesList.Add(new PathFileComponent(this, path, this.NewFilesList.Count, FileVersion.New));
+                    }
+                    this.ReloadNewFiles();
+                    this.CheckFileCounts();
+                    if (this.Options.PatchFileDestination == "")
+                    {
+                        this.Options.PatchFileDestination = Path.Combine(Path.GetDirectoryName(this.NewFilesList[0].FullPath), "xDelta3_Output");
+                    }
                 }
-                this.ReloadNewFiles();
-                if (this.Options.PatchFileDestination == "")
-                {
-                    this.Options.PatchFileDestination = Path.Combine(Path.GetDirectoryName(this.NewFilesList[0].FullPath), "xDelta3_Output");
-                }
+            } catch (Exception e)
+            {
+                Debug.WriteLine(e);
             }
-            this.CheckFileCounts();
         }
         public void MoveNewFileUp(object sender, RoutedEventArgs args)
         {
@@ -563,8 +575,14 @@ namespace xdelta3_cross_gui
 
         public async void BrowseOutputDirectory(object sender, RoutedEventArgs args)
         {
-            string url = await this.OpenFolderBrowser();
-            this.Options.PatchFileDestination = url;
+            try
+            {
+                string url = await this.OpenFolderBrowser();
+                this.Options.PatchFileDestination = url;
+            } catch (Exception e)
+            {
+                Debug.WriteLine(e);
+            }
         }
 
         public void UseShortNamesChecked(object sender, RoutedEventArgs args)
