@@ -1,0 +1,24 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "LeeBinder",
+      "name": "LeeBinder",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/39203497?v=4",
+      "profile": "https://github.com/LeeBinder",
+      "contributions": [
+        "design"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "xdelta3-cross-gui",
+  "projectOwner": "dan0v",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
