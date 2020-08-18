@@ -23,7 +23,7 @@ A cross-platform GUI for xDelta3 patching, inspired by [Moodkiller/xdelta3-gui-2
 3. Run executable (`xdelta3_cross_gui`)
 
 ### Mac
-##### Untested!
+#### > Untested!
 1. Install [.Net Core 3.1 SDK for MacOS](https://docs.microsoft.com/en-us/dotnet/core/install/macos)
 2. Download latest [Tag](https://github.com/dan0v/xdelta3-cross-gui/tags) from the Master branch
 3. Unzip download and `cd` to the new directory using Terminal
