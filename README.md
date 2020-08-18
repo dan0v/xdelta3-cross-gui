@@ -1,3 +1,4 @@
+![GitHub Logo](Extra%20Resources/Repository%20Cover.png)
 # xDelta3 Cross GUI
 A cross-platform GUI for creating xDelta3 patches, inspired by [Moodkiller/xdelta3-gui-2.0](https://github.com/Moodkiller/xdelta3-gui-2.0), now available for Windows, Linux, and MacOS. Output patches can also be applied on all three major platforms without requiring the GUI.
 
@@ -23,7 +24,7 @@ A cross-platform GUI for creating xDelta3 patches, inspired by [Moodkiller/xdelt
 3. Run executable (`xdelta3_cross_gui`)
 
 ### Mac
-1. Install [.Net Core 3.1 for MacOS](https://docs.microsoft.com/en-us/dotnet/core/install/macos)
+1. Install .Net Core 3.1 for MacOS [using the installer](https://docs.microsoft.com/en-us/dotnet/core/install/macos), or using Homebrew (`brew cask install dotnet`)
 2. Download latest MacOS build from the [Releases page](https://github.com/dan0v/xdelta3-cross-gui/releases)
 3. Run executable (`xdelta3_cross_gui`)
 
