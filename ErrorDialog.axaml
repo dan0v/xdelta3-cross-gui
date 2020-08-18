@@ -6,7 +6,9 @@
         x:Class="xdelta3_cross_gui.ErrorDialog"
         Title="Error"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
-        Height="200" Width="500">
+        Height="200" Width="500"
+        Icon="avares://xdelta3_cross_gui/Assets/img/Icon.png">
+  
   <Grid RowDefinitions="Auto,*,Auto,Auto">
     <TextBlock Grid.Row="0" HorizontalAlignment="Center" Text="An error has occured" FontWeight="Bold" Margin="10"></TextBlock>
     <Grid x:Name="grd_MissingFiles" Grid.Row="1" ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,*" IsVisible="False">

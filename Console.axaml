@@ -7,7 +7,7 @@
         Title="Console"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         Height="500" Width="500"
-        >
+        Icon="avares://xdelta3_cross_gui/Assets/img/Icon.png">
   
   <Border BorderThickness="2,2,2,2" BorderBrush="Gray">
     <Grid RowDefinitions="*">

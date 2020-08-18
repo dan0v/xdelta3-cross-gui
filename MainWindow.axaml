@@ -6,7 +6,8 @@
         x:Class="xdelta3_cross_gui.MainWindow"
         Title="xdelta3_cross_gui" MinWidth="600" MinHeight="600"
         Width="900" Height="650"
-        DataContext="{Binding RelativeSource={RelativeSource Self}}">
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        Icon="avares://xdelta3_cross_gui/Assets/img/Icon.png">
   
   <Grid ColumnDefinitions="*,*" RowDefinitions="*,Auto,Auto,Auto,Auto" MinWidth="600">
     <!--Row 0-->

@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <Authors>dan0v</Authors>
     <Description>A cross-platform graphical user interface for xDelta3 patching</Description>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Assets\exec\xdelta3_mac" />
@@ -12,6 +13,7 @@
     <None Remove="Assets\img\add.png" />
     <None Remove="Assets\img\delete.png" />
     <None Remove="Assets\img\down.png" />
+    <None Remove="Assets\img\Icon.png" />
     <None Remove="Assets\img\up.png" />
   </ItemGroup>
   <ItemGroup>
@@ -27,6 +29,7 @@
     <AvaloniaResource Include="Assets\img\add.png" />
     <AvaloniaResource Include="Assets\img\delete.png" />
     <AvaloniaResource Include="Assets\img\down.png" />
+    <AvaloniaResource Include="Assets\img\Icon.png" />
     <AvaloniaResource Include="Assets\img\up.png" />
   </ItemGroup>
   <ItemGroup>
