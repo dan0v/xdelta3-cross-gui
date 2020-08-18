@@ -23,15 +23,9 @@ A cross-platform GUI for xDelta3 patching, inspired by [Moodkiller/xdelta3-gui-2
 3. Run executable (`xdelta3_cross_gui`)
 
 ### Mac
-#### > Untested!
-1. Install [.Net Core 3.1 SDK for MacOS](https://docs.microsoft.com/en-us/dotnet/core/install/macos)
-2. Download latest [Tag](https://github.com/dan0v/xdelta3-cross-gui/tags) from the Master branch
-3. Unzip download and `cd` to the new directory using Terminal
-3. Build using `dotnet publish -f netcoreapp3.1 -r [VERSION] --self-contained false -o xdelta3-cross-gui-build` (replace '[VERSION]' with your MacOS version (without brackets); options can be found [here](https://docs.microsoft.com/en-us/dotnet/core/rid-catalog#macos-rids)
-
-For example: `dotnet publish -f netcoreapp3.1 -r osx.10.14-x64 --self-contained false -o xdelta3-cross-gui-build`
-
-4. Run executable (`xdelta3_cross_gui`) from the new `xdelta3-cross-gui-build` folder
+1. Install [.Net Core 3.1 for MacOS](https://docs.microsoft.com/en-us/dotnet/core/install/macos)
+2. Download latest MacOS build from the [Releases page](https://github.com/dan0v/xdelta3-cross-gui/releases)
+3. Run executable (`xdelta3_cross_gui`)
 
 #### Optionally
 You may provide your own builds of xDelta3, instead of using the included versions, by simply replacing the binaries in the `Assets/exec` folder with files with the same names, or including your own build in your System Path, with the name `xdelta3`
