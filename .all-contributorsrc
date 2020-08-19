@@ -13,6 +13,24 @@
       "contributions": [
         "design"
       ]
+    },
+    {
+      "login": "dan0v",
+      "name": "Dano",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/7658521?v=4",
+      "profile": "https://github.com/dan0v",
+      "contributions": [
+        "code",
+        "bug",
+        "design",
+        "doc",
+        "maintenance",
+        "platform",
+        "question",
+        "review",
+        "test",
+        "userTesting"
+      ]
     }
   ],
   "contributorsPerLine": 7,
