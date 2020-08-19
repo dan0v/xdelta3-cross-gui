@@ -5,16 +5,7 @@
   "imageSize": 100,
   "commit": false,
   "contributors": [
-    {
-      "login": "LeeBinder",
-      "name": "LeeBinder",
-      "avatar_url": "https://avatars0.githubusercontent.com/u/39203497?v=4",
-      "profile": "https://github.com/LeeBinder",
-      "contributions": [
-        "design"
-      ]
-    },
-    {
+  {
       "login": "dan0v",
       "name": "Dano",
       "avatar_url": "https://avatars1.githubusercontent.com/u/7658521?v=4",
@@ -30,6 +21,15 @@
         "review",
         "test",
         "userTesting"
+      ]
+    },
+    {
+      "login": "LeeBinder",
+      "name": "LeeBinder",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/39203497?v=4",
+      "profile": "https://github.com/LeeBinder",
+      "contributions": [
+        "design"
       ]
     }
   ],
