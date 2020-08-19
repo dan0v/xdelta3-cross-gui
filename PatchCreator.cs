@@ -81,7 +81,14 @@ namespace xdelta3_cross_gui
             if (!this.MainParent.Options.CreateBatchFileOnly)
             {
                 currentPatchScript.Close();
-                File.Delete(Path.Combine(this.MainParent.Options.PatchFileDestination, "doNotDelete-In-Progress.bat"));
+                try
+                {
+                    File.Delete(Path.Combine(this.MainParent.Options.PatchFileDestination, "doNotDelete-In-Progress.bat"));
+                } catch (Exception e)
+                {
+                    Debug.WriteLine(e);
+                }
+                
                 currentPatchScript = new StreamWriter(Path.Combine(MainParent.Options.PatchFileDestination, this.MainParent.Options.PatchSubdirectory, "doNotDelete-In-Progress.bat"));
             }
             List<string> oldFileNames = new List<string>();
@@ -159,7 +166,13 @@ namespace xdelta3_cross_gui
                         activeCMD.BeginOutputReadLine();
                         activeCMD.BeginErrorReadLine();
                         activeCMD.WaitForExit();
-                        File.Delete(Path.Combine(this.MainParent.Options.PatchFileDestination, this.MainParent.Options.PatchSubdirectory, "doNotDelete-In-Progress.bat"));
+                        try
+                        {
+                            File.Delete(Path.Combine(this.MainParent.Options.PatchFileDestination, this.MainParent.Options.PatchSubdirectory, "doNotDelete-In-Progress.bat"));
+                        } catch (Exception e)
+                        {
+                            Debug.WriteLine(e);
+                        }
 
                         if (this.MainParent.Options.ZipFilesWhenDone)
                         {
@@ -179,6 +192,13 @@ namespace xdelta3_cross_gui
                 { IsBackground = true }.Start();
             } else
             {
+                try
+                {
+                    File.Delete(Path.Combine(MainParent.Options.PatchFileDestination, "doNotDelete-In-Progress.bat"));
+                } catch (Exception e)
+                {
+                    Debug.WriteLine(e);
+                }
                 this.MainParent.PatchProgress = 0;
                 if (this.MainParent.Options.ZipFilesWhenDone)
                 {

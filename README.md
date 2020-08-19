@@ -34,7 +34,7 @@ A cross-platform GUI for creating xDelta3 patches, inspired by [Moodkiller/xdelt
 #### Optionally
 You may provide your own builds of xDelta3, instead of using the included versions, by simply replacing the binaries in the `Assets/exec` folder with files with the same names, or including your own build in your System Path, with the name `xdelta3`
 
-## Contributors ✨
+## Contributors
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
