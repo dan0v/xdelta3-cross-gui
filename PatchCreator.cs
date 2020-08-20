@@ -110,7 +110,7 @@ namespace xdelta3_cross_gui
                 // Script for patch creation
                 if (!this.MainParent.Options.CreateBatchFileOnly)
                 {
-                    currentPatchScript.WriteLine(MainWindow.XDELTA3_PATH + " " + this.MainParent.Options.XDeltaArguments + " " + "\"" + this.MainParent.OldFilesList[i].FullPath + "\" \"" + this.MainParent.NewFilesList[i].FullPath + "\" \"" + Path.Combine(this.MainParent.Options.PatchFileDestination, this.MainParent.Options.PatchSubdirectory, oldFileNames[i]) + "." + this.MainParent.Options.PatchExtention + "\"");
+                    currentPatchScript.WriteLine("\"" + MainWindow.XDELTA3_PATH + "\""+ " " + this.MainParent.Options.XDeltaArguments + " " + "\"" + this.MainParent.OldFilesList[i].FullPath + "\" \"" + this.MainParent.NewFilesList[i].FullPath + "\" \"" + Path.Combine(this.MainParent.Options.PatchFileDestination, this.MainParent.Options.PatchSubdirectory, oldFileNames[i]) + "." + this.MainParent.Options.PatchExtention + "\"");
                 }
 
             }
