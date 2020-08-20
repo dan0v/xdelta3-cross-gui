@@ -1,7 +1,7 @@
 #!/bin/bash
 APP_NAME="xDelta3 Cross GUI.app"
 APP_OUTPUT_PATH="Output"
-APP_TAR_NAME="xdelta3_cross_gui_macOS_x64"
+APP_TAR_NAME="xdelta3-cross-gui_XXX_macOS_x64"
 PUBLISH_OUTPUT_DIRECTORY="../../bin/Release/netcoreapp3.1/publish/."
 INFO_PLIST="Info.plist"
 ICON_FILE="Icon.icns"
