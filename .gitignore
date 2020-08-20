@@ -13,7 +13,6 @@
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
-[Pp]ublish/*
 ![Pp]ublish/.gitignore
 [Rr]elease/*
 ![Rr]elease/.gitignore
@@ -24,6 +23,8 @@ build/
 bld/
 [Bb]in/
 [Oo]bj/
+[Pp]ublish/MacOS/*.tar.gz
+[Pp]ublish/MacOS/Output/*
 
 # Debug tools
 [Pp]ublish.ps1
