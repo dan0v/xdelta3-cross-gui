@@ -23,8 +23,13 @@ build/
 bld/
 [Bb]in/
 [Oo]bj/
+[Pp]ublish/*.tar.gz
+[Pp]ublish/*.zip
+[Pp]ublish/version.txt
 [Pp]ublish/MacOS/*.tar.gz
 [Pp]ublish/MacOS/Output/*
+[Pp]ublish/Windows/Build/*
+[Pp]ublish/Linux/Build/*
 
 # Debug tools
 [Pp]ublish.ps1
