@@ -386,6 +386,10 @@ namespace xdelta3_cross_gui
                 Debug.WriteLine(e);
             }
             this.CheckFileCounts();
+            if (this.OldFilesListCount == 0)
+            {
+                this._AllOldFilesSelected = false;
+            }
         }
         public void ToggleAllOldFilesSelection(object sender, RoutedEventArgs args)
         {
@@ -414,6 +418,10 @@ namespace xdelta3_cross_gui
                     }
                     this.ReloadNewFiles();
                     this.CheckFileCounts();
+                    if (this.Options.PatchFileDestination == "")
+                    {
+                        this.Options.PatchFileDestination = Path.Combine(Path.GetDirectoryName(this.NewFilesList[0].FullPath), "xDelta3_Output");
+                    }
                 }
             }
         }
@@ -494,6 +502,10 @@ namespace xdelta3_cross_gui
                 Debug.WriteLine(e);
             }
             this.CheckFileCounts();
+            if (this.NewFilesListCount == 0)
+            {
+                this._AllNewFilesSelected = false;
+            }
         }
         public void ToggleAllNewFilesSelection(object sender, RoutedEventArgs args)
         {

@@ -36,13 +36,13 @@ namespace xdelta3_cross_gui
             readmeWriter.WriteLine("Linux:");
             readmeWriter.WriteLine("1. Copy your original files into this folder with their original file names");
             readmeWriter.WriteLine("2. In terminal, type: sh " + '"' + "2.Apply Patch-Linux.sh" + '"' + ". Patching should start automatically");
-            readmeWriter.WriteLine("2. Alternatively, if you're using a GUI, double click 3.Apply Patch-Linux.sh and patching should start automatically");
+            readmeWriter.WriteLine("2. Alternatively, if you're using a GUI, double click 2.Apply Patch-Linux.sh and patching should start automatically");
             readmeWriter.WriteLine("3. Once patching is complete you will find your newly patched files in the main folder and the originals in a folder called 'old'");
             readmeWriter.WriteLine("4. Enjoy");
             readmeWriter.WriteLine("");
             readmeWriter.WriteLine("MacOS:");
             readmeWriter.WriteLine("1. Copy your original files into this folder with their original file names");
-            readmeWriter.WriteLine("3. Double click 3.Apply Patch-Mac.command and a terminal window should appear");
+            readmeWriter.WriteLine("2. Double click 2.Apply Patch-Mac.command and a terminal window should appear");
             readmeWriter.WriteLine("3. Once patching is complete you will find your newly patched files in the main folder and the originals in a folder called 'old'");
             readmeWriter.WriteLine("4. Enjoy");
             readmeWriter.Close();
