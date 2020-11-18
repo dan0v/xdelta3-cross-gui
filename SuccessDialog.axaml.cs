@@ -2,6 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using System;
 using System.Diagnostics;
 using System.IO;
 
@@ -37,7 +38,8 @@ namespace xdelta3_cross_gui
             if (this.MainParent.Options.ZipFilesWhenDone)
             {
                 this._Destination = Path.Combine(this.MainParent.Options.PatchFileDestination, "..");
-            } else
+            }
+            else
             {
                 this._Destination = this.MainParent.Options.PatchFileDestination;
             }
@@ -54,11 +56,18 @@ namespace xdelta3_cross_gui
         }
         private void OpenDestinationClicked(object sender, RoutedEventArgs args)
         {
-            Process.Start(new ProcessStartInfo
+            try
             {
-                FileName = this._Destination + Path.DirectorySeparatorChar,
-                UseShellExecute = true
-            });
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = this._Destination + Path.DirectorySeparatorChar,
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+            }
         }
         private void InitializeComponent()
         {

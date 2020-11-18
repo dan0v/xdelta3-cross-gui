@@ -1,4 +1,5 @@
 #!/bin/bash
+cd "$(dirname "$0")"
 APP_NAME="xDelta3 Cross GUI.app"
 APP_OUTPUT_PATH="Output"
 APP_TAR_NAME1="xdelta3-cross-gui_"

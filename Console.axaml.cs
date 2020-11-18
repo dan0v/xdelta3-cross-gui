@@ -5,11 +5,14 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 
 namespace xdelta3_cross_gui
 {
     public class Console : Window
     {
+        private static MainWindow _Parent;
+
         public bool CanClose = false;
 
         TextBlock txt_blk_Output;
@@ -24,6 +27,11 @@ namespace xdelta3_cross_gui
             this.sv_ScrollConsole = this.FindControl<ScrollViewer>("sv_ScrollConsole");
         }
 
+        public void SetParent(MainWindow parent)
+        {
+            _Parent = parent;
+        }
+
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
@@ -32,6 +40,19 @@ namespace xdelta3_cross_gui
         protected override void OnClosing(CancelEventArgs e)
         {
             e.Cancel = !this.CanClose;
+
+            // Hide window instead of closing
+            if (!this.CanClose)
+            {
+                try
+                {
+                    _Parent.ShowTerminal = false;
+                }
+                catch (Exception e1)
+                {
+                    Debug.WriteLine(e1);
+                }
+            }
         }
 
         protected override void OnPointerPressed(PointerPressedEventArgs e)

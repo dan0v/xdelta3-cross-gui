@@ -29,7 +29,9 @@ namespace xdelta3_cross_gui
 
         public string Credits { get { return "xDelta3 Cross-Platform GUI by dan0v, using xDelta 3.1.0\n\nHeavily inspired by xDelta GUI 2\nby Jordi Vermeulen (Modified by Brian Campbell)"; } }
         private bool _XDeltaOnSystemPath { get; set; }
-        public bool XDeltaOnSystemPath { get => _XDeltaOnSystemPath;
+        public bool XDeltaOnSystemPath
+        {
+            get => _XDeltaOnSystemPath;
             set
             {
                 if (value != _XDeltaOnSystemPath)
@@ -122,9 +124,11 @@ namespace xdelta3_cross_gui
             }
         }
 
-        public bool ShowTerminal { get => Options.ShowTerminal;
+        public bool ShowTerminal
+        {
+            get => Options.ShowTerminal;
             set
-            { 
+            {
                 Options.ShowTerminal = value;
                 try
                 {
@@ -137,9 +141,12 @@ namespace xdelta3_cross_gui
                         this.Console.Hide();
                     }
                 }
-                catch (Exception e) { Debug.WriteLine(e);
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e);
                     this._Console = new Console();
                 }
+                OnPropertyChanged();
             }
         }
 
@@ -174,7 +181,7 @@ namespace xdelta3_cross_gui
         public ProgressBar pb_Progress;
         TextBox txt_bx_PatchDestination;
 
-        public enum FileVersion { New, Old };
+        public enum FileCategory { New, Old };
 
         public MainWindow()
         {
@@ -231,16 +238,16 @@ namespace xdelta3_cross_gui
             this.pb_Progress = this.FindControl<ProgressBar>("pb_Progress");
 
             // Bindings
-            this.btn_ToggleAllOldFilesSelection.Click += ToggleAllOldFilesSelection;
-            this.btn_ToggleAllNewFilesSelection.Click += ToggleAllNewFilesSelection;
-            this.btn_AddOld.Click += AddOldFile;
-            this.btn_UpOld.Click += MoveOldFileUp;
-            this.btn_DownOld.Click += MoveOldFileDown;
-            this.btn_DeleteOld.Click += DeleteOldFiles;
-            this.btn_AddNew.Click += AddNewFile;
-            this.btn_UpNew.Click += MoveNewFileUp;
-            this.btn_DownNew.Click += MoveNewFileDown;
-            this.btn_DeleteNew.Click += DeleteNewFiles;
+            this.btn_ToggleAllOldFilesSelection.Click += ToggleAllOldFilesSelectionClicked;
+            this.btn_ToggleAllNewFilesSelection.Click += ToggleAllNewFilesSelectionClicked;
+            this.btn_AddOld.Click += AddOldFileClicked;
+            this.btn_UpOld.Click += MoveOldFileUpClicked;
+            this.btn_DownOld.Click += MoveOldFileDownClicked;
+            this.btn_DeleteOld.Click += DeleteOldFilesClicked;
+            this.btn_AddNew.Click += AddNewFileClicked;
+            this.btn_UpNew.Click += MoveNewFileUpClicked;
+            this.btn_DownNew.Click += MoveNewFileDownClicked;
+            this.btn_DeleteNew.Click += DeleteNewFilesClicked;
             this.btn_SaveSettings.Click += SaveSettingsClicked;
             this.btn_ResetDefaults.Click += ResetDefaultsClicked;
             this.btn_Go.Click += GoClicked;
@@ -250,6 +257,8 @@ namespace xdelta3_cross_gui
             this.sv_OldFilesDisplay.AddHandler(DragDrop.DropEvent, OldFilesDropped);
             this.sv_NewFilesDisplay.AddHandler(DragDrop.DropEvent, NewFilesDropped);
 
+            this.Console.SetParent(this);
+
         }
 
         private void CheckFileCounts()
@@ -257,44 +266,13 @@ namespace xdelta3_cross_gui
             if (this.OldFilesList.Count != this.NewFilesList.Count || this.OldFilesList.Count == 0)
             {
                 this.EqualFileCount = false;
-            } else
+            }
+            else
             {
                 this.EqualFileCount = true;
             }
             this.OldFilesListCount = this.OldFilesList.Count;
             this.NewFilesListCount = this.NewFilesList.Count;
-        }
-        public void ReloadOldFiles(bool forceReloadContents = false)
-        {
-            this.sp_OldFilesDisplay.Children.Clear();
-
-            if (forceReloadContents)
-            {
-                for (int i = 0; i < this.OldFilesList.Count; i++)
-                {
-                    this.OldFilesList[i].Index = i;
-                    this.OldFilesList[i]._Shifted = false;
-                    this.OldFilesList[i].UpdateValues();
-                }
-            }
-
-            this.sp_OldFilesDisplay.Children.AddRange(this.OldFilesList);
-        }
-        public void ReloadNewFiles(bool forceReloadContents = false)
-        {
-            this.sp_NewFilesDisplay.Children.Clear();
-
-            if (forceReloadContents)
-            {
-                for (int i = 0; i < this.NewFilesList.Count; i++)
-                {
-                    this.NewFilesList[i].Index = i;
-                    this.NewFilesList[i]._Shifted = false;
-                    this.NewFilesList[i].UpdateValues();
-                }
-            }
-
-            this.sp_NewFilesDisplay.Children.AddRange(this.NewFilesList);
         }
 
         public void OldFilesDropped(object sender, DragEventArgs args)
@@ -302,155 +280,119 @@ namespace xdelta3_cross_gui
             if (args.Data.Contains(DataFormats.FileNames))
             {
                 List<string> url = new List<string>(args.Data.GetFileNames());
-                if (url.Count > 0)
-                {
-                    foreach (string path in url)
-                    {
-                        this.OldFilesList.Add(new PathFileComponent(this, path, this.OldFilesList.Count, FileVersion.Old));
-                    }
-                    this.ReloadOldFiles();
-                    this.CheckFileCounts();
-                }
-            } 
+                this.AddFiles(url.ToArray(), FileCategory.Old);
+            }
         }
-        public async void AddOldFile(object sender, RoutedEventArgs args)
+        public async void AddOldFileClicked(object sender, RoutedEventArgs args)
         {
             try
             {
                 string[] url = await this.OpenFileBrowser();
-                if (url.Length > 0)
-                {
-                    foreach (string path in url)
-                    {
-                        this.OldFilesList.Add(new PathFileComponent(this, path, this.OldFilesList.Count, FileVersion.Old));
-                    }
-                    this.ReloadOldFiles();
-                    this.CheckFileCounts();
-                }
-            } catch (Exception e)
-            {
-                Debug.WriteLine(e);
-            }
-        }
-        public void MoveOldFileUp(object sender, RoutedEventArgs args)
-        {
-            List<PathFileComponent> list = this.OldFilesList;
-            List<PathFileComponent> selectedList = list.FindAll(c => c.IsSelected == true);
-            this.SortListInPlaceByIndex(selectedList);
-            for (int i = 0; i < selectedList.Count; i++)
-            {
-                PathFileComponent component = selectedList[i];
-                // Do not shift up if element before it was not shifted
-                if (component.Index != 0 && (i == 0 || (i > 0 && (list.IndexOf(component) - list.IndexOf(selectedList[i - 1]) > 1) || selectedList[i - 1]._Shifted == true)))
-                {
-                    list[list.IndexOf(component) - 1].Index++;
-                    component.Index--;
-                    component._Shifted = true;
-                    this.SortListInPlaceByIndex(list);
-                }
-            }
-            this.ReloadOldFiles(true);
-        }
-        public void MoveOldFileDown(object sender, RoutedEventArgs args)
-        {
-            List<PathFileComponent> list = this.OldFilesList;
-            List<PathFileComponent> selectedList = list.FindAll(c => c.IsSelected == true);
-            this.SortListInPlaceByIndex(selectedList);
-            for (int i = selectedList.Count - 1; i >= 0; i--)
-            {
-                PathFileComponent component = selectedList[i];
-                // Do not shift down if element after it was not shifted
-                if (component.Index != list.Count - 1 && (i == selectedList.Count - 1 || (i < selectedList.Count - 1 && (list.IndexOf(selectedList[i + 1]) - list.IndexOf(component)) > 1) || selectedList[i + 1]._Shifted == true))
-                {
-                    list[list.IndexOf(component) + 1].Index--;
-                    component.Index++;
-                    component._Shifted = true;
-                    this.SortListInPlaceByIndex(list);
-                }
-            }
-            this.ReloadOldFiles(true);
-        }
-        public void DeleteOldFiles(object sender, RoutedEventArgs args)
-        {
-            try
-            {
-                List<PathFileComponent> list = this.OldFilesList.FindAll(c => c.IsSelected == true);
-                foreach (PathFileComponent component in list)
-                {
-                    this.OldFilesList.Remove(component);
-                }
-                this.ReloadOldFiles(true);
+                this.AddFiles(url, FileCategory.Old);
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e);
             }
-            this.CheckFileCounts();
-            if (this.OldFilesListCount == 0)
-            {
-                this._AllOldFilesSelected = false;
-            }
         }
-        public void ToggleAllOldFilesSelection(object sender, RoutedEventArgs args)
+        public void MoveOldFileUpClicked(object sender, RoutedEventArgs args)
         {
-            if (_AllOldFilesSelected)
-            {
-                this.OldFilesList.ForEach(c => c.IsSelected = false);
-                this._AllOldFilesSelected = false;
-            }
-            else
-            {
-                this.OldFilesList.ForEach(c => c.IsSelected = true);
-                this._AllOldFilesSelected = true;
-            }
-            ReloadOldFiles(true);
+            this.MoveFilesUp(FileCategory.Old);
         }
+        public void MoveOldFileDownClicked(object sender, RoutedEventArgs args)
+        {
+            this.MoveFilesDown(FileCategory.Old);
+        }
+        public void DeleteOldFilesClicked(object sender, RoutedEventArgs args)
+        {
+            this.DeleteFiles(FileCategory.Old);
+        }
+        public void ToggleAllOldFilesSelectionClicked(object sender, RoutedEventArgs args)
+        {
+            this.ToggleAllFilesSelection(FileCategory.Old);
+        }
+
         public void NewFilesDropped(object sender, DragEventArgs args)
         {
             if (args.Data.Contains(DataFormats.FileNames))
             {
                 List<string> url = new List<string>(args.Data.GetFileNames());
-                if (url.Count > 0)
-                {
-                    foreach (string path in url)
-                    {
-                        this.NewFilesList.Add(new PathFileComponent(this, path, this.NewFilesList.Count, FileVersion.New));
-                    }
-                    this.ReloadNewFiles();
-                    this.CheckFileCounts();
-                    if (this.Options.PatchFileDestination == "")
-                    {
-                        this.Options.PatchFileDestination = Path.Combine(Path.GetDirectoryName(this.NewFilesList[0].FullPath), "xDelta3_Output");
-                    }
-                }
+                this.AddFiles(url.ToArray(), FileCategory.New);
             }
         }
-        public async void AddNewFile(object sender, RoutedEventArgs args)
+        public async void AddNewFileClicked(object sender, RoutedEventArgs args)
         {
             try
             {
                 string[] url = await this.OpenFileBrowser();
-                if (url.Length > 0)
+                this.AddFiles(url, FileCategory.New);
+
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+            }
+        }
+        public void MoveNewFileUpClicked(object sender, RoutedEventArgs args)
+        {
+            this.MoveFilesUp(FileCategory.New);
+        }
+        public void MoveNewFileDownClicked(object sender, RoutedEventArgs args)
+        {
+            this.MoveFilesDown(FileCategory.New);
+        }
+        public void DeleteNewFilesClicked(object sender, RoutedEventArgs args)
+        {
+            this.DeleteFiles(FileCategory.New);
+        }
+        public void ToggleAllNewFilesSelectionClicked(object sender, RoutedEventArgs args)
+        {
+            this.ToggleAllFilesSelection(FileCategory.New);
+        }
+
+        private void AddFiles(string[] urls, FileCategory version)
+        {
+            List<PathFileComponent> filesList = this.NewFilesList;
+
+            if (version == FileCategory.New)
+            {
+                filesList = this.NewFilesList;
+            }
+            else if (version == FileCategory.Old)
+            {
+                filesList = this.OldFilesList;
+            }
+
+            if (urls.Length > 0)
+            {
+                foreach (string path in urls)
                 {
-                    foreach (string path in url)
-                    {
-                        this.NewFilesList.Add(new PathFileComponent(this, path, this.NewFilesList.Count, FileVersion.New));
-                    }
-                    this.ReloadNewFiles();
-                    this.CheckFileCounts();
+                    filesList.Add(new PathFileComponent(this, path, filesList.Count, version));
+                }
+                this.ReloadFiles(version);
+                this.CheckFileCounts();
+
+                if (version == FileCategory.New)
+                {
                     if (this.Options.PatchFileDestination == "")
                     {
                         this.Options.PatchFileDestination = Path.Combine(Path.GetDirectoryName(this.NewFilesList[0].FullPath), "xDelta3_Output");
                     }
                 }
-            } catch (Exception e)
-            {
-                Debug.WriteLine(e);
             }
         }
-        public void MoveNewFileUp(object sender, RoutedEventArgs args)
+        private void MoveFilesUp(FileCategory category)
         {
             List<PathFileComponent> list = this.NewFilesList;
+            if (category == FileCategory.New)
+            {
+                list = this.NewFilesList;
+            }
+            else if (category == FileCategory.Old)
+            {
+                list = this.OldFilesList;
+            }
+
             List<PathFileComponent> selectedList = list.FindAll(c => c.IsSelected == true);
             this.SortListInPlaceByIndex(selectedList);
             for (int i = 0; i < selectedList.Count; i++)
@@ -465,11 +407,20 @@ namespace xdelta3_cross_gui
                     this.SortListInPlaceByIndex(list);
                 }
             }
-            this.ReloadNewFiles(true);
+            this.ReloadFiles(category, true);
         }
-        public void MoveNewFileDown(object sender, RoutedEventArgs args)
+        private void MoveFilesDown(FileCategory category)
         {
             List<PathFileComponent> list = this.NewFilesList;
+            if (category == FileCategory.New)
+            {
+                list = this.NewFilesList;
+            }
+            else if (category == FileCategory.Old)
+            {
+                list = this.OldFilesList;
+            }
+
             List<PathFileComponent> selectedList = list.FindAll(c => c.IsSelected == true);
             this.SortListInPlaceByIndex(selectedList);
             for (int i = selectedList.Count - 1; i >= 0; i--)
@@ -484,42 +435,112 @@ namespace xdelta3_cross_gui
                     this.SortListInPlaceByIndex(list);
                 }
             }
-            this.ReloadNewFiles(true);
+            this.ReloadFiles(category, true);
         }
-        public void DeleteNewFiles(object sender, RoutedEventArgs args)
+        private void DeleteFiles(FileCategory category)
         {
+            List<PathFileComponent> list = this.NewFilesList;
+            if (category == FileCategory.New)
+            {
+                list = this.NewFilesList;
+            }
+            else if (category == FileCategory.Old)
+            {
+                list = this.OldFilesList;
+            }
+
             try
             {
-                List<PathFileComponent> list = this.NewFilesList.FindAll(c => c.IsSelected == true);
-                foreach (PathFileComponent component in list)
+                List<PathFileComponent> deletableList = list.FindAll(c => c.IsSelected == true);
+                foreach (PathFileComponent component in deletableList)
                 {
-                    this.NewFilesList.Remove(component);
+                    list.Remove(component);
                 }
-                this.ReloadNewFiles(true);
+                this.ReloadFiles(category, true);
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e);
             }
             this.CheckFileCounts();
-            if (this.NewFilesListCount == 0)
+
+            if (category == FileCategory.New)
             {
-                this._AllNewFilesSelected = false;
+                if (this.NewFilesListCount == 0)
+                {
+                    this._AllNewFilesSelected = false;
+                }
+            }
+            else if (category == FileCategory.Old)
+            {
+                if (this.OldFilesListCount == 0)
+                {
+                    this._AllOldFilesSelected = false;
+                }
             }
         }
-        public void ToggleAllNewFilesSelection(object sender, RoutedEventArgs args)
+        private void ToggleAllFilesSelection(FileCategory category)
         {
-            if(_AllNewFilesSelected)
+            if (category == FileCategory.New)
             {
-                this.NewFilesList.ForEach(c => c.IsSelected = false);
-                this._AllNewFilesSelected = false;
-            } else
-            {
-                this.NewFilesList.ForEach(c => c.IsSelected = true);
-                this._AllNewFilesSelected = true;
+                if (_AllNewFilesSelected)
+                {
+                    this.NewFilesList.ForEach(c => c.IsSelected = false);
+                    this._AllNewFilesSelected = false;
+                }
+                else
+                {
+                    this.NewFilesList.ForEach(c => c.IsSelected = true);
+                    this._AllNewFilesSelected = true;
+                }
+                ReloadFiles(FileCategory.New, true);
             }
-            ReloadNewFiles(true);
+            else if (category == FileCategory.Old)
+            {
+                if (_AllOldFilesSelected)
+                {
+                    this.OldFilesList.ForEach(c => c.IsSelected = false);
+                    this._AllOldFilesSelected = false;
+                }
+                else
+                {
+                    this.OldFilesList.ForEach(c => c.IsSelected = true);
+                    this._AllOldFilesSelected = true;
+                }
+                ReloadFiles(FileCategory.Old, true);
+            }
         }
+        public void ReloadFiles(FileCategory category, bool forceReloadContents = false)
+        {
+            List<PathFileComponent> components = this.NewFilesList;
+            StackPanel sp = sp_NewFilesDisplay;
+
+            if (category == FileCategory.New)
+            {
+                components = this.NewFilesList;
+                sp = sp_NewFilesDisplay;
+            }
+            else if (category == FileCategory.Old)
+            {
+                components = this.OldFilesList;
+                sp = sp_OldFilesDisplay;
+            }
+
+            sp.Children.Clear();
+
+            if (forceReloadContents)
+            {
+                for (int i = 0; i < components.Count; i++)
+                {
+                    components[i].Index = i;
+                    components[i]._Shifted = false;
+                    components[i].UpdateValues();
+                }
+            }
+
+            sp.Children.AddRange(components);
+        }
+
         public void SaveSettingsClicked(object sender, RoutedEventArgs args)
         {
             this.Options.SaveCurrent();
@@ -536,9 +557,8 @@ namespace xdelta3_cross_gui
             bool failed = false;
             List<string> missingOldFiles = new List<string>();
             List<string> missingNewFiles = new List<string>();
-            bool missingDestinationDirectory = false;
 
-            foreach (PathFileComponent component in  this.OldFilesList)
+            foreach (PathFileComponent component in this.OldFilesList)
             {
                 if (!File.Exists(component.FullPath))
                 {
@@ -556,11 +576,6 @@ namespace xdelta3_cross_gui
                 }
             }
 
-            if (!File.Exists(this.Options.PatchFileDestination))
-            {
-                missingDestinationDirectory = true;
-            }
-
             if (!this.Options.Validate())
             {
                 failed = true;
@@ -576,7 +591,8 @@ namespace xdelta3_cross_gui
                     patcher.CopyExecutables();
                 }
                 patcher.CreatePatchingBatchFiles();
-            } else
+            }
+            else
             {
                 ErrorDialog dialog = new ErrorDialog(missingOldFiles, missingNewFiles);
                 dialog.Show();
@@ -591,7 +607,8 @@ namespace xdelta3_cross_gui
             {
                 string url = await this.OpenFolderBrowser();
                 this.Options.PatchFileDestination = url;
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 Debug.WriteLine(e);
             }
@@ -599,8 +616,8 @@ namespace xdelta3_cross_gui
 
         public void UseShortNamesChecked(object sender, RoutedEventArgs args)
         {
-            this.ReloadNewFiles(true);
-            this.ReloadOldFiles(true);
+            this.ReloadFiles(FileCategory.New, true);
+            this.ReloadFiles(FileCategory.Old, true);
         }
 
         public void SortListInPlaceByIndex(List<PathFileComponent> list)
@@ -664,10 +681,12 @@ namespace xdelta3_cross_gui
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 XDELTA3_PATH = Path.Combine(location, XDELTA3_BINARY_WINDOWS);
-            } else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
                 XDELTA3_PATH = Path.Combine(location, XDELTA3_BINARY_LINUX);
-            } else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
                 XDELTA3_PATH = Path.Combine(location, XDELTA3_BINARY_MACOS);
             }

@@ -84,11 +84,12 @@ namespace xdelta3_cross_gui
                 try
                 {
                     File.Delete(Path.Combine(this.MainParent.Options.PatchFileDestination, "doNotDelete-In-Progress.bat"));
-                } catch (Exception e)
+                }
+                catch (Exception e)
                 {
                     Debug.WriteLine(e);
                 }
-                
+
                 currentPatchScript = new StreamWriter(Path.Combine(MainParent.Options.PatchFileDestination, this.MainParent.Options.PatchSubdirectory, "doNotDelete-In-Progress.bat"));
             }
             List<string> oldFileNames = new List<string>();
@@ -106,11 +107,11 @@ namespace xdelta3_cross_gui
                 // Batch creation - Mac //
                 patchWriterMac.WriteLine(MainWindow.XDELTA3_BINARY_MACOS + " -v -d -s \"{0}\" " + '"' + this.MainParent.Options.PatchSubdirectory + '/' + "{0}." + this.MainParent.Options.PatchExtention + "\" \"{2}\"", oldFileNames[i], this.MainParent.Options.PatchSubdirectory + (i + 1).ToString(), newFileNames[i]);
                 patchWriterMac.WriteLine("mv \"{0}\" old", oldFileNames[i]);
-                
+
                 // Script for patch creation
                 if (!this.MainParent.Options.CreateBatchFileOnly)
                 {
-                    currentPatchScript.WriteLine("\"" + MainWindow.XDELTA3_PATH + "\""+ " " + this.MainParent.Options.XDeltaArguments + " " + "\"" + this.MainParent.OldFilesList[i].FullPath + "\" \"" + this.MainParent.NewFilesList[i].FullPath + "\" \"" + Path.Combine(this.MainParent.Options.PatchFileDestination, this.MainParent.Options.PatchSubdirectory, oldFileNames[i]) + "." + this.MainParent.Options.PatchExtention + "\"");
+                    currentPatchScript.WriteLine("\"" + MainWindow.XDELTA3_PATH + "\"" + " " + this.MainParent.Options.XDeltaArguments + " " + "\"" + this.MainParent.OldFilesList[i].FullPath + "\" \"" + this.MainParent.NewFilesList[i].FullPath + "\" \"" + Path.Combine(this.MainParent.Options.PatchFileDestination, this.MainParent.Options.PatchSubdirectory, oldFileNames[i]) + "." + this.MainParent.Options.PatchExtention + "\"");
                 }
 
             }
@@ -122,80 +123,13 @@ namespace xdelta3_cross_gui
 
             currentPatchScript.Close();
 
-            if (!this.MainParent.Options.CreateBatchFileOnly)
-            {
-                new Thread(() =>
-                {
-                    using (Process activeCMD = new Process())
-                    {
-                        activeCMD.OutputDataReceived += HandleCMDOutput;
-                        activeCMD.ErrorDataReceived += HandleCMDError;
-
-                        ProcessStartInfo info = new ProcessStartInfo();
-
-                        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                        {
-                            info.FileName = Path.Combine(this.MainParent.Options.PatchFileDestination, this.MainParent.Options.PatchSubdirectory, "doNotDelete-In-Progress.bat");
-                        }
-                        else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                        {
-                            string args = Path.Combine(this.MainParent.Options.PatchFileDestination, this.MainParent.Options.PatchSubdirectory, "doNotDelete-In-Progress.bat");
-                            string escapedArgs = "/bin/bash " + args.Replace("\"", "\\\"");
-                            info.FileName = "/bin/bash";
-                            info.Arguments = $"-c \"{escapedArgs}\"";
-                        }
-                        else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-                        {
-                            // Todo test
-                            string args = Path.Combine(this.MainParent.Options.PatchFileDestination, this.MainParent.Options.PatchSubdirectory, "doNotDelete-In-Progress.bat");
-                            string escapedArgs = "/bin/bash " + args.Replace("\"", "\\\"");
-                            info.FileName = "/bin/bash";
-                            info.Arguments = $"-c \"{escapedArgs}\"";
-                        }
-
-                        info.WindowStyle = ProcessWindowStyle.Hidden;
-                        info.CreateNoWindow = true;
-                        info.UseShellExecute = false;
-                        info.RedirectStandardOutput = true;
-                        info.RedirectStandardError = true;
-
-                        activeCMD.StartInfo = info;
-                        activeCMD.EnableRaisingEvents = true;
-
-                        activeCMD.Start();
-                        activeCMD.BeginOutputReadLine();
-                        activeCMD.BeginErrorReadLine();
-                        activeCMD.WaitForExit();
-                        try
-                        {
-                            File.Delete(Path.Combine(this.MainParent.Options.PatchFileDestination, this.MainParent.Options.PatchSubdirectory, "doNotDelete-In-Progress.bat"));
-                        } catch (Exception e)
-                        {
-                            Debug.WriteLine(e);
-                        }
-
-                        if (this.MainParent.Options.ZipFilesWhenDone)
-                        {
-                            this.ZipFiles();
-                        }
-                        this.MainParent.AlreadyBusy = false;
-                        this.MainParent.PatchProgress = 0;
-                        Dispatcher.UIThread.InvokeAsync(new Action(() =>
-                        {
-                            SuccessDialog dialog = new SuccessDialog(this.MainParent);
-                            dialog.Show();
-                            dialog.Topmost = true;
-                            dialog.Topmost = false;
-                        }));
-                    }
-                })
-                { IsBackground = true }.Start();
-            } else
+            if (this.MainParent.Options.CreateBatchFileOnly)
             {
                 try
                 {
                     File.Delete(Path.Combine(MainParent.Options.PatchFileDestination, "doNotDelete-In-Progress.bat"));
-                } catch (Exception e)
+                }
+                catch (Exception e)
                 {
                     Debug.WriteLine(e);
                 }
@@ -213,6 +147,80 @@ namespace xdelta3_cross_gui
                     dialog.Topmost = false;
                 }));
             }
+            else
+            {
+                CreateNewXDeltaThread().Start();
+            }
+        }
+
+        private Thread CreateNewXDeltaThread()
+        {
+            return new Thread(() =>
+            {
+                using (Process activeCMD = new Process())
+                {
+                    activeCMD.OutputDataReceived += HandleCMDOutput;
+                    activeCMD.ErrorDataReceived += HandleCMDError;
+
+                    ProcessStartInfo info = new ProcessStartInfo();
+
+                    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                    {
+                        info.FileName = Path.Combine(this.MainParent.Options.PatchFileDestination, this.MainParent.Options.PatchSubdirectory, "doNotDelete-In-Progress.bat");
+                    }
+                    else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                    {
+                        string args = Path.Combine(this.MainParent.Options.PatchFileDestination, this.MainParent.Options.PatchSubdirectory, "doNotDelete-In-Progress.bat");
+                        string escapedArgs = "/bin/bash " + args.Replace("\"", "\\\"");
+                        info.FileName = "/bin/bash";
+                        info.Arguments = $"-c \"{escapedArgs}\"";
+                    }
+                    else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                    {
+                        string args = Path.Combine(this.MainParent.Options.PatchFileDestination, this.MainParent.Options.PatchSubdirectory, "doNotDelete-In-Progress.bat");
+                        string escapedArgs = "/bin/bash " + args.Replace("\"", "\\\"");
+                        info.FileName = "/bin/bash";
+                        info.Arguments = $"-c \"{escapedArgs}\"";
+                    }
+
+                    info.WindowStyle = ProcessWindowStyle.Hidden;
+                    info.CreateNoWindow = true;
+                    info.UseShellExecute = false;
+                    info.RedirectStandardOutput = true;
+                    info.RedirectStandardError = true;
+
+                    activeCMD.StartInfo = info;
+                    activeCMD.EnableRaisingEvents = true;
+
+                    activeCMD.Start();
+                    activeCMD.BeginOutputReadLine();
+                    activeCMD.BeginErrorReadLine();
+                    activeCMD.WaitForExit();
+                    try
+                    {
+                        File.Delete(Path.Combine(this.MainParent.Options.PatchFileDestination, this.MainParent.Options.PatchSubdirectory, "doNotDelete-In-Progress.bat"));
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine(e);
+                    }
+
+                    if (this.MainParent.Options.ZipFilesWhenDone)
+                    {
+                        this.ZipFiles();
+                    }
+                    this.MainParent.AlreadyBusy = false;
+                    this.MainParent.PatchProgress = 0;
+                    Dispatcher.UIThread.InvokeAsync(new Action(() =>
+                    {
+                        SuccessDialog dialog = new SuccessDialog(this.MainParent);
+                        dialog.Show();
+                        dialog.Topmost = true;
+                        dialog.Topmost = false;
+                    }));
+                }
+            })
+            { IsBackground = true };
         }
 
         private void ZipFiles()
@@ -224,10 +232,10 @@ namespace xdelta3_cross_gui
                 {
                     File.Delete(Path.Combine(this.MainParent.Options.PatchFileDestination, "..", this.MainParent.Options.ZipName + ".zip"));
                 }
-                ZipFile.CreateFromDirectory(this.MainParent.Options.PatchFileDestination, Path.Combine(this.MainParent.Options.PatchFileDestination,"..", this.MainParent.Options.ZipName + ".zip"));
+                ZipFile.CreateFromDirectory(this.MainParent.Options.PatchFileDestination, Path.Combine(this.MainParent.Options.PatchFileDestination, "..", this.MainParent.Options.ZipName + ".zip"));
                 this.MainParent.PatchProgressIsIndeterminate = false;
             })
-            { IsBackground = true}.Start();
+            { IsBackground = true }.Start();
         }
 
         private void HandleCMDOutput(object sender, DataReceivedEventArgs e)
@@ -237,7 +245,7 @@ namespace xdelta3_cross_gui
             {
                 Debug.WriteLine(e.Data);
                 this._Progress++;
-                
+
                 prog = (this._Progress / this.MainParent.OldFilesList.Count) * 100;
                 this.MainParent.PatchProgress = prog > 100 ? 100 : prog;
 
@@ -260,7 +268,8 @@ namespace xdelta3_cross_gui
             try
             {
                 File.Copy(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "exec", MainWindow.XDELTA3_BINARY_WINDOWS), Path.Combine(this.MainParent.Options.PatchFileDestination, MainWindow.XDELTA3_BINARY_WINDOWS), true);
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 Debug.WriteLine(e);
             }

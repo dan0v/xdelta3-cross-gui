@@ -20,7 +20,7 @@ namespace xdelta3_cross_gui
 
         public bool _Shifted = false;
 
-        private MainWindow.FileVersion _FileVersion;
+        private MainWindow.FileCategory _FileCategory;
 
         private bool _IsSelected = false;
         public bool IsSelected {
@@ -43,7 +43,7 @@ namespace xdelta3_cross_gui
         {
             this.InitializeComponent();
         }
-        public PathFileComponent(MainWindow parent,  string url, int index, MainWindow.FileVersion fileVersion)
+        public PathFileComponent(MainWindow parent,  string url, int index, MainWindow.FileCategory fileCategory)
         {
             this.InitializeComponent();
 
@@ -56,7 +56,7 @@ namespace xdelta3_cross_gui
             this.FullPath = "";
             this.ShortName = "";
             this.Index = index;
-            this._FileVersion = fileVersion;
+            this._FileCategory = fileCategory;
 
 
             try
