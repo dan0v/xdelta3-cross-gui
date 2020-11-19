@@ -8,7 +8,7 @@ A cross-platform GUI for creating xDelta3 patches, inspired by [Moodkiller/xdelt
 ## Features
 - Compatible with Windows, Linux, and MacOS
 - Scalable UI
-- Add old and new files to the UI with Drag and Drop (Windows only [*upstream issue*](https://github.com/AvaloniaUI/Avalonia/issues/3502))
+- Add old and new files to the UI with Drag and Drop (Windows and MacOS only [*upstream issue*](https://github.com/AvaloniaUI/Avalonia/issues/3502))
 - Visual progress bar for patching
 - View or hide terminal output during patching
 - Allow for custom xDelta3 commandline arguments
