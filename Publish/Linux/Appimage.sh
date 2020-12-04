@@ -7,7 +7,7 @@ APP_NAME="xDelta3 Cross GUI"
 APP_OUTPUT_PATH="Build"
 PUBLISH_OUTPUT_DIRECTORY="../../bin/Release/netcoreapp3.1/publishLinux/."
 APP_TAR_NAME1="xdelta3-cross-gui_"
-APP_TAR_NAME2="_linux_x64"
+APP_TAR_NAME2="_linux_AppImage_x86_64"
 
 if [ -d "$APP_OUTPUT_PATH" ]
 then
