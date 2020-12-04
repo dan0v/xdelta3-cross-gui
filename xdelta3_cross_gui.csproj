@@ -2,22 +2,11 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RuntimeIdentifiers>win-x86;win-x64;osx-x64;linux-x64;</RuntimeIdentifiers>
     <Authors>dan0v</Authors>
     <Description>A cross-platform graphical user interface for xDelta3 patching</Description>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
     <Version>1.0.4</Version>
-  </PropertyGroup>
-  <PropertyGroup>
-    <CFBundleName>xdelta3_cross_gui</CFBundleName> <!-- Also defines .app file name -->
-    <CFBundleDisplayName>xDelta3 Cross GUI</CFBundleDisplayName>
-    <CFBundleIdentifier>com.dan0v.xdelta3_cross_gui</CFBundleIdentifier>
-    <CFBundleVersion>1.0.0</CFBundleVersion>
-    <CFBundlePackageType>AAPL</CFBundlePackageType>
-    <CFBundleSignature>????</CFBundleSignature>
-    <CFBundleExecutable>xdelta3_cross_gui</CFBundleExecutable>
-    <CFBundleIconFile>AppName.icns</CFBundleIconFile> <!-- Will be copied from output directory -->
-    <NSPrincipalClass>NSApplication</NSPrincipalClass>
-    <NSHighResolutionCapable>true</NSHighResolutionCapable>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Assets\exec\xdelta3_mac" />
@@ -52,6 +41,9 @@
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Packaging.Targets" Version="$(PackagingNuGetVersion)" />
+  </ItemGroup>
+  <ItemGroup>
     <None Update="LICENSE.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -59,7 +51,11 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <DebDotNetDependencies Include="dotnet-runtime-3.1"/>
+  </ItemGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="PowerShell -ExecutionPolicy Unrestricted $(ProjectDir)Publish\getVersion.ps1 -TargetDir $(TargetDir)&#xD;&#xA;&#xD;&#xA;echo $(Version)&gt;  $(ProjectDir)Publish\version.txt" />
   </Target>
+  <Target Name="PackageDebian" DependsOnTargets="CreateDeb" Outputs="$(DebPath)"/>
 </Project>

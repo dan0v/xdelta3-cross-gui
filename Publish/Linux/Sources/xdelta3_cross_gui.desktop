@@ -1,0 +1,8 @@
+# Desktop Entry Specification: https://standards.freedesktop.org/desktop-entry-spec/desktop-entry-spec-latest.html
+[Desktop Entry]
+Type=Application
+Name=xDelta3 Cross Gui
+Comment=A cross-platform graphical user interface for xDelta3 patching
+Icon=icn
+Exec=xdelta3_cross_gui
+Categories=Development;

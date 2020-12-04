@@ -1,4 +1,7 @@
 #!/bin/bash
+
+#dotnet publish --configuration Release --framework netcoreapp3.1 -r osx-x64 /p:PublishTrimmed=true -o bin/Release/netcoreapp3.1/publishMac
+
 cd "$(dirname "$0")"
 APP_NAME="xDelta3 Cross GUI.app"
 APP_OUTPUT_PATH="Output"
