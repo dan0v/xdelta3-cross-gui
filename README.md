@@ -17,19 +17,16 @@ A cross-platform GUI for creating xDelta3 patches, inspired by [Moodkiller/xdelt
 
 ## Installation
 ### Windows
-1. Install [.Net Core 3.1 for Windows](https://docs.microsoft.com/en-us/dotnet/core/install/windows?tabs=netcore31)
-2. Download latest Windows build from the [Releases page](https://github.com/dan0v/xdelta3-cross-gui/releases)
-3. Run executable (`xdelta3_cross_gui.exe`)
+1. Download and unzip latest Windows build from the [Releases page](https://github.com/dan0v/xdelta3-cross-gui/releases)
+2. Run executable (`xdelta3_cross_gui.exe`)
 
 ### Linux
-1. Install [.Net Core 3.1 for your distribution](https://docs.microsoft.com/en-us/dotnet/core/install/linux)
-2. Download latest Linux build from the [Releases page](https://github.com/dan0v/xdelta3-cross-gui/releases)
-3. Run executable (`xdelta3_cross_gui`)
+1. Download and unzip latest Linux build from the [Releases page](https://github.com/dan0v/xdelta3-cross-gui/releases)
+2. Run executable (`xdelta3_cross_gui`)
 
 ### Mac
-1. Install .Net Core 3.1 for MacOS [using the installer](https://docs.microsoft.com/en-us/dotnet/core/install/macos), or using Homebrew (`brew cask install dotnet`)
-2. Download latest MacOS build from the [Releases page](https://github.com/dan0v/xdelta3-cross-gui/releases)
-3. Run (`xDelta3 Cross GUI.app`)
+1. Download and unzip latest MacOS build from the [Releases page](https://github.com/dan0v/xdelta3-cross-gui/releases)
+2. Run (`xDelta3 Cross GUI.app`)
 
 #### Optionally
 You may provide your own builds of xDelta3, instead of using the included versions, by simply replacing the binaries in the `Assets/exec` folder with files with the same names, or including your own build in your System Path, with the name `xdelta3`

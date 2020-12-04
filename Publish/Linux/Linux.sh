@@ -15,9 +15,11 @@ mkdir "$APP_OUTPUT_PATH"
 mkdir "$APP_OUTPUT_PATH/$APP_NAME"
 
 cp -a "$PUBLISH_OUTPUT_DIRECTORY" "$APP_OUTPUT_PATH/$APP_NAME/"
+cp "../../NOTICE.txt" "$APP_OUTPUT_PATH/NOTICE.txt"
+cp "../../LICENSE.txt" "$APP_OUTPUT_PATH/LICENSE.txt"
 
 VERSION=$(cat ../version.txt | sed 's/ *$//g' | sed 's/\r//' | sed ':a;N;$!ba;s/\n//g')
 
 cd "$APP_OUTPUT_PATH"
-tar -czvf "$APP_TAR_NAME1$VERSION$APP_TAR_NAME2.tar.gz" "$APP_NAME/"
+tar -czvf "$APP_TAR_NAME1$VERSION$APP_TAR_NAME2.tar.gz" "$APP_NAME/" "LICENSE.txt" "NOTICE.txt"
 mv "$APP_TAR_NAME1$VERSION$APP_TAR_NAME2.tar.gz" ../../"$APP_TAR_NAME1$VERSION$APP_TAR_NAME2.tar.gz"
