@@ -55,7 +55,7 @@
     <DebDotNetDependencies Include="dotnet-runtime-3.1"/>
   </ItemGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="PowerShell -ExecutionPolicy Unrestricted $(ProjectDir)Publish\getVersion.ps1 -TargetDir $(TargetDir)&#xD;&#xA;&#xD;&#xA;echo $(Version)&gt;  $(ProjectDir)Publish\version.txt" />
+    <Exec Command="PowerShell -ExecutionPolicy Unrestricted $(ProjectDir)Publish\getVersion.ps1 -TargetDir $(TargetDir)&#xD;&#xA;&#xD;&#xA;echo $(Version)&gt;  $(ProjectDir)Publish/version.txt" />
   </Target>
   <Target Name="PackageDebian" DependsOnTargets="CreateDeb" Outputs="$(DebPath)"/>
 </Project>
