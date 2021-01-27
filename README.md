@@ -43,6 +43,9 @@ You may provide your own builds of xDelta3, instead of using the included versio
 - *Linux unpackaged -* `Assets/exec`
 - *Mac -* `Contents/MacOS/Assets/exec`
 
+## Screenshots
+![GitHub Logo](Extra%20Resources/Progress-demo.png)
+
 ## Contributors
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
