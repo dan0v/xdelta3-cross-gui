@@ -15,9 +15,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 '
 
-#dotnet publish --configuration Release --framework netcoreapp3.1 -r linux-x64 /p:PublishTrimmed=true -o bin/Release/netcoreapp3.1/publishLinux
+ORIGIN="$(pwd)"
+cd "../.."
+dotnet publish --configuration Release --framework netcoreapp3.1 -r linux-x64 /p:PublishTrimmed=true -o bin/Release/netcoreapp3.1/publishLinux
+cd "$ORIGIN"
 
-cd "$(dirname "$0")"
 APP_NAME="xDelta3 Cross GUI"
 APP_OUTPUT_PATH="Build"
 PUBLISH_OUTPUT_DIRECTORY="../../bin/Release/netcoreapp3.1/publishLinux/."
