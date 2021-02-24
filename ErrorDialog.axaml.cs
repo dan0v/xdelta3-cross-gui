@@ -32,17 +32,11 @@ namespace xdelta3_cross_gui
         public ErrorDialog()
         {
             this.InitializeComponent();
-#if DEBUG
-            this.AttachDevTools();
-#endif
         }
 
         public ErrorDialog(List<string> missingOldFiles, List<string> missingNewFiles)
         {
             this.InitializeComponent();
-#if DEBUG
-            this.AttachDevTools();
-#endif
             this.missingNewFiles = missingNewFiles;
             this.missingOldFiles = missingOldFiles;
             this.Configure();

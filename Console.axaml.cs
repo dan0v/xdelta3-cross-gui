@@ -34,9 +34,6 @@ namespace xdelta3_cross_gui
         public Console()
         {
             this.InitializeComponent();
-#if DEBUG
-            this.AttachDevTools();
-#endif
             this.txt_blk_Output = this.FindControl<TextBlock>("txt_blk_Output");
             this.sv_ScrollConsole = this.FindControl<ScrollViewer>("sv_ScrollConsole");
         }

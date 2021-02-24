@@ -14,9 +14,6 @@ limitations under the License.*/
 
 using System;
 using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Dialogs;
-using Avalonia.Logging.Serilog;
 
 namespace xdelta3_cross_gui
 {

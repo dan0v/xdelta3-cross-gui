@@ -17,10 +17,8 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using Avalonia.VisualTree;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -51,6 +49,8 @@ namespace xdelta3_cross_gui
                 if (value != _XDeltaOnSystemPath)
                 {
                     _XDeltaOnSystemPath = value;
+                    XDeltaOnSystemPathMessage1 = value ? "has" : "has not";
+                    XDeltaOnSystemPathMessage2 = value ? "" : ", so the locally bundled xDelta3 binary will be used";
                     OnPropertyChanged();
                 }
             }
@@ -107,8 +107,26 @@ namespace xdelta3_cross_gui
                 }
             }
         }
-        public string XDeltaOnSystemPathMessage1 { get { return this.XDeltaOnSystemPath ? "has" : "has not"; } } //has | has not
-        public string XDeltaOnSystemPathMessage2 { get { return this.XDeltaOnSystemPath ? "" : ", so the locally bundled xDelta3 binary will be used"; } } // | , so locally bundled xDelta binary will be used
+        private string _XDeltaOnSystemPathMessage1 = "has not";
+        public string XDeltaOnSystemPathMessage1
+        {
+            get => _XDeltaOnSystemPathMessage1;
+            set
+            {
+                _XDeltaOnSystemPathMessage1 = value;
+                OnPropertyChanged();
+            }
+        }
+        private string _XDeltaOnSystemPathMessage2 = "";
+        public string XDeltaOnSystemPathMessage2
+        {
+            get => _XDeltaOnSystemPathMessage2;
+            set
+            {
+                _XDeltaOnSystemPathMessage2 = value;
+                OnPropertyChanged();
+            }
+        }
         public List<PathFileComponent> OldFilesList { get; set; }
         public List<PathFileComponent> NewFilesList { get; set; }
         private int _OldFilesListCount { get; set; }
@@ -149,6 +167,8 @@ namespace xdelta3_cross_gui
                     if (value)
                     {
                         this.Console.Show();
+                        this.Console.Activate();
+                        this.Console.Focus();
                     }
                     else
                     {
@@ -200,9 +220,6 @@ namespace xdelta3_cross_gui
         public MainWindow()
         {
             InitializeComponent();
-#if DEBUG
-            this.AttachDevTools();
-#endif
             this.Configure();
         }
 
@@ -211,84 +228,7 @@ namespace xdelta3_cross_gui
             AvaloniaXamlLoader.Load(this);
         }
 
-        private void Configure()
-        {
-            this.Title = TITLE;
-
-            this.EqualFileCount = false;
-            this.XDeltaOnSystemPath = false;
-            this.AlreadyBusy = false;
-            this.PatchProgressIsIndeterminate = false;
-            this.OldFilesListCount = 0;
-            this.NewFilesListCount = 0;
-
-            this.Options.LoadSaved();
-            this.CheckXDeltaIsOnSystemPath();
-
-            this.OldFilesList = new List<PathFileComponent>();
-            this.NewFilesList = new List<PathFileComponent>();
-
-            // Button Click event does not compile in XAML, so has to be manually added https://github.com/AvaloniaUI/Avalonia/issues/3898
-            this.btn_ToggleAllOldFilesSelection = this.FindControl<Button>("btn_ToggleAllOldFilesSelection");
-            this.btn_ToggleAllNewFilesSelection = this.FindControl<Button>("btn_ToggleAllNewFilesSelection");
-            this.btn_AddOld = this.FindControl<Button>("btn_AddOld");
-            this.btn_UpOld = this.FindControl<Button>("btn_UpOld");
-            this.btn_DownOld = this.FindControl<Button>("btn_DownOld");
-            this.btn_DeleteOld = this.FindControl<Button>("btn_DeleteOld");
-            this.btn_AddNew = this.FindControl<Button>("btn_AddNew");
-            this.btn_UpNew = this.FindControl<Button>("btn_UpNew");
-            this.btn_DownNew = this.FindControl<Button>("btn_DownNew");
-            this.btn_DeleteNew = this.FindControl<Button>("btn_DeleteNew");
-            this.btn_BrowsePathDestination = this.FindControl<Button>("btn_BrowsePathDestination");
-            this.sp_OldFilesDisplay = this.FindControl<StackPanel>("sp_OldFilesDisplay");
-            this.sp_NewFilesDisplay = this.FindControl<StackPanel>("sp_NewFilesDisplay");
-            this.sv_OldFilesDisplay = this.FindControl<ScrollViewer>("sv_OldFilesDisplay");
-            this.sv_NewFilesDisplay = this.FindControl<ScrollViewer>("sv_NewFilesDisplay");
-            this.chk_UseShortNames = this.FindControl<CheckBox>("chk_UseShortNames");
-            this.txt_bx_PatchDestination = this.FindControl<TextBox>("txt_bx_PatchDestination");
-            this.btn_SaveSettings = this.FindControl<Button>("btn_SaveSettings");
-            this.btn_ResetDefaults = this.FindControl<Button>("btn_ResetDefaults");
-            this.btn_Go = this.FindControl<Button>("btn_Go");
-            this.pb_Progress = this.FindControl<ProgressBar>("pb_Progress");
-
-            // Bindings
-            this.btn_ToggleAllOldFilesSelection.Click += ToggleAllOldFilesSelectionClicked;
-            this.btn_ToggleAllNewFilesSelection.Click += ToggleAllNewFilesSelectionClicked;
-            this.btn_AddOld.Click += AddOldFileClicked;
-            this.btn_UpOld.Click += MoveOldFileUpClicked;
-            this.btn_DownOld.Click += MoveOldFileDownClicked;
-            this.btn_DeleteOld.Click += DeleteOldFilesClicked;
-            this.btn_AddNew.Click += AddNewFileClicked;
-            this.btn_UpNew.Click += MoveNewFileUpClicked;
-            this.btn_DownNew.Click += MoveNewFileDownClicked;
-            this.btn_DeleteNew.Click += DeleteNewFilesClicked;
-            this.btn_SaveSettings.Click += SaveSettingsClicked;
-            this.btn_ResetDefaults.Click += ResetDefaultsClicked;
-            this.btn_Go.Click += GoClicked;
-            this.btn_BrowsePathDestination.Click += BrowseOutputDirectory;
-            this.chk_UseShortNames.Click += UseShortNamesChecked;
-
-            this.sv_OldFilesDisplay.AddHandler(DragDrop.DropEvent, OldFilesDropped);
-            this.sv_NewFilesDisplay.AddHandler(DragDrop.DropEvent, NewFilesDropped);
-
-            this.Console.SetParent(this);
-
-        }
-
-        private void CheckFileCounts()
-        {
-            if (this.OldFilesList.Count != this.NewFilesList.Count || this.OldFilesList.Count == 0)
-            {
-                this.EqualFileCount = false;
-            }
-            else
-            {
-                this.EqualFileCount = true;
-            }
-            this.OldFilesListCount = this.OldFilesList.Count;
-            this.NewFilesListCount = this.NewFilesList.Count;
-        }
-
+        #region public
         public void OldFilesDropped(object sender, DragEventArgs args)
         {
             if (args.Data.Contains(DataFormats.FileNames))
@@ -364,6 +304,199 @@ namespace xdelta3_cross_gui
             this.ToggleAllFilesSelection(FileCategory.New);
         }
 
+        public void ReloadFiles(FileCategory category, bool forceReloadContents = false)
+        {
+            List<PathFileComponent> components = this.NewFilesList;
+            StackPanel sp = sp_NewFilesDisplay;
+
+            if (category == FileCategory.New)
+            {
+                components = this.NewFilesList;
+                sp = sp_NewFilesDisplay;
+            }
+            else if (category == FileCategory.Old)
+            {
+                components = this.OldFilesList;
+                sp = sp_OldFilesDisplay;
+            }
+
+            sp.Children.Clear();
+
+            if (forceReloadContents)
+            {
+                for (int i = 0; i < components.Count; i++)
+                {
+                    components[i].Index = i;
+                    components[i]._Shifted = false;
+                    components[i].UpdateValues();
+                }
+            }
+
+            sp.Children.AddRange(components);
+        }
+
+        public void SaveSettingsClicked(object sender, RoutedEventArgs args)
+        {
+            this.Options.SaveCurrent();
+        }
+
+        public void ResetDefaultsClicked(object sender, RoutedEventArgs args)
+        {
+            this.Options.ResetToDefault();
+            this.Options.SaveCurrent();
+        }
+
+        public void GoClicked(object sender, RoutedEventArgs args)
+        {
+            bool failed = false;
+            List<string> missingOldFiles = new List<string>();
+            List<string> missingNewFiles = new List<string>();
+
+            foreach (PathFileComponent component in this.OldFilesList)
+            {
+                if (!File.Exists(component.FullPath))
+                {
+                    missingOldFiles.Add(component.FullPath);
+                    failed = true;
+                }
+            }
+
+            foreach (PathFileComponent component in this.NewFilesList)
+            {
+                if (!File.Exists(component.FullPath))
+                {
+                    missingNewFiles.Add(component.FullPath);
+                    failed = true;
+                }
+            }
+
+            if (!this.Options.Validate())
+            {
+                failed = true;
+            }
+
+            if (failed)
+            {
+                ErrorDialog dialog = new ErrorDialog(missingOldFiles, missingNewFiles);
+                dialog.Show();
+                dialog.Topmost = true;
+                this.AlreadyBusy = false;
+            }
+            else
+            {
+                PatchCreator patcher = new PatchCreator(this);
+                this.AlreadyBusy = true;
+                patcher.CreateReadme();
+                if (this.Options.CopyExecutables)
+                {
+                    patcher.CopyExecutables();
+                }
+                patcher.CreatePatchingBatchFiles();
+            }
+        }
+
+        public async void BrowseOutputDirectory(object sender, RoutedEventArgs args)
+        {
+            try
+            {
+                string url = await this.OpenFolderBrowser();
+                this.Options.PatchFileDestination = url;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+            }
+        }
+
+        public void UseShortNamesChecked(object sender, RoutedEventArgs args)
+        {
+            this.ReloadFiles(FileCategory.New, true);
+            this.ReloadFiles(FileCategory.Old, true);
+        }
+
+        public void SortListInPlaceByIndex(List<PathFileComponent> list)
+        {
+            list.Sort((x, y) => x.Index.CompareTo(y.Index));
+        }
+        #endregion
+
+        #region private
+        private void Configure()
+        {
+            this.Title = TITLE;
+
+            this.EqualFileCount = false;
+            this.AlreadyBusy = false;
+            this.PatchProgressIsIndeterminate = false;
+            this.OldFilesListCount = 0;
+            this.NewFilesListCount = 0;
+
+            this.Options.LoadSaved();
+            this.SetXDeltaLocations();
+
+            this.OldFilesList = new List<PathFileComponent>();
+            this.NewFilesList = new List<PathFileComponent>();
+
+            // Button Click event does not compile in XAML, so has to be manually added https://github.com/AvaloniaUI/Avalonia/issues/3898
+            this.btn_ToggleAllOldFilesSelection = this.FindControl<Button>("btn_ToggleAllOldFilesSelection");
+            this.btn_ToggleAllNewFilesSelection = this.FindControl<Button>("btn_ToggleAllNewFilesSelection");
+            this.btn_AddOld = this.FindControl<Button>("btn_AddOld");
+            this.btn_UpOld = this.FindControl<Button>("btn_UpOld");
+            this.btn_DownOld = this.FindControl<Button>("btn_DownOld");
+            this.btn_DeleteOld = this.FindControl<Button>("btn_DeleteOld");
+            this.btn_AddNew = this.FindControl<Button>("btn_AddNew");
+            this.btn_UpNew = this.FindControl<Button>("btn_UpNew");
+            this.btn_DownNew = this.FindControl<Button>("btn_DownNew");
+            this.btn_DeleteNew = this.FindControl<Button>("btn_DeleteNew");
+            this.btn_BrowsePathDestination = this.FindControl<Button>("btn_BrowsePathDestination");
+            this.sp_OldFilesDisplay = this.FindControl<StackPanel>("sp_OldFilesDisplay");
+            this.sp_NewFilesDisplay = this.FindControl<StackPanel>("sp_NewFilesDisplay");
+            this.sv_OldFilesDisplay = this.FindControl<ScrollViewer>("sv_OldFilesDisplay");
+            this.sv_NewFilesDisplay = this.FindControl<ScrollViewer>("sv_NewFilesDisplay");
+            this.chk_UseShortNames = this.FindControl<CheckBox>("chk_UseShortNames");
+            this.txt_bx_PatchDestination = this.FindControl<TextBox>("txt_bx_PatchDestination");
+            this.btn_SaveSettings = this.FindControl<Button>("btn_SaveSettings");
+            this.btn_ResetDefaults = this.FindControl<Button>("btn_ResetDefaults");
+            this.btn_Go = this.FindControl<Button>("btn_Go");
+            this.pb_Progress = this.FindControl<ProgressBar>("pb_Progress");
+
+            // Bindings
+            this.btn_ToggleAllOldFilesSelection.Click += ToggleAllOldFilesSelectionClicked;
+            this.btn_ToggleAllNewFilesSelection.Click += ToggleAllNewFilesSelectionClicked;
+            this.btn_AddOld.Click += AddOldFileClicked;
+            this.btn_UpOld.Click += MoveOldFileUpClicked;
+            this.btn_DownOld.Click += MoveOldFileDownClicked;
+            this.btn_DeleteOld.Click += DeleteOldFilesClicked;
+            this.btn_AddNew.Click += AddNewFileClicked;
+            this.btn_UpNew.Click += MoveNewFileUpClicked;
+            this.btn_DownNew.Click += MoveNewFileDownClicked;
+            this.btn_DeleteNew.Click += DeleteNewFilesClicked;
+            this.btn_SaveSettings.Click += SaveSettingsClicked;
+            this.btn_ResetDefaults.Click += ResetDefaultsClicked;
+            this.btn_Go.Click += GoClicked;
+            this.btn_BrowsePathDestination.Click += BrowseOutputDirectory;
+            this.chk_UseShortNames.Click += UseShortNamesChecked;
+
+            this.sv_OldFilesDisplay.AddHandler(DragDrop.DropEvent, OldFilesDropped);
+            this.sv_NewFilesDisplay.AddHandler(DragDrop.DropEvent, NewFilesDropped);
+
+            this.Console.SetParent(this);
+
+        }
+
+        private void CheckFileCounts()
+        {
+            if (this.OldFilesList.Count != this.NewFilesList.Count || this.OldFilesList.Count == 0)
+            {
+                this.EqualFileCount = false;
+            }
+            else
+            {
+                this.EqualFileCount = true;
+            }
+            this.OldFilesListCount = this.OldFilesList.Count;
+            this.NewFilesListCount = this.NewFilesList.Count;
+        }
         private void AddFiles(string[] urls, FileCategory version)
         {
             List<PathFileComponent> filesList = this.NewFilesList;
@@ -524,120 +657,6 @@ namespace xdelta3_cross_gui
                 ReloadFiles(FileCategory.Old, true);
             }
         }
-        public void ReloadFiles(FileCategory category, bool forceReloadContents = false)
-        {
-            List<PathFileComponent> components = this.NewFilesList;
-            StackPanel sp = sp_NewFilesDisplay;
-
-            if (category == FileCategory.New)
-            {
-                components = this.NewFilesList;
-                sp = sp_NewFilesDisplay;
-            }
-            else if (category == FileCategory.Old)
-            {
-                components = this.OldFilesList;
-                sp = sp_OldFilesDisplay;
-            }
-
-            sp.Children.Clear();
-
-            if (forceReloadContents)
-            {
-                for (int i = 0; i < components.Count; i++)
-                {
-                    components[i].Index = i;
-                    components[i]._Shifted = false;
-                    components[i].UpdateValues();
-                }
-            }
-
-            sp.Children.AddRange(components);
-        }
-
-        public void SaveSettingsClicked(object sender, RoutedEventArgs args)
-        {
-            this.Options.SaveCurrent();
-        }
-
-        public void ResetDefaultsClicked(object sender, RoutedEventArgs args)
-        {
-            this.Options.ResetToDefault();
-            this.Options.SaveCurrent();
-        }
-
-        public void GoClicked(object sender, RoutedEventArgs args)
-        {
-            bool failed = false;
-            List<string> missingOldFiles = new List<string>();
-            List<string> missingNewFiles = new List<string>();
-
-            foreach (PathFileComponent component in this.OldFilesList)
-            {
-                if (!File.Exists(component.FullPath))
-                {
-                    missingOldFiles.Add(component.FullPath);
-                    failed = true;
-                }
-            }
-
-            foreach (PathFileComponent component in this.NewFilesList)
-            {
-                if (!File.Exists(component.FullPath))
-                {
-                    missingNewFiles.Add(component.FullPath);
-                    failed = true;
-                }
-            }
-
-            if (!this.Options.Validate())
-            {
-                failed = true;
-            }
-
-            if (!failed)
-            {
-                PatchCreator patcher = new PatchCreator(this);
-                this.AlreadyBusy = true;
-                patcher.CreateReadme();
-                if (this.Options.CopyExecutables)
-                {
-                    patcher.CopyExecutables();
-                }
-                patcher.CreatePatchingBatchFiles();
-            }
-            else
-            {
-                ErrorDialog dialog = new ErrorDialog(missingOldFiles, missingNewFiles);
-                dialog.Show();
-                dialog.Topmost = true;
-                this.AlreadyBusy = false;
-            }
-        }
-
-        public async void BrowseOutputDirectory(object sender, RoutedEventArgs args)
-        {
-            try
-            {
-                string url = await this.OpenFolderBrowser();
-                this.Options.PatchFileDestination = url;
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e);
-            }
-        }
-
-        public void UseShortNamesChecked(object sender, RoutedEventArgs args)
-        {
-            this.ReloadFiles(FileCategory.New, true);
-            this.ReloadFiles(FileCategory.Old, true);
-        }
-
-        public void SortListInPlaceByIndex(List<PathFileComponent> list)
-        {
-            list.Sort((x, y) => x.Index.CompareTo(y.Index));
-        }
 
         private static string GetVersion()
         {
@@ -668,10 +687,13 @@ namespace xdelta3_cross_gui
             };
             return await dialog.ShowAsync(GetWindow());
         }
+
         Window GetWindow() => (Window)this.VisualRoot;
 
-        private void CheckXDeltaIsOnSystemPath()
+        private void SetXDeltaLocations()
         {
+            this.XDeltaOnSystemPath = false;
+
             if (File.Exists("xdelta3"))
             {
                 XDELTA3_PATH = Path.GetFullPath("xdelta3");
@@ -682,29 +704,36 @@ namespace xdelta3_cross_gui
             foreach (var path in values.Split(Path.PathSeparator))
             {
                 var fullPath = Path.Combine(path, "xdelta3");
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    fullPath += ".exe";
+                }
                 if (File.Exists(fullPath))
                 {
                     XDELTA3_PATH = fullPath;
                     this.XDeltaOnSystemPath = true;
                 }
             }
-            this.XDeltaOnSystemPath = false;
 
-            string location = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "exec");
+            if (!this.XDeltaOnSystemPath)
+            {
+                string location = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "exec");
 
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                XDELTA3_PATH = Path.Combine(location, XDELTA3_BINARY_WINDOWS);
-            }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            {
-                XDELTA3_PATH = Path.Combine(location, XDELTA3_BINARY_LINUX);
-            }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-            {
-                XDELTA3_PATH = Path.Combine(location, XDELTA3_BINARY_MACOS);
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    XDELTA3_PATH = Path.Combine(location, XDELTA3_BINARY_WINDOWS);
+                }
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                {
+                    XDELTA3_PATH = Path.Combine(location, XDELTA3_BINARY_LINUX);
+                }
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                {
+                    XDELTA3_PATH = Path.Combine(location, XDELTA3_BINARY_MACOS);
+                }
             }
         }
+        #endregion
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
