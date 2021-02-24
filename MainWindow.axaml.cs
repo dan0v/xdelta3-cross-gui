@@ -107,7 +107,7 @@ namespace xdelta3_cross_gui
                 }
             }
         }
-        private string _XDeltaOnSystemPathMessage1 { get; set; }
+        private string _XDeltaOnSystemPathMessage1 = "has not";
         public string XDeltaOnSystemPathMessage1
         {
             get => _XDeltaOnSystemPathMessage1;
@@ -117,7 +117,7 @@ namespace xdelta3_cross_gui
                 OnPropertyChanged();
             }
         }
-        private string _XDeltaOnSystemPathMessage2 { get; set; }
+        private string _XDeltaOnSystemPathMessage2 = "";
         public string XDeltaOnSystemPathMessage2
         {
             get => _XDeltaOnSystemPathMessage2;
@@ -220,9 +220,6 @@ namespace xdelta3_cross_gui
         public MainWindow()
         {
             InitializeComponent();
-#if DEBUG
-            this.AttachDevTools();
-#endif
             this.Configure();
         }
 

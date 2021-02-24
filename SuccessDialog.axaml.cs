@@ -33,17 +33,11 @@ namespace xdelta3_cross_gui
         public SuccessDialog()
         {
             this.InitializeComponent();
-#if DEBUG
-            this.AttachDevTools();
-#endif
         }
 
         public SuccessDialog(MainWindow MainParent)
         {
             this.InitializeComponent();
-#if DEBUG
-            this.AttachDevTools();
-#endif
             this.MainParent = MainParent;
             this.Configure();
         }

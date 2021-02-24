@@ -50,13 +50,13 @@ namespace xdelta3_cross_gui
             readmeWriter.WriteLine("Linux:");
             readmeWriter.WriteLine("1. Copy your original files into this folder with their original file names");
             readmeWriter.WriteLine("2. In terminal, type: sh " + '"' + "2.Apply Patch-Linux.sh" + '"' + ". Patching should start automatically");
-            readmeWriter.WriteLine("2. Alternatively, if you're using a GUI, double click 2.Apply Patch-Linux.sh and patching should start automatically");
+            readmeWriter.WriteLine("2. Alternatively, if you're using a GUI, double click 2.Apply Patch-Linux.sh and patching should start automatically (you may have to `chmod +x` to allow execution of the script)");
             readmeWriter.WriteLine("3. Once patching is complete you will find your newly patched files in the main folder and the originals in a folder called 'old'");
             readmeWriter.WriteLine("4. Enjoy");
             readmeWriter.WriteLine("");
             readmeWriter.WriteLine("MacOS:");
             readmeWriter.WriteLine("1. Copy your original files into this folder with their original file names");
-            readmeWriter.WriteLine("2. Double click 2.Apply Patch-Mac.command and a terminal window should appear");
+            readmeWriter.WriteLine("2. Double click 2.Apply Patch-Mac.command and a terminal window should appear (you may have to `chmod +x` to allow execution of the script)");
             readmeWriter.WriteLine("3. Once patching is complete you will find your newly patched files in the main folder and the originals in a folder called 'old'");
             readmeWriter.WriteLine("4. Enjoy");
             readmeWriter.Close();
@@ -116,10 +116,10 @@ namespace xdelta3_cross_gui
                 patchWriterWindows.WriteLine(MainWindow.XDELTA3_BINARY_WINDOWS + " -v -d -s \"{0}\" " + "\".\\" + this.MainParent.Options.PatchSubdirectory + "\\" + "{0}." + this.MainParent.Options.PatchExtention + "\" \"{2}\"", oldFileNames[i], this.MainParent.Options.PatchSubdirectory + "\\" + (i + 1).ToString(), newFileNames[i]);
                 patchWriterWindows.WriteLine("move \"{0}\" old", oldFileNames[i]);
                 // Batch creation - Linux //
-                patchWriterLinux.WriteLine(MainWindow.XDELTA3_BINARY_LINUX + " -v -d -s \"{0}\" " + '"' + this.MainParent.Options.PatchSubdirectory + '/' + "{0}." + this.MainParent.Options.PatchExtention + "\" \"{2}\"", oldFileNames[i], this.MainParent.Options.PatchSubdirectory + (i + 1).ToString(), newFileNames[i]);
+                patchWriterLinux.WriteLine("./" + MainWindow.XDELTA3_BINARY_LINUX + " -v -d -s \"{0}\" " + '"' + this.MainParent.Options.PatchSubdirectory + '/' + "{0}." + this.MainParent.Options.PatchExtention + "\" \"{2}\"", oldFileNames[i], this.MainParent.Options.PatchSubdirectory + (i + 1).ToString(), newFileNames[i]);
                 patchWriterLinux.WriteLine("mv \"{0}\" old", oldFileNames[i]);
                 // Batch creation - Mac //
-                patchWriterMac.WriteLine(MainWindow.XDELTA3_BINARY_MACOS + " -v -d -s \"{0}\" " + '"' + this.MainParent.Options.PatchSubdirectory + '/' + "{0}." + this.MainParent.Options.PatchExtention + "\" \"{2}\"", oldFileNames[i], this.MainParent.Options.PatchSubdirectory + (i + 1).ToString(), newFileNames[i]);
+                patchWriterMac.WriteLine("./" + MainWindow.XDELTA3_BINARY_MACOS + " -v -d -s \"{0}\" " + '"' + this.MainParent.Options.PatchSubdirectory + '/' + "{0}." + this.MainParent.Options.PatchExtention + "\" \"{2}\"", oldFileNames[i], this.MainParent.Options.PatchSubdirectory + (i + 1).ToString(), newFileNames[i]);
                 patchWriterMac.WriteLine("mv \"{0}\" old", oldFileNames[i]);
 
                 // Script for patch creation
@@ -185,14 +185,14 @@ namespace xdelta3_cross_gui
                     else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
                     {
                         string args = Path.Combine(this.MainParent.Options.PatchFileDestination, this.MainParent.Options.PatchSubdirectory, "doNotDelete-In-Progress.bat");
-                        string escapedArgs = "/bin/bash " + args.Replace("\"", "\\\"");
+                        string escapedArgs = "/bin/bash " + args.Replace("\"", "\\\"").Replace(" ", "\\ ").Replace("(", "\\(").Replace(")", "\\)");
                         info.FileName = "/bin/bash";
                         info.Arguments = $"-c \"{escapedArgs}\"";
                     }
                     else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
                     {
                         string args = Path.Combine(this.MainParent.Options.PatchFileDestination, this.MainParent.Options.PatchSubdirectory, "doNotDelete-In-Progress.bat");
-                        string escapedArgs = "/bin/bash " + args.Replace("\"", "\\\"");
+                        string escapedArgs = "/bin/bash " + args.Replace("\"", "\\\"").Replace(" ", "\\ ").Replace("(", "\\(").Replace(")", "\\)");
                         info.FileName = "/bin/bash";
                         info.Arguments = $"-c \"{escapedArgs}\"";
                     }
