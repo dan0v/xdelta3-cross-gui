@@ -17,22 +17,22 @@ A cross-platform GUI for creating xDelta3 patches, inspired by [Moodkiller/xdelt
 
 ## Installation
 ### Windows *(x86)*
-1. Download and unzip [latest Windows build](https://github.com/dan0v/xdelta3-cross-gui/releases/latest/download/xdelta3-cross-gui_1.0.4_win_x86.zip) from the [Releases page](https://github.com/dan0v/xdelta3-cross-gui/releases)
+1. Download and unzip [latest Windows build](https://github.com/dan0v/xdelta3-cross-gui/releases/latest/) from the Releases page
 2. Run executable (`xdelta3_cross_gui.exe`)
 
 ### Linux *(x86_64)*
 #### Use AppImage for a packaged, native experience
 1. *Optionally install [AppImageLauncher](https://github.com/TheAssassin/AppImageLauncher) to integrate xDelta3 Cross Gui into your desktop environment*
-2. Download and unzip [latest Linux AppImage build](https://github.com/dan0v/xdelta3-cross-gui/releases/latest/download/xdelta3-cross-gui_1.0.4_linux_AppImage_x86_64.tar.gz) from the [Releases page](https://github.com/dan0v/xdelta3-cross-gui/releases)
+2. Download and unzip [latest Linux AppImage build](https://github.com/dan0v/xdelta3-cross-gui/releases/latest/) from the Releases page
 3. Mark `xDelta3_Cross_Gui-x86_64.AppImage` as executable (`chmod 755 xDelta3_Cross_Gui-x86_64.AppImage`)
 4. Run executable (`xDelta3_Cross_Gui-x86_64.AppImage`)
 
 #### Or use the unpackaged version
-1. Download and unzip [latest Linux build](https://github.com/dan0v/xdelta3-cross-gui/releases/latest/download/xdelta3-cross-gui_1.0.4_linux_x86_64.tar.gz) from the [Releases page](https://github.com/dan0v/xdelta3-cross-gui/releases)
+1. Download and unzip [latest Linux build](https://github.com/dan0v/xdelta3-cross-gui/releases/latest/) from the Releases page
 2. Run executable (`xdelta3_cross_gui`)
 
 ### Mac *(x86_64)*
-1. Download and unzip [latest MacOS build](https://github.com/dan0v/xdelta3-cross-gui/releases/latest/download/xdelta3-cross-gui_1.0.4_macOS_x86_64.tar.gz) from the [Releases page](https://github.com/dan0v/xdelta3-cross-gui/releases)
+1. Download and unzip [latest MacOS build](https://github.com/dan0v/xdelta3-cross-gui/releases/latest/) from the Releases page
 2. Run (`xDelta3 Cross GUI.app`)
 
 #### Optionally use your own builds of xDelta3
