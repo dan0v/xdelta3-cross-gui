@@ -6,7 +6,7 @@
     <Authors>dan0v</Authors>
     <Description>A cross-platform graphical user interface for xDelta3 patching</Description>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
-    <Version>1.0.5</Version>
+    <Version>1.0.6</Version>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Assets\exec\xdelta3_mac" />
@@ -37,11 +37,7 @@
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="0.10.0" />
     <PackageReference Include="Avalonia.Desktop" Version="0.10.0" />
-    <PackageReference Include="Dotnet.Bundle" Version="0.9.13" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Packaging.Targets" Version="$(PackagingNuGetVersion)" />
   </ItemGroup>
   <ItemGroup>
     <None Update="LICENSE.txt">
@@ -51,11 +47,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <DebDotNetDependencies Include="dotnet-runtime-3.1" />
-  </ItemGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="PowerShell -ExecutionPolicy Unrestricted $(ProjectDir)Publish\getVersion.ps1 -TargetDir $(TargetDir)&#xD;&#xA;&#xD;&#xA;echo $(Version)&gt;  $(ProjectDir)Publish/version.txt" />
   </Target>
-  <Target Name="PackageDebian" DependsOnTargets="CreateDeb" Outputs="$(DebPath)" />
 </Project>
