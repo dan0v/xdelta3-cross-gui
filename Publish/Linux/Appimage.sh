@@ -17,7 +17,7 @@ limitations under the License.
 
 ORIGIN="$(pwd)"
 cd "../.."
-dotnet publish --configuration Release --framework netcoreapp3.1 -r linux-x64 /p:PublishTrimmed=true -o bin/Release/netcoreapp3.1/publishLinux
+dotnet publish --configuration Release --framework netcoreapp3.1 -r linux-x64 --self-contained true /p:PublishTrimmed=true -o bin/Release/netcoreapp3.1/publishLinux
 cd "$ORIGIN"
 
 APP_NAME="xDelta3 Cross GUI"

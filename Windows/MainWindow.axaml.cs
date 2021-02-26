@@ -12,7 +12,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.*/
 
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -22,6 +21,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Net.Http;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -38,6 +38,8 @@ namespace xdelta3_cross_gui
         public const string XDELTA3_BINARY_WINDOWS = "xdelta3_x86_64_win.exe";
         public const string XDELTA3_BINARY_LINUX = "xdelta3_x64_linux";
         public const string XDELTA3_BINARY_MACOS = "xdelta3_mac";
+        public const string VERSION_CHECK_URL = "https://github.com/dan0v/xdelta3-cross-gui/releases/latest/download/version.txt";
+        public const string RELEASES_PAGE = "https://github.com/dan0v/xdelta3-cross-gui/releases/latest/";
 
         public string Credits { get { return "xDelta3 Cross-Platform GUI by dan0v, using xDelta 3.1.0\n\nHeavily inspired by xDelta GUI 2\nby Jordi Vermeulen (Modified by Brian Campbell)"; } }
         private bool _XDeltaOnSystemPath { get; set; }
@@ -343,7 +345,7 @@ namespace xdelta3_cross_gui
         public void ResetDefaultsClicked(object sender, RoutedEventArgs args)
         {
             this.Options.ResetToDefault();
-            this.Options.SaveCurrent();
+            //this.Options.SaveCurrent();
         }
 
         public void GoClicked(object sender, RoutedEventArgs args)
@@ -481,7 +483,7 @@ namespace xdelta3_cross_gui
             this.sv_NewFilesDisplay.AddHandler(DragDrop.DropEvent, NewFilesDropped);
 
             this.Console.SetParent(this);
-
+            this.CheckForUpdates();
         }
 
         private void CheckFileCounts()
@@ -655,6 +657,26 @@ namespace xdelta3_cross_gui
                     this._AllOldFilesSelected = true;
                 }
                 ReloadFiles(FileCategory.Old, true);
+            }
+        }
+
+        private async void CheckForUpdates()
+        {
+            try
+            {
+                HttpResponseMessage response = await new HttpClient().GetAsync(VERSION_CHECK_URL);
+                response.EnsureSuccessStatusCode();
+                string newVer = await response.Content.ReadAsStringAsync();
+                if (newVer.Trim() != VERSION.Trim())
+                {
+                    UpdateDialog updateDialog = new UpdateDialog(this, newVer);
+                    updateDialog.Show();
+                    updateDialog.Activate();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
             }
         }
 
