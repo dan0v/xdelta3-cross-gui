@@ -1,0 +1,32 @@
+﻿<!--Copyright 2020-2021 dan0v
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.-->
+
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="xdelta3_cross_gui.PathFileComponent"
+             DataContext="{Binding RelativeSource={RelativeSource Self}}">
+
+  <Grid ColumnDefinitions="30,25,*" Height="26">
+    <Border Grid.Column="0" BorderBrush="Black" BorderThickness="0.5,0,0.5,0.5">
+      <CheckBox x:Name="chk_IsChecked" Margin="5,0,5,0" IsChecked="{Binding IsSelected, Mode=TwoWay}"></CheckBox>
+    </Border>
+    <Border Grid.Column="1" BorderBrush="Black" BorderThickness="0,0.5,0.5,0.5">
+      <TextBlock x:Name="txt_blk_Index" Text="{Binding Index}" HorizontalAlignment="Center" VerticalAlignment="Center">0</TextBlock>
+    </Border>
+    <TextBox x:Name="txt_bx_Path" Grid.Column="2" IsReadOnly="True" MinWidth="0"></TextBox>
+  </Grid>
+</UserControl>
