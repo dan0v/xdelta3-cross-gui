@@ -13,15 +13,11 @@ See the License for the specific language governing permissions and
 limitations under the License.*/
 
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace xdelta3_cross_gui
 {
