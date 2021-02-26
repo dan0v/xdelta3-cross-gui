@@ -16,11 +16,11 @@ limitations under the License.-->
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="200"
+        mc:Ignorable="d" d:DesignWidth="350" d:DesignHeight="150"
         x:Class="xdelta3_cross_gui.ErrorDialog"
-        Title="Error"
+        Title="Error" MinWidth="300" MinHeight="130"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
-        Height="200" Width="500"
+        Width="350" Height="150"
         Icon="avares://xdelta3_cross_gui/Assets/img/Icon.png">
   
   <Grid RowDefinitions="Auto,*,Auto,Auto">

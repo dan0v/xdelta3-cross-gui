@@ -18,9 +18,9 @@ limitations under the License.-->
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="350" d:DesignHeight="150"
         x:Class="xdelta3_cross_gui.UpdateDialog"
-        Title="Update"
+        Title="Update" MinWidth="300" MinHeight="130"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
-        Height="150" Width="350"
+        Width="350" Height="150"
         Icon="avares://xdelta3_cross_gui/Assets/img/Icon.png">
   
   <Grid RowDefinitions="*,Auto,Auto">
