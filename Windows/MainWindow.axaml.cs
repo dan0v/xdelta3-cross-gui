@@ -22,6 +22,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -55,13 +56,6 @@ namespace xdelta3_cross_gui
                     OnPropertyChanged();
                 }
             }
-        }
-        public string ToggleSelectionString
-        {
-            get
-            {
-                return Localizer.Instance["ToggleSelectionButton"];
-            } 
         }
         private bool _EqualFileCount { get; set; }
         public bool EqualFileCount
@@ -408,6 +402,18 @@ namespace xdelta3_cross_gui
         {
             list.Sort((x, y) => x.Index.CompareTo(y.Index));
         }
+
+        public void ChangeLanguage(string language)
+        {
+            if (!Localizer.Languages.ContainsKey(language))
+            {
+                return;
+            }
+
+            CultureInfo.CurrentUICulture = new CultureInfo(Localizer.Languages[language]);
+            Options.Language = language;
+            Localizer.Instance.LoadLanguage();
+        }
         #endregion
 
         #region private
@@ -467,12 +473,15 @@ namespace xdelta3_cross_gui
             this.btn_Go.Click += GoClicked;
             this.btn_BrowsePathDestination.Click += BrowseOutputDirectory;
             this.chk_UseShortNames.Click += UseShortNamesChecked;
-            this.cb_LanguageOptions.SelectionChanged += ChangeLanguage;
+            this.cb_LanguageOptions.SelectionChanged += ChangeLanguageSelection;
 
             this.sv_OldFilesDisplay.AddHandler(DragDrop.DropEvent, OldFilesDropped);
             this.sv_NewFilesDisplay.AddHandler(DragDrop.DropEvent, NewFilesDropped);
 
             this.LoadLanguageOptions();
+
+            this.ChangeLanguage(Options.Language);
+            this.MatchSelectedLanguage();
 
             this.Console.SetParent(this);
             this.CheckForUpdates();
@@ -652,35 +661,27 @@ namespace xdelta3_cross_gui
             }
         }
 
-        private void ChangeLanguage(object sender, SelectionChangedEventArgs e)
-        {
-            string choice = (string)((ComboBoxItem)cb_LanguageOptions.SelectedItem).Content;
-            switch (choice)
-            {
-                case "English":
-                    CultureInfo.CurrentUICulture = new CultureInfo("en-US");
-                    break;
-                case "Hungarian":
-                    CultureInfo.CurrentUICulture = new CultureInfo("hu");
-                    break;
-                default:
-                    return;
-            }
-            Localizer.Instance.LoadLanguage();
-        }
-
         private void LoadLanguageOptions()
         {
-            string[] languages = { "English", "Hungarian"};
             List<ComboBoxItem> items = new List<ComboBoxItem>();
-            foreach (string language in languages)
+            foreach (string language in Localizer.Languages.Keys)
             {
                 ComboBoxItem item = new ComboBoxItem();
                 item.Content = language;
                 items.Add(item);
             }
             cb_LanguageOptions.Items = items;
-            cb_LanguageOptions.SelectedIndex = 0;
+        }
+        private void ChangeLanguageSelection(object sender, SelectionChangedEventArgs e)
+        {
+            string language = (string)((ComboBoxItem)cb_LanguageOptions.SelectedItem).Content;
+            ChangeLanguage(language);
+        }
+        private void MatchSelectedLanguage()
+        {
+            var items = cb_LanguageOptions.Items;
+            int index = items.Cast<ComboBoxItem>().ToList().FindIndex(item => (string)item.Content == Options.Language);
+            cb_LanguageOptions.SelectedIndex = index;
         }
 
         private async void CheckForUpdates()

@@ -15,6 +15,12 @@ namespace xdelta3_cross_gui.Localization
 {
     class Localizer : INotifyPropertyChanged
     {
+        public static readonly Dictionary<string, string> Languages = new Dictionary<string, string>
+        {
+            { "English", "en-US" },
+            { "Magyar", "hu" }
+        };
+
         private const string IndexerName = "Item";
         private const string IndexerArrayName = "Item[]";
         private ResourceManager resources;
@@ -46,10 +52,7 @@ namespace xdelta3_cross_gui.Localization
 
         public void Invalidate()
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(string.Empty));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(string.Empty));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(IndexerName));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(IndexerArrayName));
         }

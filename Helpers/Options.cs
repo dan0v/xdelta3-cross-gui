@@ -23,6 +23,7 @@ namespace xdelta3_cross_gui
 {
     public class Options : INotifyPropertyChanged
     {
+        public string Language { get; set; }
         private string _PatchExtention { get; set; }
         private string _PatchSubdirectory { get; set; }
         private string _PatchFileDestination { get; set; }
@@ -166,6 +167,7 @@ namespace xdelta3_cross_gui
                 string savedSettings = System.IO.File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "options.json"));
                 Options json = (Options)JsonConvert.DeserializeObject(savedSettings, typeof(Options));
 
+                this.Language = json.Language;
                 this.PatchExtention = json.PatchExtention;
                 this.PatchSubdirectory = json.PatchSubdirectory;
                 this.PatchFileDestination = json.PatchFileDestination;
