@@ -17,6 +17,7 @@ using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using System;
 using System.Diagnostics;
+using xdelta3_cross_gui.Localization;
 
 namespace xdelta3_cross_gui
 {
@@ -49,7 +50,7 @@ namespace xdelta3_cross_gui
 
             this.btn_Dismiss.Click += DismissClicked;
             this.btn_GoToReleases.Click += GoToReleasesClicked;
-            this.txt_blk_Prompt.Text = string.Format("Version {0} can be downloaded from the releases page on GitHub", newVersion);
+            this.txt_blk_Prompt.Text = string.Format(Localizer.Instance["NewVersionText"], newVersion);
         }
 
         private void DismissClicked(object sender, RoutedEventArgs args)

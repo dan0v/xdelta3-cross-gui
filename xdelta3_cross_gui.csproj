@@ -6,7 +6,7 @@
     <Authors>dan0v</Authors>
     <Description>A cross-platform graphical user interface for xDelta3 patching</Description>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
-    <Version>1.0.7</Version>
+    <Version>1.0.8</Version>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Assets\exec\xdelta3_mac" />
@@ -38,6 +38,16 @@
     <PackageReference Include="Avalonia" Version="0.10.0" />
     <PackageReference Include="Avalonia.Desktop" Version="0.10.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Localization\Language.hu.resx">
+      <LastGenOutput>Language.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Localization\Language.resx">
+      <LastGenOutput>Language.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Update="LICENSE.txt">
