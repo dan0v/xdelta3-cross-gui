@@ -40,6 +40,11 @@
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Update="Localization\Language.es.resx">
+      <SubType>Designer</SubType>
+      <LastGenOutput>Language.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Localization\Language.hu.resx">
       <LastGenOutput>Language.Designer.cs</LastGenOutput>
       <Generator>ResXFileCodeGenerator</Generator>

@@ -1,0 +1,252 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BatchFileOnly" xml:space="preserve">
+    <value>Solo batch files</value>
+    <comment>MainWindow</comment>
+  </data>
+  <data name="CopyExecutables" xml:space="preserve">
+    <value>Copie los ejecutables de xDelta al directorio de salida</value>
+    <comment>MainWindow</comment>
+  </data>
+  <data name="Credit" xml:space="preserve">
+    <value>GUI multiplataforma de xDelta3 de dan0v, usando xDelta 3.1.0 \\n\\nMuy inspirado en xDelta GUI 2\\nde Jordi Vermeulen (Modificado por Brian Campbell)</value>
+    <comment>MainWindow</comment>
+  </data>
+  <data name="DismissButton" xml:space="preserve">
+    <value>Descartar</value>
+    <comment>Dialog</comment>
+  </data>
+  <data name="ErrorHeader" xml:space="preserve">
+    <value>Ha ocurrido un error</value>
+    <comment>ErrorDialog</comment>
+  </data>
+  <data name="ErrorText" xml:space="preserve">
+    <value>Es posible que se hayan restablecido algunas opciones. Compruébalo antes de volver a intentarlo.</value>
+    <comment>ErrorDialog</comment>
+  </data>
+  <data name="FilesHeader" xml:space="preserve">
+    <value>Files</value>
+    <comment>MainWindow</comment>
+  </data>
+  <data name="Go" xml:space="preserve">
+    <value>Vamos!</value>
+    <comment>MainWindow</comment>
+  </data>
+  <data name="NewFilesHeader" xml:space="preserve">
+    <value>Files nuevos</value>
+    <comment>MainWindow</comment>
+  </data>
+  <data name="NewVersionHeader" xml:space="preserve">
+    <value>Hay una nueva versión disponible
+</value>
+    <comment>UpdateDialog</comment>
+  </data>
+  <data name="NewVersionText" xml:space="preserve">
+    <value>La versión {0} se puede descargar desde la página de Releases en GitHub.
+</value>
+    <comment>UpdateDialog</comment>
+  </data>
+  <data name="OldFilesHeader" xml:space="preserve">
+    <value>Files antiguos</value>
+    <comment>MainWindow</comment>
+  </data>
+  <data name="OpenOutputDirectory" xml:space="preserve">
+    <value>Abrir directorio de salida</value>
+    <comment>SuccessDialog</comment>
+  </data>
+  <data name="OptionsHeader" xml:space="preserve">
+    <value>Opciones</value>
+    <comment>MainWindow</comment>
+  </data>
+  <data name="PatchExtension" xml:space="preserve">
+    <value>Extension de patch files</value>
+    <comment>MainWindow</comment>
+  </data>
+  <data name="PatchFileDestination" xml:space="preserve">
+    <value>Destino de patch file</value>
+    <comment>MainWindow</comment>
+  </data>
+  <data name="PatchSubdir" xml:space="preserve">
+    <value>Subdirectorio de los patch files</value>
+    <comment>MainWindow</comment>
+  </data>
+  <data name="Progress" xml:space="preserve">
+    <value>Progreso</value>
+    <comment>MainWindow</comment>
+  </data>
+  <data name="ResetDefaults" xml:space="preserve">
+    <value>Restablecer predeterminados</value>
+    <comment>MainWindow</comment>
+  </data>
+  <data name="SaveSettings" xml:space="preserve">
+    <value>Guardar configuraciones</value>
+    <comment>MainWindow</comment>
+  </data>
+  <data name="ShowFullPaths" xml:space="preserve">
+    <value>Mostrar rutas completas</value>
+    <comment>MainWindow</comment>
+  </data>
+  <data name="ShowTerminal" xml:space="preserve">
+    <value>Mostrar ventana de terminal</value>
+    <comment>MainWindow</comment>
+  </data>
+  <data name="SuccessHeader" xml:space="preserve">
+    <value>Éxito</value>
+    <comment>SuccessDialog</comment>
+  </data>
+  <data name="SuccessText" xml:space="preserve">
+    <value>El patch xDelta3, o patch batches, se han creado con éxito.</value>
+    <comment>SuccessDialog</comment>
+  </data>
+  <data name="ToggleSelectionButton" xml:space="preserve">
+    <value>Cambiar selección</value>
+    <comment>MainWindow</comment>
+  </data>
+  <data name="UnequalFilesError" xml:space="preserve">
+    <value>Por favor, agregue un número igual de files antiguos y nuevos
+
+</value>
+    <comment>MainWindow</comment>
+  </data>
+  <data name="ViewReleases" xml:space="preserve">
+    <value>Ver GitHub releases</value>
+    <comment>UpdateDialog</comment>
+  </data>
+  <data name="xDeltaArguments" xml:space="preserve">
+    <value>xDelta argumentos</value>
+    <comment>MainWindow</comment>
+  </data>
+  <data name="xDeltaNotOnPath" xml:space="preserve">
+    <value>xDelta3 no se encontró en la ruta del sistema, por lo que se utilizará la versión incluida</value>
+    <comment>MainWindow</comment>
+  </data>
+  <data name="xDeltaOnPath" xml:space="preserve">
+    <value>xDelta3 se encontró en la ruta del sistema, por lo que se utilizará</value>
+    <comment>MainWindow</comment>
+  </data>
+  <data name="ZipFiles" xml:space="preserve">
+    <value>Zip todos los files</value>
+    <comment>MainWindow</comment>
+  </data>
+  <data name="ZipName" xml:space="preserve">
+    <value>Nombre de Zip</value>
+    <comment>MainWindow</comment>
+  </data>
+</root>

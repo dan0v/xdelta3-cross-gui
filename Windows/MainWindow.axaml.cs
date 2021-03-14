@@ -29,20 +29,28 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using xdelta3_cross_gui.Localization;
+using static System.Environment;
 
 namespace xdelta3_cross_gui
 {
     public class MainWindow : Window, INotifyPropertyChanged
     {
-        public static string VERSION = GetVersion();
-        public static string TITLE = "xDelta3 Cross GUI " + VERSION;
+        public static readonly string VERSION = GetVersion();
+        public static readonly string TITLE = "xDelta3 Cross GUI " + VERSION;
         public static string XDELTA3_PATH = "";
 
-        public const string XDELTA3_BINARY_WINDOWS = "xdelta3_x86_64_win.exe";
-        public const string XDELTA3_BINARY_LINUX = "xdelta3_x64_linux";
-        public const string XDELTA3_BINARY_MACOS = "xdelta3_mac";
-        public const string VERSION_CHECK_URL = "https://github.com/dan0v/xdelta3-cross-gui/releases/latest/download/version.txt";
-        public const string RELEASES_PAGE = "https://github.com/dan0v/xdelta3-cross-gui/releases/latest/";
+        public static readonly string XDELTA3_BINARY_WINDOWS = "xdelta3_x86_64_win.exe";
+        public static readonly string XDELTA3_BINARY_LINUX = "xdelta3_x64_linux";
+        public static readonly string XDELTA3_BINARY_MACOS = "xdelta3_mac";
+        public static string XDELTA3_APP_STORAGE
+        {
+            get
+            {
+                return Path.Combine(Environment.GetFolderPath(SpecialFolder.LocalApplicationData, SpecialFolderOption.DoNotVerify), "xdelta3-cross-gui");
+            }
+        }
+        public static readonly string VERSION_CHECK_URL = "https://github.com/dan0v/xdelta3-cross-gui/releases/latest/download/version.txt";
+        public static readonly string RELEASES_PAGE = "https://github.com/dan0v/xdelta3-cross-gui/releases/latest/";
 
         private bool _XDeltaOnSystemPath { get; set; }
         public bool XDeltaOnSystemPath
@@ -405,9 +413,9 @@ namespace xdelta3_cross_gui
 
         public void ChangeLanguage(string language)
         {
-            if (!Localizer.Languages.ContainsKey(language))
+            if (language == null || !Localizer.Languages.ContainsKey(language))
             {
-                return;
+                language = "English";
             }
 
             CultureInfo.CurrentUICulture = new CultureInfo(Localizer.Languages[language]);
