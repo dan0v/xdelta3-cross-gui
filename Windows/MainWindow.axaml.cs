@@ -20,28 +20,38 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using xdelta3_cross_gui.Localization;
+using static System.Environment;
 
 namespace xdelta3_cross_gui
 {
     public class MainWindow : Window, INotifyPropertyChanged
     {
-        public static string VERSION = GetVersion();
-        public static string TITLE = "xDelta3 Cross GUI " + VERSION;
+        public static readonly string VERSION = GetVersion();
+        public static readonly string TITLE = "xDelta3 Cross GUI " + VERSION;
         public static string XDELTA3_PATH = "";
 
-        public const string XDELTA3_BINARY_WINDOWS = "xdelta3_x86_64_win.exe";
-        public const string XDELTA3_BINARY_LINUX = "xdelta3_x64_linux";
-        public const string XDELTA3_BINARY_MACOS = "xdelta3_mac";
-        public const string VERSION_CHECK_URL = "https://github.com/dan0v/xdelta3-cross-gui/releases/latest/download/version.txt";
-        public const string RELEASES_PAGE = "https://github.com/dan0v/xdelta3-cross-gui/releases/latest/";
+        public static readonly string XDELTA3_BINARY_WINDOWS = "xdelta3_x86_64_win.exe";
+        public static readonly string XDELTA3_BINARY_LINUX = "xdelta3_x64_linux";
+        public static readonly string XDELTA3_BINARY_MACOS = "xdelta3_mac";
+        public static string XDELTA3_APP_STORAGE
+        {
+            get
+            {
+                return Path.Combine(Environment.GetFolderPath(SpecialFolder.LocalApplicationData, SpecialFolderOption.DoNotVerify), "xdelta3-cross-gui");
+            }
+        }
+        public static readonly string VERSION_CHECK_URL = "https://github.com/dan0v/xdelta3-cross-gui/releases/latest/download/version.txt";
+        public static readonly string RELEASES_PAGE = "https://github.com/dan0v/xdelta3-cross-gui/releases/latest/";
 
-        public string Credits { get { return "xDelta3 Cross-Platform GUI by dan0v, using xDelta 3.1.0\n\nHeavily inspired by xDelta GUI 2\nby Jordi Vermeulen (Modified by Brian Campbell)"; } }
         private bool _XDeltaOnSystemPath { get; set; }
         public bool XDeltaOnSystemPath
         {
@@ -51,8 +61,6 @@ namespace xdelta3_cross_gui
                 if (value != _XDeltaOnSystemPath)
                 {
                     _XDeltaOnSystemPath = value;
-                    XDeltaOnSystemPathMessage1 = value ? "has" : "has not";
-                    XDeltaOnSystemPathMessage2 = value ? "" : ", so the locally bundled xDelta3 binary will be used";
                     OnPropertyChanged();
                 }
             }
@@ -107,26 +115,6 @@ namespace xdelta3_cross_gui
                     _AlreadyBusy = value;
                     OnPropertyChanged();
                 }
-            }
-        }
-        private string _XDeltaOnSystemPathMessage1 = "has not";
-        public string XDeltaOnSystemPathMessage1
-        {
-            get => _XDeltaOnSystemPathMessage1;
-            set
-            {
-                _XDeltaOnSystemPathMessage1 = value;
-                OnPropertyChanged();
-            }
-        }
-        private string _XDeltaOnSystemPathMessage2 = "";
-        public string XDeltaOnSystemPathMessage2
-        {
-            get => _XDeltaOnSystemPathMessage2;
-            set
-            {
-                _XDeltaOnSystemPathMessage2 = value;
-                OnPropertyChanged();
             }
         }
         public List<PathFileComponent> OldFilesList { get; set; }
@@ -215,6 +203,7 @@ namespace xdelta3_cross_gui
         ScrollViewer sv_NewFilesDisplay;
         CheckBox chk_UseShortNames;
         public ProgressBar pb_Progress;
+        ComboBox cb_LanguageOptions;
         TextBox txt_bx_PatchDestination;
 
         public enum FileCategory { New, Old };
@@ -227,6 +216,7 @@ namespace xdelta3_cross_gui
 
         private void InitializeComponent()
         {
+            Localizer.Instance.LoadLanguage();
             AvaloniaXamlLoader.Load(this);
         }
 
@@ -389,6 +379,7 @@ namespace xdelta3_cross_gui
                 PatchCreator patcher = new PatchCreator(this);
                 this.AlreadyBusy = true;
                 patcher.CreateReadme();
+                patcher.CopyNotice();
                 if (this.Options.CopyExecutables)
                 {
                     patcher.CopyExecutables();
@@ -419,6 +410,18 @@ namespace xdelta3_cross_gui
         public void SortListInPlaceByIndex(List<PathFileComponent> list)
         {
             list.Sort((x, y) => x.Index.CompareTo(y.Index));
+        }
+
+        public void ChangeLanguage(string language)
+        {
+            if (language == null || !Localizer.Languages.ContainsKey(language))
+            {
+                language = "English";
+            }
+
+            CultureInfo.CurrentUICulture = new CultureInfo(Localizer.Languages[language]);
+            Options.Language = language;
+            Localizer.Instance.LoadLanguage();
         }
         #endregion
 
@@ -461,6 +464,7 @@ namespace xdelta3_cross_gui
             this.btn_ResetDefaults = this.FindControl<Button>("btn_ResetDefaults");
             this.btn_Go = this.FindControl<Button>("btn_Go");
             this.pb_Progress = this.FindControl<ProgressBar>("pb_Progress");
+            this.cb_LanguageOptions = this.FindControl<ComboBox>("cb_LanguageOptions");
 
             // Bindings
             this.btn_ToggleAllOldFilesSelection.Click += ToggleAllOldFilesSelectionClicked;
@@ -478,9 +482,15 @@ namespace xdelta3_cross_gui
             this.btn_Go.Click += GoClicked;
             this.btn_BrowsePathDestination.Click += BrowseOutputDirectory;
             this.chk_UseShortNames.Click += UseShortNamesChecked;
+            this.cb_LanguageOptions.SelectionChanged += ChangeLanguageSelection;
 
             this.sv_OldFilesDisplay.AddHandler(DragDrop.DropEvent, OldFilesDropped);
             this.sv_NewFilesDisplay.AddHandler(DragDrop.DropEvent, NewFilesDropped);
+
+            this.LoadLanguageOptions();
+
+            this.ChangeLanguage(Options.Language);
+            this.MatchSelectedLanguage();
 
             this.Console.SetParent(this);
             this.CheckForUpdates();
@@ -658,6 +668,29 @@ namespace xdelta3_cross_gui
                 }
                 ReloadFiles(FileCategory.Old, true);
             }
+        }
+
+        private void LoadLanguageOptions()
+        {
+            List<ComboBoxItem> items = new List<ComboBoxItem>();
+            foreach (string language in Localizer.Languages.Keys)
+            {
+                ComboBoxItem item = new ComboBoxItem();
+                item.Content = language;
+                items.Add(item);
+            }
+            cb_LanguageOptions.Items = items;
+        }
+        private void ChangeLanguageSelection(object sender, SelectionChangedEventArgs e)
+        {
+            string language = (string)((ComboBoxItem)cb_LanguageOptions.SelectedItem).Content;
+            ChangeLanguage(language);
+        }
+        private void MatchSelectedLanguage()
+        {
+            var items = cb_LanguageOptions.Items;
+            int index = items.Cast<ComboBoxItem>().ToList().FindIndex(item => (string)item.Content == Options.Language);
+            cb_LanguageOptions.SelectedIndex = index;
         }
 
         private async void CheckForUpdates()

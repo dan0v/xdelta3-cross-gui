@@ -65,6 +65,11 @@ namespace xdelta3_cross_gui
             readmeWriter.Close();
         }
 
+        public void CopyNotice()
+        {
+            File.Copy(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "NOTICE.txt"), Path.Combine(MainParent.Options.PatchFileDestination, "NOTICE.txt"));
+        }
+
         public void CreatePatchingBatchFiles()
         {
             this.MainParent.PatchProgress = 0;
@@ -305,6 +310,10 @@ namespace xdelta3_cross_gui
 
         public void CopyExecutables()
         {
+            if (!File.Exists(Path.Combine(this.MainParent.Options.PatchFileDestination, "exec")))
+            {
+                Directory.CreateDirectory(Path.Combine(this.MainParent.Options.PatchFileDestination, "exec"));
+            }
             try
             {
                 File.Copy(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "exec", MainWindow.XDELTA3_BINARY_WINDOWS), Path.Combine(this.MainParent.Options.PatchFileDestination, "exec", MainWindow.XDELTA3_BINARY_WINDOWS), true);

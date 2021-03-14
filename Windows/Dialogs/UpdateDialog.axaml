@@ -16,6 +16,7 @@ limitations under the License.-->
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i18n="clr-namespace:xdelta3_cross_gui.Localization"
         mc:Ignorable="d" d:DesignWidth="350" d:DesignHeight="150"
         x:Class="xdelta3_cross_gui.UpdateDialog"
         Title="Update" MinWidth="300" MinHeight="130"
@@ -24,9 +25,9 @@ limitations under the License.-->
         Icon="avares://xdelta3_cross_gui/Assets/img/Icon.png">
   
   <Grid RowDefinitions="*,Auto,Auto">
-    <TextBlock Grid.Row="0" HorizontalAlignment="Center" Text="There is a new version available" FontWeight="Bold" Margin="10"></TextBlock>
+    <TextBlock Grid.Row="0" HorizontalAlignment="Center" Text="{i18n:Localize NewVersionHeader}" FontWeight="Bold" Margin="10"></TextBlock>
     <TextBlock x:Name="txt_blk_Prompt" Grid.Row="1" TextWrapping="Wrap" Margin="10" TextAlignment="Center" Text="Version xxx can be downloaded from the releases page on GitHub"></TextBlock>
-    <Button x:Name="btn_GoToReleases" Grid.Row="2" Content="View releases" HorizontalAlignment="Left" Margin="10" MinWidth="150"></Button>
-    <Button x:Name="btn_Dismiss" Grid.Row="2" Content="Dismiss" HorizontalAlignment="Right" Margin="10" Width="80"></Button>
+    <Button x:Name="btn_GoToReleases" Grid.Row="2" Content="{i18n:Localize ViewReleases}" HorizontalAlignment="Left" Margin="10" MinWidth="150"></Button>
+    <Button x:Name="btn_Dismiss" Grid.Row="2" Content="{i18n:Localize DismissButton}" HorizontalAlignment="Right" Margin="10" Width="80"></Button>
   </Grid>
 </Window>

@@ -17,12 +17,15 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.IO.IsolatedStorage;
 using System.Runtime.CompilerServices;
+using static System.Environment;
 
 namespace xdelta3_cross_gui
 {
     public class Options : INotifyPropertyChanged
     {
+        public string Language { get; set; }
         private string _PatchExtention { get; set; }
         private string _PatchSubdirectory { get; set; }
         private string _PatchFileDestination { get; set; }
@@ -163,9 +166,20 @@ namespace xdelta3_cross_gui
         {
             try
             {
-                string savedSettings = System.IO.File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "options.json"));
+                string savedSettings = "";
+
+                try
+                {
+                    savedSettings = File.ReadAllText(Path.Combine(MainWindow.XDELTA3_APP_STORAGE, "options.json"));
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e);
+                }
+
                 Options json = (Options)JsonConvert.DeserializeObject(savedSettings, typeof(Options));
 
+                this.Language = json.Language;
                 this.PatchExtention = json.PatchExtention;
                 this.PatchSubdirectory = json.PatchSubdirectory;
                 this.PatchFileDestination = json.PatchFileDestination;
@@ -186,7 +200,19 @@ namespace xdelta3_cross_gui
         public async void SaveCurrent()
         {
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);
-            System.IO.File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "options.json"), json);
+
+            try
+            {
+                if (!Directory.Exists(MainWindow.XDELTA3_APP_STORAGE))
+                {
+                    Directory.CreateDirectory(MainWindow.XDELTA3_APP_STORAGE);
+                }
+                await File.WriteAllTextAsync(Path.Combine(MainWindow.XDELTA3_APP_STORAGE, "options.json"), json);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+            }
         }
 
         public void ResetToDefault()
