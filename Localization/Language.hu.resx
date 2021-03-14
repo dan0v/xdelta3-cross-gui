@@ -126,7 +126,7 @@
     <comment>MainWindow</comment>
   </data>
   <data name="Credit" xml:space="preserve">
-    <value>xDelta3 Cross-Platform GUI by dan0v, using xDelta 3.1.0\\n\\nHeavily inspired by xDelta GUI 2\\nby Jordi Vermeulen (Modified by Brian Campbell)"</value>
+    <value>xDelta3 Cross-Platform GUI, készítette dan0v, xDelta 3.1.0 használatával\\n\\nxDelta GUI 2 által inspirálva\\nJordi Vermeulen készítésével és Brian Campbell változtatásaival</value>
     <comment>MainWindow</comment>
   </data>
   <data name="DismissButton" xml:space="preserve">

@@ -79,7 +79,7 @@ namespace xdelta3_cross_gui.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to xDelta3 Cross-Platform GUI by dan0v, using xDelta 3.1.0\\n\\nHeavily inspired by xDelta GUI 2\\nby Jordi Vermeulen (Modified by Brian Campbell)&quot;.
+        ///   Looks up a localized string similar to xDelta3 Cross-Platform GUI by dan0v, using xDelta 3.1.0\\n\\nHeavily inspired by xDelta GUI 2\\nby Jordi Vermeulen (Modified by Brian Campbell).
         /// </summary>
         internal static string Credit {
             get {
