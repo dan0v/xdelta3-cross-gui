@@ -379,6 +379,7 @@ namespace xdelta3_cross_gui
                 PatchCreator patcher = new PatchCreator(this);
                 this.AlreadyBusy = true;
                 patcher.CreateReadme();
+                patcher.CopyNotice();
                 if (this.Options.CopyExecutables)
                 {
                     patcher.CopyExecutables();
