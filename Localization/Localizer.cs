@@ -17,6 +17,7 @@ namespace xdelta3_cross_gui.Localization
     {
         public static readonly Dictionary<string, string> Languages = new Dictionary<string, string>
         {
+            { "Deutsch", "de"},
             { "English", "en-US" },
             { "Español", "es" },
             { "Magyar", "hu" }

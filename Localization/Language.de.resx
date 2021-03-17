@@ -118,131 +118,131 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="BatchFileOnly" xml:space="preserve">
-    <value>Csak batch file készítése</value>
+    <value>Nur Batch-Datei (für späteres Patchen)</value>
     <comment>MainWindow</comment>
   </data>
   <data name="CopyExecutables" xml:space="preserve">
-    <value>xDelta alkalmazások másolása a célmappába</value>
+    <value>xDelta-Executables in Ausgabeverzeichnis kopieren</value>
     <comment>MainWindow</comment>
   </data>
   <data name="Credit" xml:space="preserve">
-    <value>xDelta3 Cross-Platform GUI, készítette dan0v, xDelta 3.1.0 használatával\\n\\nxDelta GUI 2 által inspirálva\\nJordi Vermeulen készítésével és Brian Campbell változtatásaival</value>
+    <value>xDelta3 Cross-Platform GUI von dan0v, unter Verwendung von xDelta 3.1.0\\n\\nStark inspiriert von xDelta GUI 2\\nvon Jordi Vermeulen (modifiziert von Brian Campbell)</value>
     <comment>MainWindow</comment>
   </data>
   <data name="DismissButton" xml:space="preserve">
-    <value>Mellőzés</value>
+    <value>Verwerfen</value>
     <comment>Dialog</comment>
   </data>
   <data name="ErrorHeader" xml:space="preserve">
-    <value>Hiba történt</value>
+    <value>Es ist ein Fehler aufgetreten</value>
     <comment>ErrorDialog</comment>
   </data>
   <data name="ErrorText" xml:space="preserve">
-    <value>Lehetséges hogy egyes beállítások vissza lettek állítva, ügyeljen mielőtt újra próbálkozik.</value>
+    <value>Einige Optionen wurde möglicherweise zurückgesetzt. Bitte prüfen Sie dies, bevor Sie es erneut versuchen.</value>
     <comment>ErrorDialog</comment>
   </data>
   <data name="FilesHeader" xml:space="preserve">
-    <value>Fileok</value>
+    <value>Dateien</value>
     <comment>MainWindow</comment>
   </data>
   <data name="Go" xml:space="preserve">
-    <value>Mehet!</value>
+    <value>Los!</value>
     <comment>MainWindow</comment>
   </data>
   <data name="NewFilesHeader" xml:space="preserve">
-    <value>Új File</value>
+    <value>Neue Datei(en)</value>
     <comment>MainWindow</comment>
   </data>
   <data name="NewVersionHeader" xml:space="preserve">
-    <value>Új verzió letölthető</value>
+    <value>Es ist eine neue Version verfügbar</value>
     <comment>UpdateDialog</comment>
   </data>
   <data name="NewVersionText" xml:space="preserve">
-    <value>verzió letölthető a GitHub Releases oldalról</value>
+    <value>Version {0} kann von der Versionsseite auf GitHub heruntergeladen werden.</value>
     <comment>UpdateDialog</comment>
   </data>
   <data name="OldFilesHeader" xml:space="preserve">
-    <value>Régi File</value>
+    <value>Alte Datei(en)</value>
     <comment>MainWindow</comment>
   </data>
   <data name="OpenOutputDirectory" xml:space="preserve">
-    <value>Célmappa megtekintése</value>
+    <value>Ausgabeverzeichnis öffnen</value>
     <comment>SuccessDialog</comment>
   </data>
   <data name="OptionsHeader" xml:space="preserve">
-    <value>Beállítások</value>
+    <value>Optionen</value>
     <comment>MainWindow</comment>
   </data>
   <data name="PatchExtension" xml:space="preserve">
-    <value>Patch file kiterjesztése</value>
+    <value>Patch-Erweiterung</value>
     <comment>MainWindow</comment>
   </data>
   <data name="PatchFileDestination" xml:space="preserve">
-    <value>Mentés elérési útvonala</value>
+    <value>Ziel der Patch-Datei(en)</value>
     <comment>MainWindow</comment>
   </data>
   <data name="PatchSubdir" xml:space="preserve">
-    <value>Patch mappa neve</value>
+    <value>Patch-Unterverzeichnis</value>
     <comment>MainWindow</comment>
   </data>
   <data name="Progress" xml:space="preserve">
-    <value>Állapot</value>
+    <value>Fortschritt</value>
     <comment>MainWindow</comment>
   </data>
   <data name="ResetDefaults" xml:space="preserve">
-    <value>Alapértelmezettek visszaállítása</value>
+    <value>Standardwerte wiederherstellen</value>
     <comment>MainWindow</comment>
   </data>
   <data name="SaveSettings" xml:space="preserve">
-    <value>Beállítások mentése</value>
+    <value>Einstellungen speichern</value>
     <comment>MainWindow</comment>
   </data>
   <data name="ShowFullPaths" xml:space="preserve">
-    <value>Teljes elérési útvonalak megjelenítése</value>
+    <value>Vollständige Pfade anzeigen</value>
     <comment>MainWindow</comment>
   </data>
   <data name="ShowTerminal" xml:space="preserve">
-    <value>Terminal ablak megjelenítése</value>
+    <value>Terminalfenster anzeigen</value>
     <comment>MainWindow</comment>
   </data>
   <data name="SuccessHeader" xml:space="preserve">
-    <value>Siker</value>
+    <value>Erfolg</value>
     <comment>SuccessDialog</comment>
   </data>
   <data name="SuccessText" xml:space="preserve">
-    <value>Sikeresen létre jöttek a kiválasztott xDelta3 patchek, vagy patch batch fileok</value>
+    <value>Ihre xDelta3-Patches, bzw. Patch-Batches, wurden erfolgreich erstellt.</value>
     <comment>SuccessDialog</comment>
   </data>
   <data name="ToggleSelectionButton" xml:space="preserve">
-    <value>Kiválasztás cserélése</value>
+    <value>Auswahl umschalten</value>
     <comment>MainWindow</comment>
   </data>
   <data name="UnequalFilesError" xml:space="preserve">
-    <value>Ugyanannyi Régi és Új filenak kell szerepelnie!</value>
+    <value>Bitte fügen Sie eine gleiche Anzahl von alten und neuen Dateien hinzu</value>
     <comment>MainWindow</comment>
   </data>
   <data name="ViewReleases" xml:space="preserve">
-    <value>Verziók és letöltések megtekintése</value>
+    <value>Versionen anzeigen</value>
     <comment>UpdateDialog</comment>
   </data>
   <data name="xDeltaArguments" xml:space="preserve">
-    <value>xDelta beállítások</value>
+    <value>xDelta-Argumente</value>
     <comment>MainWindow</comment>
   </data>
   <data name="xDeltaNotOnPath" xml:space="preserve">
-    <value>xDelta3 nem található a rendszerben, tehát a beépített alkalmazás kerül használatra</value>
+    <value>xDelta3 wurde nicht im Systempfad gefunden, daher wird die gebündelte Version verwendet</value>
     <comment>MainWindow</comment>
   </data>
   <data name="xDeltaOnPath" xml:space="preserve">
-    <value>xDelta3 található a rendszerben, tehát ez lesz használva</value>
+    <value>xDelta3 wurde im Systempfad gefunden, daher wird es verwendet</value>
     <comment>MainWindow</comment>
   </data>
   <data name="ZipFiles" xml:space="preserve">
-    <value>Fileok tömörítése</value>
+    <value>Alle Dateien zippen</value>
     <comment>MainWindow</comment>
   </data>
   <data name="ZipName" xml:space="preserve">
-    <value>Zip név</value>
+    <value>Zip-Name</value>
     <comment>MainWindow</comment>
   </data>
 </root>
