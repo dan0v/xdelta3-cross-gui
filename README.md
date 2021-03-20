@@ -15,6 +15,7 @@ A cross-platform GUI for creating xDelta3 patches, inspired by [Moodkiller/xdelt
 - Optional zip compression of patches
 - Detect and use preinstalled xDelta3 if available on System Path
 - Localization support ([further contributions welcome](https://github.com/dan0v/xdelta3-cross-gui/issues/12))
+	- Deutsch
 	- English
 	- Español
 	- Magyar
@@ -56,4 +57,4 @@ All contributions are welcome! Thanks goes to these wonderful people ([emoji key
 <!-- prettier-ignore-end -->
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
-This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification.
