@@ -17,9 +17,7 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.IO.IsolatedStorage;
 using System.Runtime.CompilerServices;
-using static System.Environment;
 
 namespace xdelta3_cross_gui
 {

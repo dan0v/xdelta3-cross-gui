@@ -17,12 +17,13 @@ limitations under the License.
 
 ORIGIN="$(pwd)"
 cd "../.."
-dotnet publish --configuration Release --framework netcoreapp3.1 -r win-x86 --self-contained true /p:CopyOutputSymbolsToPublishDirectory=false /p:PublishTrimmed=true -p:PublishSingleFile=true -o bin/Release/netcoreapp3.1/publishWin
+#dotnet publish -c Release --framework net5.0 -r win-x86 --self-contained true -p:CopyOutputSymbolsToPublishDirectory=False -p:PublishTrimmed=True -p:TrimMode=Link -p:PublishSingleFile=True -p:IncludeAllContentForSelfExtract=True -o bin/Release/net5.0/publishWin
+dotnet publish -r win-x86 -c Release -o bin/Release/net5.0/publishWin
 cd "$ORIGIN"
 
 APP_NAME="xDelta3 Cross GUI"
 APP_OUTPUT_PATH="Build"
-PUBLISH_OUTPUT_DIRECTORY="../../bin/Release/netcoreapp3.1/publishWin/."
+PUBLISH_OUTPUT_DIRECTORY="../../bin/Release/net5.0/publishWin/."
 APP_TAR_NAME1="xdelta3-cross-gui_"
 APP_TAR_NAME2="_win_x86"
 
