@@ -67,7 +67,14 @@ namespace xdelta3_cross_gui
 
         public void CopyNotice()
         {
-            File.Copy(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "NOTICE.txt"), Path.Combine(MainParent.Options.PatchFileDestination, "NOTICE.txt"));
+            try
+            {
+                File.Copy(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "NOTICE.txt"), Path.Combine(MainParent.Options.PatchFileDestination, "NOTICE.txt"), true);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+            }
         }
 
         public void CreatePatchingBatchFiles()
