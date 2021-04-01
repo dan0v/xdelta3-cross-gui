@@ -1,4 +1,4 @@
-﻿/*Copyright 2020-2021 dan0v
+/*Copyright 2020-2021 dan0v
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -393,7 +393,7 @@ namespace xdelta3_cross_gui
             try
             {
                 string url = await this.OpenFolderBrowser();
-                if (url != "")
+                if (!string.IsNullOrEmpty(url))
                 {
                     this.Options.PatchFileDestination = url;
                 }
@@ -525,7 +525,7 @@ namespace xdelta3_cross_gui
                 filesList = this.OldFilesList;
             }
 
-            if (urls.Length > 0)
+            if (urls?.Length > 0)
             {
                 foreach (string path in urls)
                 {
@@ -556,20 +556,23 @@ namespace xdelta3_cross_gui
             }
 
             List<PathFileComponent> selectedList = list.FindAll(c => c.IsSelected == true);
-            this.SortListInPlaceByIndex(selectedList);
-            for (int i = 0; i < selectedList.Count; i++)
-            {
-                PathFileComponent component = selectedList[i];
-                // Do not shift up if element before it was not shifted
-                if (component.Index != 0 && (i == 0 || (i > 0 && (list.IndexOf(component) - list.IndexOf(selectedList[i - 1]) > 1) || selectedList[i - 1]._Shifted == true)))
+			if (selectedList.Count > 0)
+			{
+                this.SortListInPlaceByIndex(selectedList);
+                for (int i = 0; i < selectedList.Count; i++)
                 {
-                    list[list.IndexOf(component) - 1].Index++;
-                    component.Index--;
-                    component._Shifted = true;
-                    this.SortListInPlaceByIndex(list);
+                    PathFileComponent component = selectedList[i];
+                    // Do not shift up if element before it was not shifted
+                    if (component.Index != 0 && (i == 0 || (i > 0 && (list.IndexOf(component) - list.IndexOf(selectedList[i - 1]) > 1) || selectedList[i - 1]._Shifted == true)))
+                    {
+                        list[list.IndexOf(component) - 1].Index++;
+                        component.Index--;
+                        component._Shifted = true;
+                        this.SortListInPlaceByIndex(list);
+                    }
                 }
+                this.ReloadFiles(category, true);
             }
-            this.ReloadFiles(category, true);
         }
         private void MoveFilesDown(FileCategory category)
         {
@@ -584,20 +587,23 @@ namespace xdelta3_cross_gui
             }
 
             List<PathFileComponent> selectedList = list.FindAll(c => c.IsSelected == true);
-            this.SortListInPlaceByIndex(selectedList);
-            for (int i = selectedList.Count - 1; i >= 0; i--)
+            if (selectedList.Count > 0)
             {
-                PathFileComponent component = selectedList[i];
-                // Do not shift down if element after it was not shifted
-                if (component.Index != list.Count - 1 && (i == selectedList.Count - 1 || (i < selectedList.Count - 1 && (list.IndexOf(selectedList[i + 1]) - list.IndexOf(component)) > 1) || selectedList[i + 1]._Shifted == true))
+                this.SortListInPlaceByIndex(selectedList);
+                for (int i = selectedList.Count - 1; i >= 0; i--)
                 {
-                    list[list.IndexOf(component) + 1].Index--;
-                    component.Index++;
-                    component._Shifted = true;
-                    this.SortListInPlaceByIndex(list);
+                    PathFileComponent component = selectedList[i];
+                    // Do not shift down if element after it was not shifted
+                    if (component.Index != list.Count - 1 && (i == selectedList.Count - 1 || (i < selectedList.Count - 1 && (list.IndexOf(selectedList[i + 1]) - list.IndexOf(component)) > 1) || selectedList[i + 1]._Shifted == true))
+                    {
+                        list[list.IndexOf(component) + 1].Index--;
+                        component.Index++;
+                        component._Shifted = true;
+                        this.SortListInPlaceByIndex(list);
+                    }
                 }
+                this.ReloadFiles(category, true);
             }
-            this.ReloadFiles(category, true);
         }
         private void DeleteFiles(FileCategory category)
         {

@@ -1,0 +1,20 @@
+Created using xDelta3 Cross GUI {0} by dan0v, https://github.com/dan0v/xdelta3-cross-gui
+
+Windows:
+1. Copy your original files into the 'original' folder with their original file names
+2. Double click the 2.Apply Patch-Windows.bat file and patching will begin
+3. Once patching is complete you will find your newly patched files in the 'output' folder
+4. Enjoy
+
+Linux:
+1. Copy your original files into the 'original' folder with their original file names
+2. In terminal, type:` sh "2.Apply Patch-Linux.sh" `. Patching should start automatically
+2. Alternatively, if you're using a desktop environment, double click 2.Apply Patch-Linux.sh and patching should start automatically (you may have to `chmod +x` to allow execution of the script)
+3. Once patching is complete you will find your newly patched files in the 'output' folder
+4. Enjoy
+
+MacOS:
+1. Copy your original files into the 'original' folder with their original file names
+2. Double click 2.Apply Patch-Mac.command and a terminal window should appear (you may have to `chmod +x` to allow execution of the script)
+3. Once patching is complete you will find your newly patched files in the 'output' folder
+4. Enjoy

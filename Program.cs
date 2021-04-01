@@ -30,6 +30,6 @@ namespace xdelta3_cross_gui
         public static AppBuilder BuildAvaloniaApp()
             => AppBuilder.Configure<App>()
                 .UsePlatformDetect()
-                .LogToDebug();
+                .LogToTrace();
     }
 }

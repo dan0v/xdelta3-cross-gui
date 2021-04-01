@@ -31,6 +31,9 @@
     <Content Include="Assets\exec\xdelta3_x86_64_win.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\doc\1.Readme.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <AvaloniaResource Include="Assets\img\add.png" />
     <AvaloniaResource Include="Assets\img\delete.png" />
     <AvaloniaResource Include="Assets\img\down.png" />

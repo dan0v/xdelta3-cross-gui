@@ -1,4 +1,4 @@
-﻿/*Copyright 2020-2021 dan0v
+/*Copyright 2020-2021 dan0v
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -33,37 +33,25 @@ namespace xdelta3_cross_gui
         }
         public void CreateReadme()
         {
-            if (!File.Exists(Path.Combine(this.MainParent.Options.PatchFileDestination, "exec")))
+            try
             {
-                Directory.CreateDirectory(Path.Combine(this.MainParent.Options.PatchFileDestination, "exec"));
+                if (!File.Exists(Path.Combine(this.MainParent.Options.PatchFileDestination, "exec")))
+                {
+                    Directory.CreateDirectory(Path.Combine(this.MainParent.Options.PatchFileDestination, "exec"));
+                }
+                if (!File.Exists(Path.Combine(this.MainParent.Options.PatchFileDestination, "original")))
+                {
+                    Directory.CreateDirectory(Path.Combine(this.MainParent.Options.PatchFileDestination, "original"));
+                }
+                string readmeString = File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "doc", "1.Readme.txt"));
+                readmeString = String.Format(readmeString, MainWindow.VERSION);
+                File.WriteAllText(Path.Combine(MainParent.Options.PatchFileDestination, "1.Readme.txt"), readmeString);
             }
-            if (!File.Exists(Path.Combine(this.MainParent.Options.PatchFileDestination, "original")))
+            catch (Exception e)
             {
-                Directory.CreateDirectory(Path.Combine(this.MainParent.Options.PatchFileDestination, "original"));
+                Debug.WriteLine(e);
             }
-            StreamWriter readmeWriter = new StreamWriter(Path.Combine(MainParent.Options.PatchFileDestination, "1.Readme.txt"));
-            readmeWriter.WriteLine("Created using xDelta3 Cross GUI " + MainWindow.VERSION + " by dan0v, https://github.com/dan0v/xdelta3-cross-gui");
-            readmeWriter.WriteLine("");
-            readmeWriter.WriteLine("Windows:");
-            readmeWriter.WriteLine("1. Copy your original files into the 'original' folder with their original file names");
-            readmeWriter.WriteLine("2. Double click the 2.Apply Patch-Windows.bat file and patching will begin");
-            readmeWriter.WriteLine("3. Once patching is complete you will find your newly patched files in the 'output' folder");
-            readmeWriter.WriteLine("4. Enjoy");
-            readmeWriter.WriteLine("");
-            readmeWriter.WriteLine("Linux:");
-            readmeWriter.WriteLine("1. Copy your original files into the 'original' folder with their original file names");
-            readmeWriter.WriteLine("2. In terminal, type: sh " + '"' + "2.Apply Patch-Linux.sh" + '"' + ". Patching should start automatically");
-            readmeWriter.WriteLine("2. Alternatively, if you're using a GUI, double click 2.Apply Patch-Linux.sh and patching should start automatically (you may have to `chmod +x` to allow execution of the script)");
-            readmeWriter.WriteLine("3. Once patching is complete you will find your newly patched files in the 'output' folder");
-            readmeWriter.WriteLine("4. Enjoy");
-            readmeWriter.WriteLine("");
-            readmeWriter.WriteLine("MacOS:");
-            readmeWriter.WriteLine("1. Copy your original files into the 'original' folder with their original file names");
-            readmeWriter.WriteLine("2. Double click 2.Apply Patch-Mac.command and a terminal window should appear (you may have to `chmod +x` to allow execution of the script)");
-            readmeWriter.WriteLine("3. Once patching is complete you will find your newly patched files in the 'output' folder");
-            readmeWriter.WriteLine("4. Enjoy");
-            readmeWriter.Close();
-        }
+		}
 
         public void CopyNotice()
         {
