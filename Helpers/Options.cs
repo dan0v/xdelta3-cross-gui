@@ -189,7 +189,8 @@ namespace xdelta3_cross_gui
                 this.ZipFilesWhenDone = json.ZipFilesWhenDone;
                 this.ShowTerminal = json.ShowTerminal;
 
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 Debug.WriteLine("Failed to load saved options\n" + e);
             }
@@ -249,7 +250,7 @@ namespace xdelta3_cross_gui
                 this.ZipName = "patch";
                 valid = false;
             }
-            
+
             return valid;
         }
 

@@ -1,15 +1,6 @@
-﻿using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Platform;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Globalization;
-using System.IO;
-using System.Reflection;
 using System.Resources;
-using System.Text;
 
 namespace xdelta3_cross_gui.Localization
 {
