@@ -54,7 +54,7 @@ VERSION=$(cat ../version.txt | sed 's/ *$//g' | sed 's/\r//' | sed ':a;N;$!ba;s/
 
 cd "$APP_OUTPUT_PATH"
 
-../Sources/appimagetool-x86_64.AppImage -n "$APP_NAME"
+ARCH=x86_64 ../Sources/appimagetool-x86_64.AppImage -n "$APP_NAME"
 
 tar -czvf "$APP_TAR_NAME1$VERSION$APP_TAR_NAME2.tar.gz" "xDelta3_Cross_Gui-x86_64.AppImage" "LICENSE.txt" "NOTICE.txt"
 mv "$APP_TAR_NAME1$VERSION$APP_TAR_NAME2.tar.gz" ../../"$APP_TAR_NAME1$VERSION$APP_TAR_NAME2.tar.gz"
