@@ -17,9 +17,7 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.IO.IsolatedStorage;
 using System.Runtime.CompilerServices;
-using static System.Environment;
 
 namespace xdelta3_cross_gui
 {
@@ -191,7 +189,8 @@ namespace xdelta3_cross_gui
                 this.ZipFilesWhenDone = json.ZipFilesWhenDone;
                 this.ShowTerminal = json.ShowTerminal;
 
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 Debug.WriteLine("Failed to load saved options\n" + e);
             }
@@ -251,7 +250,7 @@ namespace xdelta3_cross_gui
                 this.ZipName = "patch";
                 valid = false;
             }
-            
+
             return valid;
         }
 

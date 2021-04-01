@@ -393,7 +393,10 @@ namespace xdelta3_cross_gui
             try
             {
                 string url = await this.OpenFolderBrowser();
-                this.Options.PatchFileDestination = url;
+                if (url != "")
+                {
+                    this.Options.PatchFileDestination = url;
+                }
             }
             catch (Exception e)
             {

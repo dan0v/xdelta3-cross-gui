@@ -34,7 +34,8 @@ namespace xdelta3_cross_gui
         private MainWindow.FileCategory _FileCategory;
 
         private bool _IsSelected = false;
-        public bool IsSelected {
+        public bool IsSelected
+        {
             get => _IsSelected;
             set
             {
@@ -54,7 +55,7 @@ namespace xdelta3_cross_gui
         {
             this.InitializeComponent();
         }
-        public PathFileComponent(MainWindow parent,  string url, int index, MainWindow.FileCategory fileCategory)
+        public PathFileComponent(MainWindow parent, string url, int index, MainWindow.FileCategory fileCategory)
         {
             this.InitializeComponent();
 
