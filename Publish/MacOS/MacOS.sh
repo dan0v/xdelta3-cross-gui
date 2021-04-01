@@ -28,6 +28,9 @@ PUBLISH_OUTPUT_DIRECTORY="../../bin/Release/net5.0/publishMac/."
 INFO_PLIST="Info.plist"
 ICON_FILE="Icon.icns"
 
+chmod +x "$PUBLISH_OUTPUT_DIRECTORY/Assets/exec/xdelta3_x64_linux"
+chmod +x "$PUBLISH_OUTPUT_DIRECTORY/Assets/exec/xdelta3_mac"
+
 if [ -d "$APP_OUTPUT_PATH" ]
 then
     rm -rf "$APP_OUTPUT_PATH"

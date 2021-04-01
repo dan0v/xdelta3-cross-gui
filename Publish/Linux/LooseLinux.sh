@@ -26,6 +26,9 @@ PUBLISH_OUTPUT_DIRECTORY="../../bin/Release/net5.0/publishLinux/."
 APP_TAR_NAME1="xdelta3-cross-gui_"
 APP_TAR_NAME2="_linux_x86_64"
 
+chmod +x "$PUBLISH_OUTPUT_DIRECTORY/Assets/exec/xdelta3_x64_linux"
+chmod +x "$PUBLISH_OUTPUT_DIRECTORY/Assets/exec/xdelta3_mac"
+
 if [ -d "$APP_OUTPUT_PATH" ]
 then
     rm -rf "$APP_OUTPUT_PATH"
