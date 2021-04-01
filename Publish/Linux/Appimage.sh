@@ -17,7 +17,6 @@ limitations under the License.
 
 ORIGIN="$(pwd)"
 cd "../.."
-#dotnet publish --configuration Release --framework netcoreapp3.1 -r linux-x64 --self-contained true /p:PublishTrimmed=true -o bin/Release/netcoreapp3.1/publishLinux
 dotnet publish -r linux-x64 -c Release -p:SelfContained=True -o bin/Release/net5.0/publishLinux
 cd "$ORIGIN"
 
