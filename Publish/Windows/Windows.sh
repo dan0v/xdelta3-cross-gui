@@ -17,6 +17,10 @@ limitations under the License.
 
 ORIGIN="$(pwd)"
 cd "../.."
+
+chmod +x "Assets/exec/xdelta3_x64_linux"
+chmod +x "Assets/exec/xdelta3_mac"
+
 #dotnet publish -r win-x86 -c Release -p:SelfContained=True -p:IncludeAllContentForSelfExtract=True -p:PublishSingleFile=True -o bin/Release/net5.0/publishWin
 cd "$ORIGIN"
 
@@ -25,9 +29,6 @@ APP_OUTPUT_PATH="Build"
 PUBLISH_OUTPUT_DIRECTORY="../../bin/Release/net5.0/publishWin/."
 APP_TAR_NAME1="xdelta3-cross-gui_"
 APP_TAR_NAME2="_win_x86"
-
-chmod +x "$PUBLISH_OUTPUT_DIRECTORY/Assets/exec/xdelta3_x64_linux"
-chmod +x "$PUBLISH_OUTPUT_DIRECTORY/Assets/exec/xdelta3_mac"
 
 if [ -d "$APP_OUTPUT_PATH" ]
 then
