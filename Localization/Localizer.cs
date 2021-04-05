@@ -22,11 +22,10 @@ namespace xdelta3_cross_gui.Localization
         {
         }
 
-        public bool LoadLanguage()
+        public void LoadLanguage()
         {
             resources = new ResourceManager(typeof(Language));
             Invalidate();
-            return true;
         }
 
         public string Language { get; private set; }

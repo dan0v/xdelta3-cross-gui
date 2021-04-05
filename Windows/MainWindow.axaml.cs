@@ -117,8 +117,8 @@ namespace xdelta3_cross_gui
                 }
             }
         }
-        public List<PathFileComponent> OldFilesList { get; set; }
-        public List<PathFileComponent> NewFilesList { get; set; }
+        public List<PathFileComponent> OldFilesList { get; set; } = new List<PathFileComponent>();
+        public List<PathFileComponent> NewFilesList { get; set; } = new List<PathFileComponent>();
         private int _OldFilesListCount { get; set; }
         public int OldFilesListCount
         {
@@ -211,13 +211,8 @@ namespace xdelta3_cross_gui
         public MainWindow()
         {
             InitializeComponent();
+            this.BindUI();
             this.Configure();
-        }
-
-        private void InitializeComponent()
-        {
-            Localizer.Instance.LoadLanguage();
-            AvaloniaXamlLoader.Load(this);
         }
 
         #region public
@@ -331,7 +326,6 @@ namespace xdelta3_cross_gui
         {
             this.Options.SaveCurrent();
         }
-
         public void ResetDefaultsClicked(object sender, RoutedEventArgs args)
         {
             this.Options.ResetToDefault();
@@ -429,21 +423,14 @@ namespace xdelta3_cross_gui
         #endregion
 
         #region private
-        private void Configure()
+        private void InitializeComponent()
+        {
+            Localizer.Instance.LoadLanguage();
+            AvaloniaXamlLoader.Load(this);
+        }
+        private void BindUI()
         {
             this.Title = TITLE;
-
-            this.EqualFileCount = false;
-            this.AlreadyBusy = false;
-            this.PatchProgressIsIndeterminate = false;
-            this.OldFilesListCount = 0;
-            this.NewFilesListCount = 0;
-
-            this.Options.LoadSaved();
-            this.SetXDeltaLocations();
-
-            this.OldFilesList = new List<PathFileComponent>();
-            this.NewFilesList = new List<PathFileComponent>();
 
             // Button Click event does not compile in XAML, so has to be manually added https://github.com/AvaloniaUI/Avalonia/issues/3898
             this.btn_ToggleAllOldFilesSelection = this.FindControl<Button>("btn_ToggleAllOldFilesSelection");
@@ -489,6 +476,17 @@ namespace xdelta3_cross_gui
 
             this.sv_OldFilesDisplay.AddHandler(DragDrop.DropEvent, OldFilesDropped);
             this.sv_NewFilesDisplay.AddHandler(DragDrop.DropEvent, NewFilesDropped);
+        }
+        private void Configure()
+        {
+            this.EqualFileCount = false;
+            this.AlreadyBusy = false;
+            this.PatchProgressIsIndeterminate = false;
+            this.OldFilesListCount = 0;
+            this.NewFilesListCount = 0;
+
+            this.Options.LoadSaved();
+            this.SetXDeltaLocations();
 
             this.LoadLanguageOptions();
 

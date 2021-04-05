@@ -280,13 +280,12 @@ namespace xdelta3_cross_gui
 
         private void HandleCMDOutput(object sender, DataReceivedEventArgs e)
         {
-            double prog = 0;
             if (e != null && e.Data != null && (e.Data + "").Trim() != "")
             {
                 Debug.WriteLine(e.Data);
                 this._Progress++;
 
-                prog = (this._Progress / this.MainParent.OldFilesList.Count) * 100;
+                double prog = (this._Progress / this.MainParent.OldFilesList.Count) * 100;
                 this.MainParent.PatchProgress = prog > 100 ? 100 : prog;
 
                 this.MainParent.Console.AddLine(e.Data);
