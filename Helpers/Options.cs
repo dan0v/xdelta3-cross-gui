@@ -165,15 +165,7 @@ namespace xdelta3_cross_gui
             try
             {
                 string savedSettings = "";
-
-                try
-                {
-                    savedSettings = File.ReadAllText(Path.Combine(MainWindow.XDELTA3_APP_STORAGE, "options.json"));
-                }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e);
-                }
+                savedSettings = File.ReadAllText(Path.Combine(MainWindow.XDELTA3_APP_STORAGE, "options.json"));
 
                 Options json = (Options)JsonConvert.DeserializeObject(savedSettings, typeof(Options));
 
@@ -188,7 +180,6 @@ namespace xdelta3_cross_gui
                 this.CreateBatchFileOnly = json.CreateBatchFileOnly;
                 this.ZipFilesWhenDone = json.ZipFilesWhenDone;
                 this.ShowTerminal = json.ShowTerminal;
-
             }
             catch (Exception e)
             {
