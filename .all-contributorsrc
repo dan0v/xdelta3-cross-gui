@@ -5,7 +5,7 @@
   "imageSize": 100,
   "commit": false,
   "contributors": [
-  {
+    {
       "login": "dan0v",
       "name": "dan0v",
       "avatar_url": "https://avatars1.githubusercontent.com/u/7658521?v=4",
@@ -38,6 +38,15 @@
       "name": "R.",
       "avatar_url": "https://avatars0.githubusercontent.com/u/0?v=4",
       "profile": "",
+      "contributions": [
+        "translation"
+      ]
+    },
+    {
+      "login": "Hambaka",
+      "name": "Hambaka",
+      "avatar_url": "https://avatars.githubusercontent.com/u/20476755?v=4",
+      "profile": "https://github.com/Hambaka",
       "contributions": [
         "translation"
       ]
