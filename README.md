@@ -19,6 +19,7 @@ A cross-platform GUI for creating xDelta3 patches, inspired by [Moodkiller/xdelt
 	- English
 	- Español
 	- Magyar
+	- 中文(简体)
 
 ## Installation
 ### Windows *(x86)*
