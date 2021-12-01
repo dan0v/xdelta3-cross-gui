@@ -1,6 +1,6 @@
 ![GitHub Logo](Extra%20Resources/Repository%20Cover.png)
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 # xDelta3 Cross GUI
 A cross-platform GUI for creating xDelta3 patches, inspired by [Moodkiller/xdelta3-gui-2.0](https://github.com/Moodkiller/xdelta3-gui-2.0), now available for Windows, Linux, and MacOS. Output patches can also be applied on all three major platforms without requiring the GUI.
@@ -47,14 +47,16 @@ All contributions are welcome! Thanks goes to these wonderful people ([emoji key
 <!-- markdownlint-disable -->
 <table>
   <tr>
-		<td align="center"><a href="https://github.com/dan0v"><img src="https://avatars1.githubusercontent.com/u/7658521?v=4" width="100px;" alt=""/><br /><sub><b>dan0v</b></sub></a><br /><a href="https://github.com/dan0v/xdelta3-cross-gui/commits?author=dan0v" title="Code">💻</a> <a href="https://github.com/dan0v/xdelta3-cross-gui/issues?q=author%3Adan0v" title="Bug reports">🐛</a> <a href="#design-dan0v" title="Design">🎨</a> <a href="https://github.com/dan0v/xdelta3-cross-gui/commits?author=dan0v" title="Documentation">📖</a> <a href="#maintenance-dan0v" title="Maintenance">🚧</a> <a href="#platform-dan0v" title="Packaging/porting to new platform">📦</a> <a href="#question-dan0v" title="Answering Questions">💬</a> <a href="https://github.com/dan0v/xdelta3-cross-gui/pulls?q=is%3Apr+reviewed-by%3Adan0v" title="Reviewed Pull Requests">👀</a> <a href="https://github.com/dan0v/xdelta3-cross-gui/commits?author=dan0v" title="Tests">⚠️</a> <a href="#userTesting-dan0v" title="User Testing">📓</a> <a href="https://github.com/dan0v/xdelta3-cross-gui/commits?author=dan0v" title="Translation">🌍</a></td>
-		<td align="center"><a href="https://github.com/LeeBinder"><img src="https://avatars0.githubusercontent.com/u/39203497?v=4" width="100px;" alt=""/><br /><sub><b>LeeBinder</b></sub></a><br /><a href="#design-LeeBinder" title="Design">🎨</a></td>
-		<td align="center"><a href="Localization/Language.de.resx"><img src="https://avatars0.githubusercontent.com/u/0?v=4" width="100px;" alt=""/><br /><sub><b>R.</b></sub></a><br /><a href="Localization/Language.de.resx" title="Translation">🌍</a></td>
+    <td align="center"><a href="https://github.com/dan0v"><img src="https://avatars1.githubusercontent.com/u/7658521?v=4?s=100" width="100px;" alt=""/><br /><sub><b>dan0v</b></sub></a><br /><a href="https://github.com/dan0v/xdelta3-cross-gui/commits?author=dan0v" title="Code">💻</a> <a href="https://github.com/dan0v/xdelta3-cross-gui/issues?q=author%3Adan0v" title="Bug reports">🐛</a> <a href="#design-dan0v" title="Design">🎨</a> <a href="https://github.com/dan0v/xdelta3-cross-gui/commits?author=dan0v" title="Documentation">📖</a> <a href="#maintenance-dan0v" title="Maintenance">🚧</a> <a href="#platform-dan0v" title="Packaging/porting to new platform">📦</a> <a href="#question-dan0v" title="Answering Questions">💬</a> <a href="https://github.com/dan0v/xdelta3-cross-gui/pulls?q=is%3Apr+reviewed-by%3Adan0v" title="Reviewed Pull Requests">👀</a> <a href="https://github.com/dan0v/xdelta3-cross-gui/commits?author=dan0v" title="Tests">⚠️</a> <a href="#userTesting-dan0v" title="User Testing">📓</a> <a href="#translation-dan0v" title="Translation">🌍</a></td>
+    <td align="center"><a href="https://github.com/LeeBinder"><img src="https://avatars0.githubusercontent.com/u/39203497?v=4?s=100" width="100px;" alt=""/><br /><sub><b>LeeBinder</b></sub></a><br /><a href="#design-LeeBinder" title="Design">🎨</a></td>
+    <td align="center"><img src="https://avatars0.githubusercontent.com/u/0?v=4?s=100" width="100px;" alt=""/><br /><sub><b>R.</b></sub><br /><a href="#translation" title="Translation">🌍</a></td>
+    <td align="center"><a href="https://github.com/Hambaka"><img src="https://avatars.githubusercontent.com/u/20476755?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Hambaka</b></sub></a><br /><a href="#translation-Hambaka" title="Translation">🌍</a></td>
   </tr>
 </table>
 
-<!-- markdownlint-enable -->
+<!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification.
