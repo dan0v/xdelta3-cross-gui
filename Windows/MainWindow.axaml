@@ -115,7 +115,20 @@ limitations under the License.-->
         <!--Destination-->
         <Grid Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Margin="10,0,10,10" ColumnDefinitions="Auto,*,30">
           <TextBlock Grid.Column="0" Text="{i18n:Localize PatchFileDestination}" Margin="0,4,0,0"></TextBlock>
-          <TextBox x:Name="txt_bx_PatchDestination" IsReadOnly="True" Text="{Binding Options.PatchFileDestination, Mode=TwoWay}" Grid.Column="1" Margin="5,0,5,0"></TextBox>
+          <Border Grid.Column="1" Margin="5,0,5,0" Classes.Normal="{Binding Options.PatchFileDestination, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Classes.Error="{Binding Options.PatchFileDestination, Converter={x:Static StringConverters.IsNullOrEmpty}}">
+            <Border.Styles>
+              <Style Selector="Border.Error">
+                <Setter Property="Border.BorderThickness" Value="1"></Setter>
+              </Style>
+              <Style Selector="Border.Normal">
+                <Setter Property="Border.BorderThickness" Value="0"></Setter>
+              </Style>
+            </Border.Styles>
+            <Border.BorderBrush>
+              <SolidColorBrush Color="Red"></SolidColorBrush>
+            </Border.BorderBrush>
+            <TextBox x:Name="txt_bx_PatchDestination" IsReadOnly="True" Text="{Binding Options.PatchFileDestination, Mode=TwoWay}"></TextBox>
+          </Border>
           <Button x:Name="btn_BrowsePathDestination" Grid.Column="2" Content="..."></Button>
         </Grid>
       </Grid>
@@ -171,6 +184,7 @@ limitations under the License.-->
             <MultiBinding Converter="{x:Static BoolConverters.And}}">
               <Binding Path="EqualFileCount"/>
               <Binding Path="!AlreadyBusy"/>
+              <Binding Path="Options.PatchFileDestination" Converter="{x:Static StringConverters.IsNotNullOrEmpty}"/>
             </MultiBinding>
           </Button.IsEnabled>
         </Button>

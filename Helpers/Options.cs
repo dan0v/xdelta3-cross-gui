@@ -222,12 +222,18 @@ namespace xdelta3_cross_gui
         public bool Validate()
         {
             bool valid = true;
-            if (!IsValidFilePath(this.PatchExtention))
+
+            if (string.IsNullOrEmpty(this.PatchFileDestination))
+            {
+                valid = false;
+            }
+
+            if (string.IsNullOrEmpty(this.PatchExtention) || !IsValidFilePath(this.PatchExtention))
             {
                 this.PatchExtention = "vcdiff";
                 valid = false;
             }
-            if (!IsValidFilePath(this.PatchSubdirectory))
+            if (string.IsNullOrEmpty(this.PatchSubdirectory) || !IsValidFilePath(this.PatchSubdirectory))
             {
                 this.PatchSubdirectory = "vcdiff";
                 valid = false;
@@ -236,7 +242,7 @@ namespace xdelta3_cross_gui
             //{
             //    this.XDeltaArguments = "-B 1073741824 -e -9 -S djw -vfs";
             //}
-            if (!IsValidFilePath(this.ZipName))
+            if (this.ZipFilesWhenDone && (string.IsNullOrEmpty(this.ZipName) || !IsValidFilePath(this.ZipName)))
             {
                 this.ZipName = "patch";
                 valid = false;
