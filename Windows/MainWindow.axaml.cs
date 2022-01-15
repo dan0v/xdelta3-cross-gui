@@ -52,6 +52,9 @@ namespace xdelta3_cross_gui
         public static readonly string VERSION_CHECK_URL = "https://github.com/dan0v/xdelta3-cross-gui/releases/latest/download/version.txt";
         public static readonly string RELEASES_PAGE = "https://github.com/dan0v/xdelta3-cross-gui/releases/latest/";
 
+        #region Properties
+        public string OldFilesHeader => string.Format(Localizer.Instance["OldFilesHeader"], OldFilesListCount);
+        public string NewFilesHeader => string.Format(Localizer.Instance["NewFilesHeader"], NewFilesListCount);
         private bool _XDeltaOnSystemPath { get; set; }
         public bool XDeltaOnSystemPath
         {
@@ -129,6 +132,7 @@ namespace xdelta3_cross_gui
                 {
                     _OldFilesListCount = value;
                     OnPropertyChanged();
+                    OnPropertyChanged(nameof(OldFilesHeader));
                 }
             }
         }
@@ -142,6 +146,7 @@ namespace xdelta3_cross_gui
                 {
                     _NewFilesListCount = value;
                     OnPropertyChanged();
+                    OnPropertyChanged(nameof(NewFilesHeader));
                 }
             }
         }
@@ -173,6 +178,7 @@ namespace xdelta3_cross_gui
                 OnPropertyChanged();
             }
         }
+        #endregion
 
         private bool _AllOldFilesSelected = false;
         private bool _AllNewFilesSelected = false;
@@ -485,6 +491,8 @@ namespace xdelta3_cross_gui
             this.OldFilesListCount = 0;
             this.NewFilesListCount = 0;
 
+            Localizer.Instance.PropertyChanged += Language_Changed;
+
             this.Options.LoadSaved();
             this.SetXDeltaLocations();
 
@@ -495,6 +503,12 @@ namespace xdelta3_cross_gui
 
             this.Console.SetParent(this);
             this.CheckForUpdates();
+        }
+
+        private void Language_Changed(object sender, PropertyChangedEventArgs e)
+        {
+            OnPropertyChanged(nameof(OldFilesHeader));
+            OnPropertyChanged(nameof(NewFilesHeader));
         }
 
         private void CheckFileCounts()

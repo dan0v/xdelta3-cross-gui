@@ -19,7 +19,7 @@ namespace xdelta3_cross_gui.Localization
         private const string IndexerArrayName = "Item[]";
         private ResourceManager resources;
 
-        public Localizer()
+        private Localizer()
         {
         }
 
@@ -40,7 +40,9 @@ namespace xdelta3_cross_gui.Localization
             }
         }
 
-        public static Localizer Instance { get; set; } = new Localizer();
+        private static Localizer _instance = null;
+        public static Localizer Instance => _instance ??= new Localizer();
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public void Invalidate()
