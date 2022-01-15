@@ -149,7 +149,7 @@
     <comment>MainWindow</comment>
   </data>
   <data name="NewFilesHeader" xml:space="preserve">
-    <value>archivo(s) nuevo(s)</value>
+    <value>Archivo(s) nuevo(s)</value>
     <comment>MainWindow</comment>
   </data>
   <data name="NewVersionHeader" xml:space="preserve">
@@ -161,7 +161,7 @@
     <comment>UpdateDialog</comment>
   </data>
   <data name="OldFilesHeader" xml:space="preserve">
-    <value>archivo(s) antiguo(s)</value>
+    <value>Archivo(s) antiguo(s)</value>
     <comment>MainWindow</comment>
   </data>
   <data name="OpenOutputDirectory" xml:space="preserve">
