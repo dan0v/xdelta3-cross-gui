@@ -739,7 +739,12 @@ namespace xdelta3_cross_gui
             string version = "";
             try
             {
-                version = System.Reflection.Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
+                var ver = Assembly.GetEntryAssembly()?.GetName().Version;
+                if (ver == null)
+                {
+                    return "0.0.0";
+                }
+                version = $"{ver.Major}.{ver.Minor}.{ver.Build}";
             }
             catch (Exception e) { Debug.WriteLine(e); }
             return version;
