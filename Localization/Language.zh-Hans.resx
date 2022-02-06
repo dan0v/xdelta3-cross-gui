@@ -138,7 +138,7 @@
     <comment>ErrorDialog</comment>
   </data>
   <data name="ErrorText" xml:space="preserve">
-    <value>某些选项可能已被重置。请在重试之前仔细检查选项设置。</value>
+    <value>某些选项可能已被重置。请在重试之前仔细检查选项设置</value>
     <comment>ErrorDialog</comment>
   </data>
   <data name="FilesHeader" xml:space="preserve">
@@ -158,7 +158,7 @@
     <comment>UpdateDialog</comment>
   </data>
   <data name="NewVersionText" xml:space="preserve">
-    <value>可以前往 GitHub 的发布页下载 {0} 版本。</value>
+    <value>可以前往 GitHub 的发布页下载 {0} 版本</value>
     <comment>UpdateDialog</comment>
   </data>
   <data name="OldFilesHeader" xml:space="preserve">
@@ -210,7 +210,7 @@
     <comment>SuccessDialog</comment>
   </data>
   <data name="SuccessText" xml:space="preserve">
-    <value>已成功创建 xDelta3 补丁或补丁的批处理文件。</value>
+    <value>已成功创建 xDelta3 补丁或补丁的批处理文件</value>
     <comment>SuccessDialog</comment>
   </data>
   <data name="ToggleSelectionButton" xml:space="preserve">
@@ -236,6 +236,9 @@
   <data name="xDeltaOnPath" xml:space="preserve">
     <value>已在系统路径中检测到 xDelta3，将使用系统路径中的 xDelta3</value>
     <comment>MainWindow</comment>
+  </data>
+  <data name="xDeltaProcessError" xml:space="preserve">
+    <value>进程遇到问题，请查看终端输出以获取更多信息</value>
   </data>
   <data name="ZipFiles" xml:space="preserve">
     <value>同时将所有补丁文件压缩为 Zip 文件</value>

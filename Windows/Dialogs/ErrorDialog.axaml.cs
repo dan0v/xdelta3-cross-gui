@@ -21,11 +21,13 @@ namespace xdelta3_cross_gui
 {
     public class ErrorDialog : Window
     {
-        List<string> missingOldFiles;
-        List<string> missingNewFiles;
+        List<string>? missingOldFiles;
+        List<string>? missingNewFiles;
+        string? errorString;
         Button btn_Dismiss;
         TextBlock txt_blk_MissingOld;
         TextBlock txt_blk_MissingNew;
+        TextBlock txt_blk_ErrorString;
         Grid grd_MissingFiles;
 
         public ErrorDialog()
@@ -41,6 +43,13 @@ namespace xdelta3_cross_gui
             this.Configure();
         }
 
+        public ErrorDialog(string xDeltaFailed)
+        {
+            this.InitializeComponent();
+            this.errorString = xDeltaFailed;
+            this.Configure();
+        }
+
         private void Configure()
         {
             this.btn_Dismiss = this.FindControl<Button>("btn_Dismiss");
@@ -49,17 +58,24 @@ namespace xdelta3_cross_gui
             this.txt_blk_MissingNew = this.FindControl<TextBlock>("txt_blk_MissingNew");
             this.grd_MissingFiles = this.FindControl<Grid>("grd_MissingFiles");
 
+            this.txt_blk_ErrorString = this.FindControl<TextBlock>("txt_blk_ErrorString");
+
             this.btn_Dismiss.Click += DismissClicked;
 
-            if (this.missingOldFiles.Count > 0)
+            if ((this.missingOldFiles?.Count ?? 0) > 0)
             {
                 this.txt_blk_MissingOld.Text = string.Join("\n", missingOldFiles);
                 this.grd_MissingFiles.IsVisible = true;
             }
-            if (this.missingNewFiles.Count > 0)
+            if ((this.missingNewFiles?.Count ?? 0) > 0)
             {
                 this.txt_blk_MissingNew.Text = string.Join("\n", missingNewFiles);
                 this.grd_MissingFiles.IsVisible = true;
+            }
+
+            if (!string.IsNullOrEmpty(errorString))
+            {
+                txt_blk_ErrorString.Text = errorString;
             }
         }
 

@@ -138,7 +138,7 @@
     <comment>ErrorDialog</comment>
   </data>
   <data name="ErrorText" xml:space="preserve">
-    <value>Lehetséges hogy egyes beállítások vissza lettek állítva, ügyeljen mielőtt újra próbálkozik.</value>
+    <value>Lehetséges hogy egyes beállítások vissza lettek állítva, ügyeljen mielőtt újra próbálkozik</value>
     <comment>ErrorDialog</comment>
   </data>
   <data name="FilesHeader" xml:space="preserve">
@@ -236,6 +236,9 @@
   <data name="xDeltaOnPath" xml:space="preserve">
     <value>xDelta3 található a rendszerben, tehát ez lesz használva</value>
     <comment>MainWindow</comment>
+  </data>
+  <data name="xDeltaProcessError" xml:space="preserve">
+    <value>A folyamat hibába futott, további információ a terminal ablakban található</value>
   </data>
   <data name="ZipFiles" xml:space="preserve">
     <value>Fileok tömörítése</value>

@@ -21,10 +21,10 @@ limitations under the License.-->
         x:Class="xdelta3_cross_gui.ErrorDialog"
         Title="Error" MinWidth="300" MinHeight="130"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
-        Width="350" Height="150"
+        Width="350" Height="200"
         Icon="avares://xdelta3_cross_gui/Assets/img/Icon.png">
   
-  <Grid RowDefinitions="Auto,*,Auto,Auto">
+  <Grid RowDefinitions="Auto,*,Auto,Auto,Auto">
     <TextBlock Grid.Row="0" HorizontalAlignment="Center" Text="{i18n:Localize ErrorHeader}" FontWeight="Bold" Margin="10"></TextBlock>
     <Grid x:Name="grd_MissingFiles" Grid.Row="1" ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,*" IsVisible="False">
       <TextBlock HorizontalAlignment="Center" Grid.Row="0" Grid.ColumnSpan="2" Text="Missing Files"></TextBlock>
@@ -33,7 +33,8 @@ limitations under the License.-->
       <TextBlock TextWrapping="Wrap" x:Name="txt_blk_MissingOld" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Center" Margin="5,0,2.5,0" ></TextBlock>
       <TextBlock TextWrapping="Wrap" x:Name="txt_blk_MissingNew" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" Margin="2.5,0,5,0" ></TextBlock>
     </Grid>
-    <TextBlock Grid.Row="2" TextWrapping="Wrap" Margin="10" TextAlignment="Center" Text="{i18n:Localize ErrorText}"></TextBlock>
-    <Button x:Name="btn_Dismiss" Grid.Row="3" Content="{i18n:Localize DismissButton}" HorizontalAlignment="Right" Margin="10" Width="80"></Button>
+    <TextBlock x:Name="txt_blk_ErrorString" Grid.Row="2" TextWrapping="Wrap" Margin="10" TextAlignment="Center"></TextBlock>
+    <TextBlock Grid.Row="3" TextWrapping="Wrap" Margin="10" TextAlignment="Center" Text="{i18n:Localize ErrorText}"></TextBlock>
+    <Button x:Name="btn_Dismiss" Grid.Row="4" Content="{i18n:Localize DismissButton}" HorizontalAlignment="Right" Margin="10" Width="80"></Button>
   </Grid>
 </Window>

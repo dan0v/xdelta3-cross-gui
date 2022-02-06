@@ -138,7 +138,7 @@
     <comment>ErrorDialog</comment>
   </data>
   <data name="ErrorText" xml:space="preserve">
-    <value>Some options may have been reset. Please check before trying again.</value>
+    <value>Some options may have been reset. Please check before trying again</value>
     <comment>ErrorDialog</comment>
   </data>
   <data name="FilesHeader" xml:space="preserve">
@@ -158,7 +158,7 @@
     <comment>UpdateDialog</comment>
   </data>
   <data name="NewVersionText" xml:space="preserve">
-    <value>Version {0} can be downloaded from the releases page on GitHub.</value>
+    <value>Version {0} can be downloaded from the releases page on GitHub</value>
     <comment>UpdateDialog</comment>
   </data>
   <data name="OldFilesHeader" xml:space="preserve">
@@ -210,7 +210,7 @@
     <comment>SuccessDialog</comment>
   </data>
   <data name="SuccessText" xml:space="preserve">
-    <value>Your xDelta3 patches, or patch batches, have been successfuly created.</value>
+    <value>Your xDelta3 patches, or patch batches, have been successfuly created</value>
     <comment>SuccessDialog</comment>
   </data>
   <data name="ToggleSelectionButton" xml:space="preserve">
@@ -236,6 +236,9 @@
   <data name="xDeltaOnPath" xml:space="preserve">
     <value>xDelta3 was found on the system path, so it will be used</value>
     <comment>MainWindow</comment>
+  </data>
+  <data name="xDeltaProcessError" xml:space="preserve">
+    <value>xDelta3 has encountered an issue, please check the terminal output for details</value>
   </data>
   <data name="ZipFiles" xml:space="preserve">
     <value>Zip all files</value>

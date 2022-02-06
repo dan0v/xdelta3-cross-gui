@@ -1,12 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <Nullable>enable</Nullable>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
     <RuntimeIdentifiers>win-x86;win-x64;osx-x64;linux-x64;</RuntimeIdentifiers>
     <Authors>dan0v</Authors>
     <Description>A cross-platform graphical user interface for xDelta3 patching</Description>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
-    <Version>1.1.4</Version>
+    <Version>1.1.5</Version>
     <CopyOutputSymbolsToPublishDirectory>false</CopyOutputSymbolsToPublishDirectory>
     <PublishTrimmed>true</PublishTrimmed>
     <TrimMode>CopyUsed</TrimMode>
@@ -42,8 +43,8 @@
     <AvaloniaResource Include="Assets\img\up.png" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="0.10.7" />
-    <PackageReference Include="Avalonia.Desktop" Version="0.10.7" />
+    <PackageReference Include="Avalonia" Version="0.10.12" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.10.12" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
   <ItemGroup>

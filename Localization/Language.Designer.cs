@@ -106,7 +106,7 @@ namespace xdelta3_cross_gui.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Some options may have been reset. Please check before trying again..
+        ///   Looks up a localized string similar to Some options may have been reset. Please check before trying again.
         /// </summary>
         internal static string ErrorText {
             get {
@@ -151,7 +151,7 @@ namespace xdelta3_cross_gui.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Version {0} can be downloaded from the releases page on GitHub..
+        ///   Looks up a localized string similar to Version {0} can be downloaded from the releases page on GitHub.
         /// </summary>
         internal static string NewVersionText {
             get {
@@ -268,7 +268,7 @@ namespace xdelta3_cross_gui.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your xDelta3 patches, or patch batches, have been successfuly created..
+        ///   Looks up a localized string similar to Your xDelta3 patches, or patch batches, have been successfuly created.
         /// </summary>
         internal static string SuccessText {
             get {
@@ -327,6 +327,15 @@ namespace xdelta3_cross_gui.Localization {
         internal static string xDeltaOnPath {
             get {
                 return ResourceManager.GetString("xDeltaOnPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to xDelta3 has encountered an issue, please check the terminal output for details.
+        /// </summary>
+        internal static string xDeltaProcessError {
+            get {
+                return ResourceManager.GetString("xDeltaProcessError", resourceCulture);
             }
         }
         

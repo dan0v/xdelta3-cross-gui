@@ -27,6 +27,8 @@ namespace xdelta3_cross_gui
     {
         private MainWindow MainParent;
         private double _Progress = 0;
+        private bool _ProcFailed = false;
+
         public PatchCreator(MainWindow MainParent)
         {
             this.MainParent = MainParent;
@@ -197,6 +199,7 @@ namespace xdelta3_cross_gui
         {
             return new Thread(() =>
             {
+                _ProcFailed = false;
                 using (Process activeCMD = new Process())
                 {
                     activeCMD.OutputDataReceived += HandleCMDOutput;
@@ -236,6 +239,22 @@ namespace xdelta3_cross_gui
                     activeCMD.BeginOutputReadLine();
                     activeCMD.BeginErrorReadLine();
                     activeCMD.WaitForExit();
+
+                    if (_ProcFailed)
+                    {
+                        Dispatcher.UIThread.InvokeAsync(new Action(() =>
+                        {
+                            this.MainParent.AlreadyBusy = false;
+                            this.MainParent.PatchProgress = 0;
+                            MainParent.ShowTerminal = true;
+                            ErrorDialog dialog = new ErrorDialog(Localization.Localizer.Instance["xDeltaProcessError"]);
+                            dialog.Show();
+                            dialog.Topmost = true;
+                            dialog.Topmost = false;
+                        }));
+                        return;
+                    }
+
                     try
                     {
                         File.Delete(Path.Combine(this.MainParent.Options.PatchFileDestination, this.MainParent.Options.PatchSubdirectory, "doNotDelete-In-Progress.bat"));
@@ -283,6 +302,10 @@ namespace xdelta3_cross_gui
             if (e != null && e.Data != null && (e.Data + "").Trim() != "")
             {
                 Debug.WriteLine(e.Data);
+                if (e.Data.ToLower().Contains("error") || e.Data.ToLower().Contains("fail"))
+                {
+                    _ProcFailed = true;
+                }
                 this._Progress++;
 
                 double prog = (this._Progress / this.MainParent.OldFilesList.Count) * 100;
@@ -297,6 +320,10 @@ namespace xdelta3_cross_gui
             if (e != null && e.Data != null && (e.Data + "").Trim() != "")
             {
                 Debug.WriteLine(e.Data);
+                if (e.Data.ToLower().Contains("error") || e.Data.ToLower().Contains("fail"))
+                {
+                    _ProcFailed = true;
+                }
 
                 this.MainParent.Console.AddLine(e.Data);
             }

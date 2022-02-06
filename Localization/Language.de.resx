@@ -138,7 +138,7 @@
     <comment>ErrorDialog</comment>
   </data>
   <data name="ErrorText" xml:space="preserve">
-    <value>Einige Optionen wurde möglicherweise zurückgesetzt. Bitte prüfen Sie dies, bevor Sie es erneut versuchen.</value>
+    <value>Einige Optionen wurde möglicherweise zurückgesetzt. Bitte prüfen Sie dies, bevor Sie es erneut versuchen</value>
     <comment>ErrorDialog</comment>
   </data>
   <data name="FilesHeader" xml:space="preserve">
@@ -158,7 +158,7 @@
     <comment>UpdateDialog</comment>
   </data>
   <data name="NewVersionText" xml:space="preserve">
-    <value>Version {0} kann von der Versionsseite auf GitHub heruntergeladen werden.</value>
+    <value>Version {0} kann von der Versionsseite auf GitHub heruntergeladen werden</value>
     <comment>UpdateDialog</comment>
   </data>
   <data name="OldFilesHeader" xml:space="preserve">
@@ -210,7 +210,7 @@
     <comment>SuccessDialog</comment>
   </data>
   <data name="SuccessText" xml:space="preserve">
-    <value>Ihre xDelta3-Patches, bzw. Patch-Batches, wurden erfolgreich erstellt.</value>
+    <value>Ihre xDelta3-Patches, bzw. Patch-Batches, wurden erfolgreich erstellt</value>
     <comment>SuccessDialog</comment>
   </data>
   <data name="ToggleSelectionButton" xml:space="preserve">
@@ -236,6 +236,9 @@
   <data name="xDeltaOnPath" xml:space="preserve">
     <value>xDelta3 wurde im Systempfad gefunden, daher wird es verwendet</value>
     <comment>MainWindow</comment>
+  </data>
+  <data name="xDeltaProcessError" xml:space="preserve">
+    <value>Beim Prozess ist ein Problem aufgetreten, weitere Informationen finden Sie in der Terminalausgabe</value>
   </data>
   <data name="ZipFiles" xml:space="preserve">
     <value>Alle Dateien zippen</value>
