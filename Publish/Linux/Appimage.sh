@@ -25,8 +25,7 @@ chmod +x Sources/appimagetool-x86_64.AppImage
 APP_NAME="xDelta3 Cross GUI"
 APP_OUTPUT_PATH="Build"
 PUBLISH_OUTPUT_DIRECTORY="../../bin/Release/net5.0/publishLinux/."
-APP_TAR_NAME1="xdelta3-cross-gui_"
-APP_TAR_NAME2="_linux_AppImage_x86_64"
+APP_TAR_NAME="xdelta3-cross-gui_linux_AppImage_x86_64"
 
 chmod +x "$PUBLISH_OUTPUT_DIRECTORY/Assets/exec/xdelta3_x64_linux"
 chmod +x "$PUBLISH_OUTPUT_DIRECTORY/Assets/exec/xdelta3_mac"
@@ -50,11 +49,9 @@ chmod 755 "$APP_OUTPUT_PATH/$APP_NAME/AppRun"
 cp "../../NOTICE.txt" "$APP_OUTPUT_PATH/NOTICE.txt"
 cp "../../LICENSE.txt" "$APP_OUTPUT_PATH/LICENSE.txt"
 
-VERSION=$(cat ../version.txt | sed 's/ *$//g' | sed 's/\r//' | sed ':a;N;$!ba;s/\n//g')
-
 cd "$APP_OUTPUT_PATH"
 
 ARCH=x86_64 ../Sources/appimagetool-x86_64.AppImage -n "$APP_NAME"
 
-tar -czvf "$APP_TAR_NAME1$VERSION$APP_TAR_NAME2.tar.gz" "xDelta3_Cross_Gui-x86_64.AppImage" "LICENSE.txt" "NOTICE.txt"
-mv "$APP_TAR_NAME1$VERSION$APP_TAR_NAME2.tar.gz" ../../"$APP_TAR_NAME1$VERSION$APP_TAR_NAME2.tar.gz"
+tar -czvf "$APP_TAR_NAME.tar.gz" "xDelta3_Cross_Gui-x86_64.AppImage" "LICENSE.txt" "NOTICE.txt"
+mv "$APP_TAR_NAME.tar.gz" ../../"$APP_TAR_NAME.tar.gz"
