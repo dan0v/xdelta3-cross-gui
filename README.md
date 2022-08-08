@@ -1,6 +1,6 @@
 ![GitHub Logo](Extra%20Resources/Repository%20Cover.png)
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 # xDelta3 Cross GUI
 A cross-platform GUI for creating xDelta3 patches, inspired by [Moodkiller/xdelta3-gui-2.0](https://github.com/Moodkiller/xdelta3-gui-2.0), now available for Windows, Linux, and MacOS. Output patches can also be applied on all three major platforms without requiring the GUI.
@@ -53,6 +53,7 @@ All contributions are welcome! Thanks goes to these wonderful people ([emoji key
     <td align="center"><img src="https://avatars0.githubusercontent.com/u/0?v=4?s=100" width="100px;" alt=""/><br /><sub><b>R.</b></sub><br /><a href="#translation" title="Translation">🌍</a></td>
     <td align="center"><a href="https://github.com/Hambaka"><img src="https://avatars.githubusercontent.com/u/20476755?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Hambaka</b></sub></a><br /><a href="#translation-Hambaka" title="Translation">🌍</a></td>
     <td align="center"><a href="https://github.com/1024mb"><img src="https://avatars.githubusercontent.com/u/9301204?v=4?s=100" width="100px;" alt=""/><br /><sub><b>1024mb</b></sub></a><br /><a href="#translation-1024mb" title="Translation">🌍</a></td>
+    <td align="center"><a href="https://bandism.net/"><img src="https://avatars.githubusercontent.com/u/22633385?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ikko Ashimine</b></sub></a><br /><a href="#translation-eltociear" title="Translation">🌍</a></td>
   </tr>
 </table>
 
