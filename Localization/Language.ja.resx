@@ -1,0 +1,251 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!--
+    Microsoft ResX Schema
+
+    Version 2.0
+
+    The primary goals of this format is to allow a simple XML format
+    that is mostly human readable. The generation and parsing of the
+    various data types are done through the TypeConverter classes
+    associated with the data types.
+
+    Example:
+
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+
+    There are any number of "resheader" rows that contain simple
+    name/value pairs.
+
+    Each data row contains a name, and value. The row also contains a
+    type or mimetype. Type corresponds to a .NET class that support
+    text/value conversion through the TypeConverter architecture.
+    Classes that don't support this are serialized and stored with the
+    mimetype set.
+
+    The mimetype is used for serialized objects, and tells the
+    ResXResourceReader how to depersist the object. This is currently not
+    extensible. For a given mimetype the value must be set accordingly:
+
+    Note - application/x-microsoft.net.object.binary.base64 is the format
+    that the ResXResourceWriter will generate, however the reader can
+    read any of the formats listed below.
+
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BatchFileOnly" xml:space="preserve">
+    <value>バッチファイルのみ（後でパッチ適用するため）</value>
+    <comment>MainWindow</comment>
+  </data>
+  <data name="CopyExecutables" xml:space="preserve">
+    <value>xDeltaの実行ファイルを出力ディレクトリにコピーします</value>
+    <comment>MainWindow</comment>
+  </data>
+  <data name="Credit" xml:space="preserve">
+    <value>xDelta3クロスプラットフォームGUI by dan0v, using xDelta 3.1.0\\n\\nxDelta GUI 2に強くインスパイアされています\\nby Jordi Vermeulen (Brian Campbellによる修正版)</value>
+    <comment>MainWindow</comment>
+  </data>
+  <data name="DismissButton" xml:space="preserve">
+    <value>閉じる</value>
+    <comment>Dialog</comment>
+  </data>
+  <data name="ErrorHeader" xml:space="preserve">
+    <value>エラーが発生しました</value>
+    <comment>ErrorDialog</comment>
+  </data>
+  <data name="ErrorText" xml:space="preserve">
+    <value>一部のオプションがリセットされている可能性があります。再試行の前にご確認ください</value>
+    <comment>ErrorDialog</comment>
+  </data>
+  <data name="FilesHeader" xml:space="preserve">
+    <value>ファイル</value>
+    <comment>MainWindow</comment>
+  </data>
+  <data name="Go" xml:space="preserve">
+    <value>開始!</value>
+    <comment>MainWindow</comment>
+  </data>
+  <data name="NewFilesHeader" xml:space="preserve">
+    <value>{0} 新しいファイル</value>
+    <comment>MainWindow</comment>
+  </data>
+  <data name="NewVersionHeader" xml:space="preserve">
+    <value>新しいバージョンがあります</value>
+    <comment>UpdateDialog</comment>
+  </data>
+  <data name="NewVersionText" xml:space="preserve">
+    <value>バージョン {0}はGitHubのreleasesページからダウンロードできます。</value>
+    <comment>UpdateDialog</comment>
+  </data>
+  <data name="OldFilesHeader" xml:space="preserve">
+    <value>{0} 古いファイル</value>
+    <comment>MainWindow</comment>
+  </data>
+  <data name="OpenOutputDirectory" xml:space="preserve">
+    <value>出力ディレクトリを開く</value>
+    <comment>SuccessDialog</comment>
+  </data>
+  <data name="OptionsHeader" xml:space="preserve">
+    <value>オプション</value>
+    <comment>MainWindow</comment>
+  </data>
+  <data name="PatchExtension" xml:space="preserve">
+    <value>パッチファイルの拡張子</value>
+    <comment>MainWindow</comment>
+  </data>
+  <data name="PatchFileDestination" xml:space="preserve">
+    <value>パッチファイルの保存先</value>
+    <comment>MainWindow</comment>
+  </data>
+  <data name="PatchSubdir" xml:space="preserve">
+    <value>パッチサブディレクトリ</value>
+    <comment>MainWindow</comment>
+  </data>
+  <data name="Progress" xml:space="preserve">
+    <value>進捗状況</value>
+    <comment>MainWindow</comment>
+  </data>
+  <data name="ResetDefaults" xml:space="preserve">
+    <value>デフォルトのリセット</value>
+    <comment>MainWindow</comment>
+  </data>
+  <data name="SaveSettings" xml:space="preserve">
+    <value>設定の保存</value>
+    <comment>MainWindow</comment>
+  </data>
+  <data name="ShowFullPaths" xml:space="preserve">
+    <value>フルパスを表示する</value>
+    <comment>MainWindow</comment>
+  </data>
+  <data name="ShowTerminal" xml:space="preserve">
+    <value>ターミナルウィンドウを表示する</value>
+    <comment>MainWindow</comment>
+  </data>
+  <data name="SuccessHeader" xml:space="preserve">
+    <value>成功</value>
+    <comment>SuccessDialog</comment>
+  </data>
+  <data name="SuccessText" xml:space="preserve">
+    <value>xDelta3パッチ（パッチバッチ）が正常に作成されました</value>
+    <comment>SuccessDialog</comment>
+  </data>
+  <data name="ToggleSelectionButton" xml:space="preserve">
+    <value>トグル選択</value>
+    <comment>MainWindow</comment>
+  </data>
+  <data name="UnequalFilesError" xml:space="preserve">
+    <value>旧ファイルと新ファイルを同数追加してください</value>
+    <comment>MainWindow</comment>
+  </data>
+  <data name="ViewReleases" xml:space="preserve">
+    <value>リリースを表示</value>
+    <comment>UpdateDialog</comment>
+  </data>
+  <data name="xDeltaArguments" xml:space="preserve">
+    <value>xDelta引数</value>
+    <comment>MainWindow</comment>
+  </data>
+  <data name="xDeltaNotOnPath" xml:space="preserve">
+    <value>xDelta3がシステムパス上に見つからなかったため、バンドル版が使用されます</value>
+    <comment>MainWindow</comment>
+  </data>
+  <data name="xDeltaOnPath" xml:space="preserve">
+    <value>xDelta3がシステムパスで見つかったので、それを使用します</value>
+    <comment>MainWindow</comment>
+  </data>
+  <data name="xDeltaProcessError" xml:space="preserve">
+    <value>xDelta3は問題が発生しました。詳細は端末の出力を確認してください</value>
+  </data>
+  <data name="ZipFiles" xml:space="preserve">
+    <value>すべてのファイルをZipで圧縮する</value>
+    <comment>MainWindow</comment>
+  </data>
+  <data name="ZipName" xml:space="preserve">
+    <value>Zipファイル名</value>
+    <comment>MainWindow</comment>
+  </data>
+</root>

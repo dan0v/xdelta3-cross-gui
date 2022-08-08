@@ -12,7 +12,8 @@ namespace xdelta3_cross_gui.Localization
             { "English", "en-US" },
             { "Español", "es" },
             { "Magyar", "hu" },
-            { "中文(简体)", "zh-Hans" }
+            { "中文(简体)", "zh-Hans" },
+            { "日本語", "ja" }
         };
 
         private const string IndexerName = "Item";
