@@ -24,6 +24,17 @@ A cross-platform GUI for creating xDelta3 patches, inspired by [Moodkiller/xdelt
 
 ## Installation
 ### Windows *(x86)*
+#### Scoop
+If you have the [Scoop](https://scoop.sh/) package manager installed, enter the following commands into Powershell to install the latest version of xDelta3 Cross GUI.
+
+```
+scoop bucket add extras
+scoop install xdelta3-cross-gui
+```
+
+The application can also be updated to new versions with `scoop update xdelta3-cross-gui`. There is a few hour delay between new updates being released and being available through Scoop.
+
+#### Manual
 1. Download and unzip [latest Windows build](https://github.com/dan0v/xdelta3-cross-gui/releases/latest/download/xdelta3-cross-gui_win_x86.zip) from the [Releases page](https://github.com/dan0v/xdelta3-cross-gui/releases/)
 2. Run executable (`xdelta3_cross_gui.exe`)
 
