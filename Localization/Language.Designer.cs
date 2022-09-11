@@ -61,6 +61,15 @@ namespace xdelta3_cross_gui.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to About.
+        /// </summary>
+        internal static string About {
+            get {
+                return ResourceManager.GetString("About", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Batch File only (for later patching).
         /// </summary>
         internal static string BatchFileOnly {

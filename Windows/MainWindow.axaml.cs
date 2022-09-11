@@ -39,6 +39,9 @@ namespace xdelta3_cross_gui
         public static readonly string TITLE = "xDelta3 Cross GUI " + VERSION;
         public static string XDELTA3_PATH = "";
 
+        public static readonly string LICENSE_FILE = "LICENSE.txt";
+        public static readonly string NOTICE_FILE = "NOTICE.txt";
+
         public static readonly string XDELTA3_BINARY_WINDOWS = "xdelta3_x86_64_win.exe";
         public static readonly string XDELTA3_BINARY_LINUX = "xdelta3_x64_linux";
         public static readonly string XDELTA3_BINARY_MACOS = "xdelta3_mac";
@@ -184,7 +187,7 @@ namespace xdelta3_cross_gui
         private bool _AllNewFilesSelected = false;
 
         private Console _Console = new Console();
-        public Console Console { get => _Console; }
+        public Console Console => _Console;
 
         private Options _Options = new Options();
         public Options Options { get { return this._Options; } }
@@ -202,6 +205,7 @@ namespace xdelta3_cross_gui
         Button btn_BrowsePathDestination;
         Button btn_ResetDefaults;
         Button btn_SaveSettings;
+        Button btn_OpenInfo;
         Button btn_Go;
         StackPanel sp_OldFilesDisplay;
         StackPanel sp_NewFilesDisplay;
@@ -338,6 +342,12 @@ namespace xdelta3_cross_gui
             //this.Options.SaveCurrent();
         }
 
+        public void OpenInfoClicked(object sender, RoutedEventArgs args)
+        {
+            var info = new InfoDialog();
+            info.Show();
+        }
+
         public void GoClicked(object sender, RoutedEventArgs args)
         {
             bool failed = false;
@@ -458,6 +468,7 @@ namespace xdelta3_cross_gui
             this.txt_bx_PatchDestination = this.FindControl<TextBox>("txt_bx_PatchDestination");
             this.btn_SaveSettings = this.FindControl<Button>("btn_SaveSettings");
             this.btn_ResetDefaults = this.FindControl<Button>("btn_ResetDefaults");
+            this.btn_OpenInfo = this.FindControl<Button>("btn_OpenInfo");
             this.btn_Go = this.FindControl<Button>("btn_Go");
             this.pb_Progress = this.FindControl<ProgressBar>("pb_Progress");
             this.cb_LanguageOptions = this.FindControl<ComboBox>("cb_LanguageOptions");
@@ -475,6 +486,7 @@ namespace xdelta3_cross_gui
             this.btn_DeleteNew.Click += DeleteNewFilesClicked;
             this.btn_SaveSettings.Click += SaveSettingsClicked;
             this.btn_ResetDefaults.Click += ResetDefaultsClicked;
+            this.btn_OpenInfo.Click += OpenInfoClicked;
             this.btn_Go.Click += GoClicked;
             this.btn_BrowsePathDestination.Click += BrowseOutputDirectory;
             this.chk_UseShortNames.Click += UseShortNamesChecked;

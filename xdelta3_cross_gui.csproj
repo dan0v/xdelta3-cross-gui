@@ -2,17 +2,32 @@
   <PropertyGroup>
     <Nullable>enable</Nullable>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
+    <Authors>dan0v</Authors>
     <RuntimeIdentifiers>win-x86;win-x64;osx-x64;linux-x64;</RuntimeIdentifiers>
     <Authors>dan0v</Authors>
     <Description>A cross-platform graphical user interface for xDelta3 patching</Description>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
-    <Version>1.2.0</Version>
+    <Version>1.3.0</Version>
     <CopyOutputSymbolsToPublishDirectory>false</CopyOutputSymbolsToPublishDirectory>
     <PublishTrimmed>true</PublishTrimmed>
     <TrimMode>CopyUsed</TrimMode>
     <Platforms>AnyCPU;x64</Platforms>
+    <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+    <Copyright>Copyright (C) 2021-2022 dan0v</Copyright>
+    <RepositoryUrl>https://git.dan0v.com/xdelta3-cross-gui</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
+  
+  <Target Name="ConfigureTrimming"
+        BeforeTargets="PrepareForILLink">
+    <ItemGroup>
+      <ManagedAssemblyToLink Condition="'%(Filename)' == 'System.StubHelpers.InterfaceMarshaler'">
+        <IsTrimmable>false</IsTrimmable>
+      </ManagedAssemblyToLink>
+    </ItemGroup>
+  </Target>
+
   <ItemGroup>
     <None Remove="Assets\exec\xdelta3_mac" />
     <None Remove="Assets\exec\xdelta3_x64_linux" />
@@ -22,6 +37,8 @@
     <None Remove="Assets\img\down.png" />
     <None Remove="Assets\img\Icon.png" />
     <None Remove="Assets\img\up.png" />
+    <None Remove="LICENSE.txt" />
+    <None Remove="NOTICE.txt" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\exec\xdelta3_mac">
@@ -36,6 +53,12 @@
     <Content Include="Assets\doc\1.Readme.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="LICENSE.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="NOTICE.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <AvaloniaResource Include="Assets\img\add.png" />
     <AvaloniaResource Include="Assets\img\delete.png" />
     <AvaloniaResource Include="Assets\img\down.png" />
@@ -43,8 +66,8 @@
     <AvaloniaResource Include="Assets\img\up.png" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="0.10.17" />
-    <PackageReference Include="Avalonia.Desktop" Version="0.10.17" />
+    <PackageReference Include="Avalonia" Version="0.10.18" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.10.18" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
   <ItemGroup>
@@ -52,6 +75,9 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Language.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Windows\Dialogs\InfoDialog.axaml.cs">
+      <DependentUpon>InfoDialog.axaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -72,14 +98,6 @@
       <LastGenOutput>Language.Designer.cs</LastGenOutput>
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="LICENSE.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="NOTICE.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">

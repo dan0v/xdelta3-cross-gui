@@ -1,0 +1,39 @@
+﻿<!--Copyright 2020-2022 dan0v
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.-->
+
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i18n="clr-namespace:xdelta3_cross_gui.Localization"
+        mc:Ignorable="d" d:DesignWidth="350" d:DesignHeight="185"
+        x:Class="xdelta3_cross_gui.InfoDialog"
+        Title="About" MinWidth="300" MinHeight="130"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        Width="350" Height="185"
+        Icon="avares://xdelta3_cross_gui/Assets/img/Icon.png">
+  
+  <Grid RowDefinitions="Auto,Auto,Auto">
+    <ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Height="100">
+      <TextBlock VerticalAlignment="Bottom" TextWrapping="Wrap" Text="{i18n:Localize Credit}" Margin="10,10,10,0"></TextBlock>
+    </ScrollViewer>
+
+    <StackPanel Orientation="Horizontal" Grid.Row="1">
+      <Button x:Name="btn_OpenLicense" Content="License" HorizontalAlignment="Left" Margin="10,10,10,0" MinWidth="150"></Button>
+      <Button x:Name="btn_OpenNotice" Content="Notice" HorizontalAlignment="Left" Margin="10,10,10,0" MinWidth="150"></Button>
+    </StackPanel>
+    
+    <Button x:Name="btn_Dismiss" Grid.Row="2" Content="{i18n:Localize DismissButton}" HorizontalAlignment="Right" Margin="10,10,10,0" Width="80"></Button>
+  </Grid>
+</Window>

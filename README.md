@@ -1,4 +1,4 @@
-![GitHub Logo](Extra%20Resources/Repository%20Cover.png)
+![Logo](Extra%20Resources/Repository%20Cover.png)
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
@@ -49,7 +49,7 @@ The application can also be updated to new versions with `scoop update xdelta3-c
 2. Run (`xDelta3 Cross GUI.app`)
 
 ## Screenshots
-![GitHub Logo](Extra%20Resources/Progress-demo.png)
+![Screenshot](Extra%20Resources/Progress-demo.png)
 
 ## Contributors
 

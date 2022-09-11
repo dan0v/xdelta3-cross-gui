@@ -36,12 +36,11 @@ namespace xdelta3_cross_gui.Localization
         {
             get
             {
-                string ret = resources.GetString(key).Replace(@"\\n", "\n") ?? $"Missing:{key}";
-                return ret;
+                return resources.GetString(key)?.Replace(@"\\n", "\n") ?? $"Missing:{key}";
             }
         }
 
-        private static Localizer _instance = null;
+        private static Localizer _instance;
         public static Localizer Instance => _instance ??= new Localizer();
 
         public event PropertyChangedEventHandler PropertyChanged;

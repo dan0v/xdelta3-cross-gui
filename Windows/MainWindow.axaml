@@ -24,7 +24,7 @@ limitations under the License.-->
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         Icon="avares://xdelta3_cross_gui/Assets/img/Icon.png">
   
-  <Grid ColumnDefinitions="*,*" RowDefinitions="*,Auto,Auto,Auto,Auto" MinWidth="600">
+  <Grid ColumnDefinitions="*,*" RowDefinitions="*,Auto,Auto,Auto" MinWidth="600">
     <!--Row 0-->
     <Border BorderThickness="1" BorderBrush="LightGray" Margin="5" MinHeight="200" Grid.Row="0" Grid.ColumnSpan="2" >
       <Grid RowDefinitions="28,*,36" ColumnDefinitions="*,*" Margin="0">
@@ -164,15 +164,11 @@ limitations under the License.-->
     </Border>
     <!--Row 2-->
     <Border BorderThickness="1" BorderBrush="LightGray" Margin="5" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2"  >
-      <StackPanel Orientation="Horizontal" Margin="5">
-        <TextBlock VerticalAlignment="Bottom" TextWrapping="Wrap" Text="{i18n:Localize xDeltaOnPath}" IsVisible="{Binding XDeltaOnSystemPath}" Margin="5,0,5,0"></TextBlock>
-        <TextBlock VerticalAlignment="Bottom" TextWrapping="Wrap" Text="{i18n:Localize xDeltaNotOnPath}" IsVisible="{Binding !XDeltaOnSystemPath}" Margin="5,0,5,0"></TextBlock>
-      </StackPanel>
-    </Border>
-    <!--Row 3-->
-    <Border BorderThickness="1" BorderBrush="LightGray" Margin="5" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2"  >
       <Grid ColumnDefinitions="*,*,*" Margin="5">
-        <TextBlock Grid.Column="0" VerticalAlignment="Bottom" TextWrapping="Wrap" Text="{i18n:Localize Credit}" FontWeight="Light" Margin="5,0,10,0"></TextBlock>
+        <StackPanel Grid.Column="0" Margin="5">
+          <TextBlock VerticalAlignment="Bottom" TextWrapping="Wrap" Text="{i18n:Localize xDeltaOnPath}" IsVisible="{Binding XDeltaOnSystemPath}" Margin="5,0,5,0"></TextBlock>
+          <TextBlock VerticalAlignment="Bottom" TextWrapping="Wrap" Text="{i18n:Localize xDeltaNotOnPath}" IsVisible="{Binding !XDeltaOnSystemPath}" Margin="5,0,5,0"></TextBlock>
+        </StackPanel>
         <Grid Grid.Column="1" RowDefinitions="30,30" VerticalAlignment="Bottom">
           <Button Grid.Row="0" x:Name="btn_SaveSettings" Content="{i18n:Localize SaveSettings}" Margin="0,0,10,5" VerticalAlignment="Bottom"></Button>
           <Button Grid.Row="1" x:Name="btn_ResetDefaults" VerticalAlignment="Bottom" MaxHeight="30" Margin="0,0,10,0" MinWidth="100" Content="{i18n:Localize ResetDefaults}"></Button>
@@ -188,13 +184,14 @@ limitations under the License.-->
         </Button>
       </Grid>
     </Border>
-    <!--Row 4-->
-    <Border BorderThickness="1" BorderBrush="LightGray" Margin="5" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2"  >
-      <Grid ColumnDefinitions="Auto,*,Auto, Auto">
+    <!--Row 3-->
+    <Border BorderThickness="1" BorderBrush="LightGray" Margin="5" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2"  >
+      <Grid ColumnDefinitions="Auto,*,Auto, Auto,Auto">
         <TextBlock Grid.Column="0" Text="{i18n:Localize Progress}" Margin="10,5,10,5"></TextBlock>
         <ProgressBar x:Name="pb_Progress" Value="{Binding PatchProgress}" IsIndeterminate="{Binding PatchProgressIsIndeterminate}" Grid.Column="1"  Margin="0,5,10,5"> </ProgressBar>
         <CheckBox Grid.Column="2" Content="{i18n:Localize ShowTerminal}" Margin="0,0,10,0" IsChecked="{Binding ShowTerminal}"></CheckBox>
         <ComboBox x:Name="cb_LanguageOptions" Grid.Column="3" AutoScrollToSelectedItem="True"></ComboBox>
+        <Button Grid.Column="4" x:Name="btn_OpenInfo" ToolTip.Tip="{i18n:Localize About}" MinWidth="30" VerticalAlignment="Bottom" Content="?"/>
       </Grid>
     </Border>
   </Grid>
