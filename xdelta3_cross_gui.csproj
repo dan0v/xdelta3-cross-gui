@@ -8,7 +8,7 @@
     <Authors>dan0v</Authors>
     <Description>A cross-platform graphical user interface for xDelta3 patching</Description>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
-    <Version>1.3.0</Version>
+    <Version>1.3.1</Version>
     <CopyOutputSymbolsToPublishDirectory>false</CopyOutputSymbolsToPublishDirectory>
     <PublishTrimmed>true</PublishTrimmed>
     <TrimMode>CopyUsed</TrimMode>
@@ -19,8 +19,7 @@
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
   
-  <Target Name="ConfigureTrimming"
-        BeforeTargets="PrepareForILLink">
+  <Target Name="ConfigureTrimming" BeforeTargets="PrepareForILLink">
     <ItemGroup>
       <ManagedAssemblyToLink Condition="'%(Filename)' == 'System.StubHelpers.InterfaceMarshaler'">
         <IsTrimmable>false</IsTrimmable>
@@ -68,13 +67,22 @@
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="0.10.18" />
     <PackageReference Include="Avalonia.Desktop" Version="0.10.18" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <AvaloniaXaml Update="Windows\Dialogs\InfoTextDialog.axaml">
+      <SubType>Designer</SubType>
+    </AvaloniaXaml>
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Localization\Language.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Language.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Windows\Dialogs\InfoTextDialog.axaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>InfoTextDialog.axaml</DependentUpon>
     </Compile>
     <Compile Update="Windows\Dialogs\InfoDialog.axaml.cs">
       <DependentUpon>InfoDialog.axaml</DependentUpon>
