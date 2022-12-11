@@ -2,3 +2,8 @@
 [Pp]ublish/Windows/* eol=lf
 [Pp]ublish/Linux/* eol=lf
 [Pp]ublish/Linux/Sources/* eol=lf
+
+*.png binary
+*.jpg binary
+*.zip binary
+*.icns binary
