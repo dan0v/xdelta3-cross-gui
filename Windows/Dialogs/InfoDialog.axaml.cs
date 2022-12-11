@@ -15,9 +15,6 @@ limitations under the License.*/
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using System;
-using System.Diagnostics;
-using System.IO;
 
 namespace xdelta3_cross_gui
 {
@@ -51,23 +48,20 @@ namespace xdelta3_cross_gui
 
         private void OpenLicense(object sender, RoutedEventArgs args)
         {
-            OpenTextFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, MainWindow.LICENSE_FILE));
+            OpenInfoTextDialog(InfoTextDialog.InfoTextType.LICENSE);
         }
 
         private void OpenNotice(object sender, RoutedEventArgs args)
         {
-            OpenTextFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, MainWindow.NOTICE_FILE));
+            OpenInfoTextDialog(InfoTextDialog.InfoTextType.NOTICE);
         }
 
-        private void OpenTextFile(string path)
+        private void OpenInfoTextDialog(InfoTextDialog.InfoTextType type)
         {
-            var p = new ProcessStartInfo()
-            {
-                FileName = path,
-                UseShellExecute = true
-            };
-            Process.Start(p);
+            Window infoTextDialog = new InfoTextDialog(type);
+            infoTextDialog.Show();
         }
+
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);

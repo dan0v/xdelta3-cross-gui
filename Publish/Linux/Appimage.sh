@@ -18,6 +18,11 @@ limitations under the License.
 ORIGIN="$(pwd)"
 cd "../.."
 dotnet publish -r linux-x64 -c Release -p:SelfContained=True -o bin/Release/net6.0/publishLinux
+
+cd "$ORIGIN"
+cd "Sources"
+unzip -o appimagetool-x86_64.AppImage.zip
+chmod +x appimagetool-x86_64.AppImage
 cd "$ORIGIN"
 
 chmod +x Sources/appimagetool-x86_64.AppImage
