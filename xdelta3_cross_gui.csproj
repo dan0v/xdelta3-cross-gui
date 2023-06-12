@@ -14,7 +14,7 @@
     <TrimMode>CopyUsed</TrimMode>
     <Platforms>AnyCPU;x64</Platforms>
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
-    <Copyright>Copyright (C) 2021-2022 dan0v</Copyright>
+    <Copyright>Copyright (C) 2020-2023 dan0v</Copyright>
     <RepositoryUrl>https://git.dan0v.com/xdelta3-cross-gui</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
