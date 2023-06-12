@@ -98,6 +98,12 @@ namespace xdelta3_cross_gui
             patchWriterMac.WriteLine("chmod +x ./exec/" + Path.GetFileName(MainWindow.XDELTA3_BINARY_MACOS));
 
             StreamWriter currentPatchScript = new StreamWriter(Path.Combine(MainParent.Options.PatchFileDestination, this.MainParent.Options.PatchSubdirectory, "doNotDelete-In-Progress.bat"));
+            
+            // Enable UTF in windows
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                currentPatchScript.WriteLine("CHCP 65001\n");
+            }
 
             List<string> oldFileNames = new List<string>();
             List<string> newFileNames = new List<string>();
@@ -129,10 +135,6 @@ namespace xdelta3_cross_gui
             patchWriterLinux.WriteLine("read -p \"Press enter to continue...\" inp");
             patchWriterMac.WriteLine("read -p \"Press enter to continue...\" inp");
 
-            if (!this.MainParent.Options.CreateBatchFileOnly)
-            {
-                currentPatchScript.WriteLine("CHCP 65001\n");
-            }
 
             for (int i = 0; i < this.MainParent.OldFilesList.Count; i++)
             {
