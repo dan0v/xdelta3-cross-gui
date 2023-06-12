@@ -72,7 +72,7 @@ namespace xdelta3_cross_gui
             this.MainParent.PatchProgress = 0;
             this._Progress = 0;
 
-            if (!File.Exists(Path.Combine(MainParent.Options.PatchFileDestination, this.MainParent.Options.PatchSubdirectory)) && !this.MainParent.Options.CreateBatchFileOnly)
+            if (!File.Exists(Path.Combine(MainParent.Options.PatchFileDestination, this.MainParent.Options.PatchSubdirectory)))
             {
                 Directory.CreateDirectory(Path.Combine(MainParent.Options.PatchFileDestination, this.MainParent.Options.PatchSubdirectory));
             }
@@ -96,21 +96,8 @@ namespace xdelta3_cross_gui
             patchWriterMac.WriteLine("mkdir ./output");
             patchWriterMac.WriteLine("chmod +x ./exec/" + Path.GetFileName(MainWindow.XDELTA3_BINARY_MACOS));
 
-            StreamWriter currentPatchScript = new StreamWriter(Path.Combine(MainParent.Options.PatchFileDestination, "doNotDelete-In-Progress.bat"));
-            if (!this.MainParent.Options.CreateBatchFileOnly)
-            {
-                currentPatchScript.Close();
-                try
-                {
-                    File.Delete(Path.Combine(this.MainParent.Options.PatchFileDestination, "doNotDelete-In-Progress.bat"));
-                }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e);
-                }
+            StreamWriter currentPatchScript = new StreamWriter(Path.Combine(MainParent.Options.PatchFileDestination, this.MainParent.Options.PatchSubdirectory, "doNotDelete-In-Progress.bat"));
 
-                currentPatchScript = new StreamWriter(Path.Combine(MainParent.Options.PatchFileDestination, this.MainParent.Options.PatchSubdirectory, "doNotDelete-In-Progress.bat"));
-            }
             List<string> oldFileNames = new List<string>();
             List<string> newFileNames = new List<string>();
             this.MainParent.OldFilesList.ForEach(c => oldFileNames.Add(c.ShortName));
@@ -150,49 +137,17 @@ namespace xdelta3_cross_gui
                 // Batch creation - Mac //
                 patchWriterMac.WriteLine("./exec/" + Path.GetFileName(MainWindow.XDELTA3_BINARY_MACOS) + " -v -d -s \"./original/{0}\" " + '"' + this.MainParent.Options.PatchSubdirectory + '/' + "{0}." + this.MainParent.Options.PatchExtention + "\" \"./output/{2}\"", oldFileNames[i], this.MainParent.Options.PatchSubdirectory + (i + 1).ToString(), newFileNames[i]);
 
-                // Script for patch creation
-                if (!this.MainParent.Options.CreateBatchFileOnly)
-                {
-                    currentPatchScript.WriteLine("\"" + MainWindow.XDELTA3_PATH + "\"" + " " + this.MainParent.Options.XDeltaArguments + " " + "\"" + this.MainParent.OldFilesList[i].FullPath + "\" \"" + this.MainParent.NewFilesList[i].FullPath + "\" \"" + Path.Combine(this.MainParent.Options.PatchFileDestination, this.MainParent.Options.PatchSubdirectory, oldFileNames[i]) + "." + this.MainParent.Options.PatchExtention + "\"");
-                }
-
+                // Actual script to generate patch files
+                currentPatchScript.WriteLine("\"" + MainWindow.XDELTA3_PATH + "\"" + " " + this.MainParent.Options.XDeltaArguments + " " + "\"" + this.MainParent.OldFilesList[i].FullPath + "\" \"" + this.MainParent.NewFilesList[i].FullPath + "\" \"" + Path.Combine(this.MainParent.Options.PatchFileDestination, this.MainParent.Options.PatchSubdirectory, oldFileNames[i]) + "." + this.MainParent.Options.PatchExtention + "\"");
             }
             patchWriterWindows.WriteLine("echo Completed!");
             patchWriterWindows.WriteLine("@pause");
             patchWriterWindows.Close();
             patchWriterLinux.Close();
             patchWriterMac.Close();
-
             currentPatchScript.Close();
 
-            if (this.MainParent.Options.CreateBatchFileOnly)
-            {
-                try
-                {
-                    File.Delete(Path.Combine(MainParent.Options.PatchFileDestination, "doNotDelete-In-Progress.bat"));
-                }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e);
-                }
-                this.MainParent.PatchProgress = 0;
-                if (this.MainParent.Options.ZipFilesWhenDone)
-                {
-                    this.ZipFiles();
-                }
-                this.MainParent.AlreadyBusy = false;
-                Dispatcher.UIThread.InvokeAsync(new Action(() =>
-                {
-                    SuccessDialog dialog = new SuccessDialog(this.MainParent);
-                    dialog.Show();
-                    dialog.Topmost = true;
-                    dialog.Topmost = false;
-                }));
-            }
-            else
-            {
-                CreateNewXDeltaThread().Start();
-            }
+            CreateNewXDeltaThread().Start();
         }
 
         private Thread CreateNewXDeltaThread()

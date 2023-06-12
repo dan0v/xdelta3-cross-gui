@@ -119,18 +119,6 @@ namespace xdelta3_cross_gui
                 }
             }
         }
-        public bool CreateBatchFileOnly
-        {
-            get => _CreateBatchFileOnly;
-            set
-            {
-                if (value != _CreateBatchFileOnly)
-                {
-                    _CreateBatchFileOnly = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
         public bool ZipFilesWhenDone
         {
             get => _ZipFilesWhenDone;
@@ -177,7 +165,6 @@ namespace xdelta3_cross_gui
                 this.ZipName = json.ZipName;
                 this.ShowFullPaths = json.ShowFullPaths;
                 this.CopyExecutables = json.CopyExecutables;
-                this.CreateBatchFileOnly = json.CreateBatchFileOnly;
                 this.ZipFilesWhenDone = json.ZipFilesWhenDone;
                 this.ShowTerminal = json.ShowTerminal;
             }
@@ -214,7 +201,6 @@ namespace xdelta3_cross_gui
             this.PatchFileDestination = "";
             this.ShowFullPaths = false;
             this.CopyExecutables = true;
-            this.CreateBatchFileOnly = false;
             this.ZipFilesWhenDone = false;
             this.ShowTerminal = false;
         }
