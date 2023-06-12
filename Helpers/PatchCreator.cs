@@ -80,6 +80,7 @@ namespace xdelta3_cross_gui
             //Batch creation - Windows//
             StreamWriter patchWriterWindows = new StreamWriter(Path.Combine(MainParent.Options.PatchFileDestination, "2.Apply Patch-Windows.bat"));
             patchWriterWindows.WriteLine("@echo off");
+            patchWriterWindows.WriteLine("CHCP 65001");
             patchWriterWindows.WriteLine("mkdir output");
             // Batch creation - Linux //
             StreamWriter patchWriterLinux = new StreamWriter(Path.Combine(MainParent.Options.PatchFileDestination, "2.Apply Patch-Linux.sh"));
@@ -127,6 +128,11 @@ namespace xdelta3_cross_gui
             patchWriterWindows.WriteLine("pause");
             patchWriterLinux.WriteLine("read -p \"Press enter to continue...\" inp");
             patchWriterMac.WriteLine("read -p \"Press enter to continue...\" inp");
+
+            if (!this.MainParent.Options.CreateBatchFileOnly)
+            {
+                currentPatchScript.WriteLine("CHCP 65001\n");
+            }
 
             for (int i = 0; i < this.MainParent.OldFilesList.Count; i++)
             {
