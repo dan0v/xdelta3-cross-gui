@@ -57,7 +57,8 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/9301204?v=4",
       "profile": "https://github.com/1024mb",
       "contributions": [
-        "translation"
+        "translation",
+        "code"
       ]
     },
     {
@@ -75,5 +76,7 @@
   "projectOwner": "dan0v",
   "repoType": "github",
   "repoHost": "https://github.com",
-  "skipCi": true
+  "skipCi": true,
+  "commitType": "docs",
+  "commitConvention": "angular"
 }
