@@ -20,13 +20,15 @@ limitations under the License.-->
              x:Class="xdelta3_cross_gui.PathFileComponent"
              DataContext="{Binding RelativeSource={RelativeSource Self}}">
 
-  <Grid ColumnDefinitions="30,25,*" Height="26">
-    <Border Grid.Column="0" BorderBrush="Black" BorderThickness="0.5,0,0.5,0.5">
+  <Grid ColumnDefinitions="32,25,*" Height="26">
+    <Border Grid.Column="0" BorderBrush="Black" BorderThickness="0,0,1,1">
       <CheckBox x:Name="chk_IsChecked" Margin="5,0,5,0" IsChecked="{Binding IsSelected, Mode=TwoWay}"></CheckBox>
     </Border>
-    <Border Grid.Column="1" BorderBrush="Black" BorderThickness="0,0.5,0.5,0.5">
+    <Border Grid.Column="1" BorderBrush="Black" BorderThickness="0,0,1,1">
       <TextBlock x:Name="txt_blk_Index" Text="{Binding Index}" HorizontalAlignment="Center" VerticalAlignment="Center">0</TextBlock>
     </Border>
-    <TextBox x:Name="txt_bx_Path" Grid.Column="2" IsReadOnly="True" MinWidth="0"></TextBox>
+    <Border Grid.Column="2" BorderBrush="Black" BorderThickness="0,0,0,1">
+      <TextBox x:Name="txt_bx_Path" IsReadOnly="True" MinWidth="0"></TextBox>
+    </Border>
   </Grid>
 </UserControl>

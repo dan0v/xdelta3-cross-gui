@@ -22,19 +22,15 @@ using System.Diagnostics;
 
 namespace xdelta3_cross_gui
 {
-    public class Console : Window
+    public partial class Console : Window
     {
         private static MainWindow _Parent;
 
         public bool CanClose = false;
 
-        TextBlock txt_blk_Output;
-        ScrollViewer sv_ScrollConsole;
         public Console()
         {
             this.InitializeComponent();
-            this.txt_blk_Output = this.FindControl<TextBlock>("txt_blk_Output");
-            this.sv_ScrollConsole = this.FindControl<ScrollViewer>("sv_ScrollConsole");
         }
 
         public void SetParent(MainWindow parent)
@@ -42,12 +38,7 @@ namespace xdelta3_cross_gui
             _Parent = parent;
         }
 
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
-
-        protected override void OnClosing(CancelEventArgs e)
+        protected override void OnClosing(WindowClosingEventArgs e)
         {
             e.Cancel = !this.CanClose;
 
@@ -78,6 +69,10 @@ namespace xdelta3_cross_gui
         {
             Dispatcher.UIThread.InvokeAsync(new Action(() =>
             {
+                if (this.txt_blk_Output?.Text == null)
+                {
+                    this.txt_blk_Output.Text = "";
+                }
                 if (this.txt_blk_Output.Text.Length > 20000)
                 {
                     this.txt_blk_Output.Text = this.txt_blk_Output.Text.Substring(15000, this.txt_blk_Output.Text.Length - 15000);

@@ -33,11 +33,11 @@ limitations under the License.-->
           <TextBlock Text="{i18n:Localize UnequalFilesError}" Foreground="Red" IsVisible="{Binding !EqualFileCount}" Margin="0,10,0,0" HorizontalAlignment="Center"></TextBlock>
         </Grid>
         <!--Old-->
-        <Grid RowDefinitions="31,*,30" Grid.Column="0" Grid.Row="1" Margin="10,5,5,5">
+        <Grid RowDefinitions="36,*,36" Grid.Column="0" Grid.Row="1" Margin="10,5,5,5">
           <Grid Grid.Row="0" ColumnDefinitions="Auto,*">
             <TextBlock Grid.Column="0" VerticalAlignment="Center" Margin="5, 0, 5, 0" Text="{Binding OldFilesHeader}"/>
             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,5">
-              <Button x:Name="btn_ToggleAllOldFilesSelection">
+              <Button x:Name="btn_ToggleAllOldFilesSelection" MinHeight="30">
                 <TextBlock Text="{i18n:Localize ToggleSelectionButton}" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5,0,5,0"></TextBlock>
               </Button>
             </StackPanel>
@@ -49,22 +49,22 @@ limitations under the License.-->
             </ScrollViewer>
           </Border>
           <Grid Grid.Row="2" ColumnDefinitions="*,*,*,*" Margin="0,5,0,0">
-            <Button x:Name="btn_AddOld" Grid.Column="0">
+            <Button x:Name="btn_AddOld" Grid.Column="0" MinHeight="30">
               <Panel>
                 <Image Source="avares://xdelta3_cross_gui/Assets/img/add.png" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" />
               </Panel>
             </Button>
-            <Button x:Name="btn_UpOld" Grid.Column="1">
+            <Button x:Name="btn_UpOld" Grid.Column="1" MinHeight="30">
               <Panel>
                 <Image Source="avares://xdelta3_cross_gui/Assets/img/up.png" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" />
               </Panel>
             </Button>
-            <Button x:Name="btn_DownOld" Grid.Column="2">
+            <Button x:Name="btn_DownOld" Grid.Column="2" MinHeight="30">
               <Panel>
                 <Image Source="avares://xdelta3_cross_gui/Assets/img/down.png" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" />
               </Panel>
             </Button>
-            <Button x:Name="btn_DeleteOld" Grid.Column="3">
+            <Button x:Name="btn_DeleteOld" Grid.Column="3" MinHeight="30">
               <Panel>
                 <Image Source="avares://xdelta3_cross_gui/Assets/img/delete.png" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" />
               </Panel>
@@ -72,11 +72,11 @@ limitations under the License.-->
           </Grid>
         </Grid>
         <!--New-->
-        <Grid RowDefinitions="31,*,30" Grid.Column="1" Grid.Row="1" Margin="5,5,10,5">
+        <Grid RowDefinitions="36,*,36" Grid.Column="1" Grid.Row="1" Margin="5,5,10,5">
           <Grid Grid.Row="0" ColumnDefinitions="Auto,*">
             <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="{Binding NewFilesHeader}" Margin="5, 0, 5, 0"></TextBlock>
             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,5">
-              <Button x:Name="btn_ToggleAllNewFilesSelection">
+              <Button x:Name="btn_ToggleAllNewFilesSelection" MinHeight="30">
                 <TextBlock Text="{i18n:Localize ToggleSelectionButton}" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5,0,5,0"></TextBlock>
               </Button>
             </StackPanel>
@@ -88,22 +88,22 @@ limitations under the License.-->
             </ScrollViewer>
           </Border>
           <Grid Grid.Row="2" ColumnDefinitions="*,*,*,*" Margin="0,5,0,0">
-            <Button x:Name="btn_AddNew" Grid.Column="0">
+            <Button x:Name="btn_AddNew" Grid.Column="0"  MinHeight="30">
               <Panel>
                 <Image Source="avares://xdelta3_cross_gui/Assets/img/add.png" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" />
               </Panel>
             </Button>
-            <Button x:Name="btn_UpNew" Grid.Column="1">
+            <Button x:Name="btn_UpNew" Grid.Column="1"  MinHeight="30">
               <Panel>
                 <Image Source="avares://xdelta3_cross_gui/Assets/img/up.png" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" />
               </Panel>
             </Button>
-            <Button x:Name="btn_DownNew" Grid.Column="2">
+            <Button x:Name="btn_DownNew" Grid.Column="2"  MinHeight="30">
               <Panel>
                 <Image Source="avares://xdelta3_cross_gui/Assets/img/down.png" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" />
               </Panel>
             </Button>
-            <Button x:Name="btn_DeleteNew" Grid.Column="3">
+            <Button x:Name="btn_DeleteNew" Grid.Column="3"  MinHeight="30">
               <Panel>
                 <Image Source="avares://xdelta3_cross_gui/Assets/img/delete.png" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" />
               </Panel>
@@ -127,7 +127,7 @@ limitations under the License.-->
             </Border.BorderBrush>
             <TextBox x:Name="txt_bx_PatchDestination" IsReadOnly="True" Text="{Binding Options.PatchFileDestination, Mode=TwoWay}"></TextBox>
           </Border>
-          <Button x:Name="btn_BrowsePathDestination" Grid.Column="2" Content="..."></Button>
+          <Button x:Name="btn_BrowsePathDestination" Grid.Column="2" Content="..." MinHeight="30"></Button>
         </Grid>
       </Grid>
     </Border>
@@ -168,11 +168,11 @@ limitations under the License.-->
           <TextBlock VerticalAlignment="Bottom" TextWrapping="Wrap" Text="{i18n:Localize xDeltaOnPath}" IsVisible="{Binding XDeltaOnSystemPath}" Margin="5,0,5,0"></TextBlock>
           <TextBlock VerticalAlignment="Bottom" TextWrapping="Wrap" Text="{i18n:Localize xDeltaNotOnPath}" IsVisible="{Binding !XDeltaOnSystemPath}" Margin="5,0,5,0"></TextBlock>
         </StackPanel>
-        <Grid Grid.Column="1" RowDefinitions="30,30" VerticalAlignment="Bottom">
+        <Grid Grid.Column="1" RowDefinitions="36,36" VerticalAlignment="Bottom">
           <Button Grid.Row="0" x:Name="btn_SaveSettings" Content="{i18n:Localize SaveSettings}" Margin="0,0,10,5" VerticalAlignment="Bottom"></Button>
-          <Button Grid.Row="1" x:Name="btn_ResetDefaults" VerticalAlignment="Bottom" MaxHeight="30" Margin="0,0,10,0" MinWidth="100" Content="{i18n:Localize ResetDefaults}"></Button>
+          <Button Grid.Row="1" x:Name="btn_ResetDefaults" VerticalAlignment="Bottom" Margin="0,0,10,0" MinWidth="100" Content="{i18n:Localize ResetDefaults}"></Button>
         </Grid>
-        <Button Grid.Column="2" x:Name="btn_Go" MinWidth="100" MinHeight="60" VerticalAlignment="Bottom" Content="{i18n:Localize Go}" Margin="0,0,5,0">
+        <Button Grid.Column="2" x:Name="btn_Go" MinWidth="100" MinHeight="70" VerticalAlignment="Bottom" Content="{i18n:Localize Go}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="0,0,5,0">
           <Button.IsEnabled>
             <MultiBinding Converter="{x:Static BoolConverters.And}}">
               <Binding Path="EqualFileCount"/>

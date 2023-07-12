@@ -19,7 +19,7 @@ limitations under the License.-->
         xmlns:i18n="clr-namespace:xdelta3_cross_gui.Localization"
         mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="300"
         x:Class="xdelta3_cross_gui.InfoTextDialog"
-        Title="About" MinWidth="300" MinHeight="130"
+        Title="About" MinWidth="320" MinHeight="150"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         Width="500" Height="300"
         Icon="avares://xdelta3_cross_gui/Assets/img/Icon.png">

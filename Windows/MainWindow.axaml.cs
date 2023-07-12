@@ -33,7 +33,7 @@ using static System.Environment;
 
 namespace xdelta3_cross_gui
 {
-    public class MainWindow : Window, INotifyPropertyChanged
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
         public static readonly string VERSION = GetVersion();
         public static readonly string TITLE = "xDelta3 Cross GUI " + VERSION;
@@ -192,41 +192,18 @@ namespace xdelta3_cross_gui
         private Options _Options = new Options();
         public Options Options { get { return this._Options; } }
 
-        Button btn_ToggleAllOldFilesSelection;
-        Button btn_ToggleAllNewFilesSelection;
-        Button btn_AddOld;
-        Button btn_UpOld;
-        Button btn_DownOld;
-        Button btn_DeleteOld;
-        Button btn_AddNew;
-        Button btn_UpNew;
-        Button btn_DownNew;
-        Button btn_DeleteNew;
-        Button btn_BrowsePathDestination;
-        Button btn_ResetDefaults;
-        Button btn_SaveSettings;
-        Button btn_OpenInfo;
-        Button btn_Go;
-        StackPanel sp_OldFilesDisplay;
-        StackPanel sp_NewFilesDisplay;
-        ScrollViewer sv_OldFilesDisplay;
-        ScrollViewer sv_NewFilesDisplay;
-        CheckBox chk_UseShortNames;
-        public ProgressBar pb_Progress;
-        ComboBox cb_LanguageOptions;
-        TextBox txt_bx_PatchDestination;
-
         public enum FileCategory { New, Old };
 
         public MainWindow()
         {
+            Localizer.Instance.LoadLanguage();
             InitializeComponent();
             this.BindUI();
             this.Configure();
         }
 
         #region public
-        public void OldFilesDropped(object sender, DragEventArgs args)
+        public void OldFilesDropped(object? sender, DragEventArgs args)
         {
             if (args.Data.Contains(DataFormats.FileNames))
             {
@@ -234,7 +211,7 @@ namespace xdelta3_cross_gui
                 this.AddFiles(url.ToArray(), FileCategory.Old);
             }
         }
-        public async void AddOldFileClicked(object sender, RoutedEventArgs args)
+        public async void AddOldFileClicked(object? sender, RoutedEventArgs args)
         {
             try
             {
@@ -246,24 +223,24 @@ namespace xdelta3_cross_gui
                 Debug.WriteLine(e);
             }
         }
-        public void MoveOldFileUpClicked(object sender, RoutedEventArgs args)
+        public void MoveOldFileUpClicked(object? sender, RoutedEventArgs args)
         {
             this.MoveFilesUp(FileCategory.Old);
         }
-        public void MoveOldFileDownClicked(object sender, RoutedEventArgs args)
+        public void MoveOldFileDownClicked(object? sender, RoutedEventArgs args)
         {
             this.MoveFilesDown(FileCategory.Old);
         }
-        public void DeleteOldFilesClicked(object sender, RoutedEventArgs args)
+        public void DeleteOldFilesClicked(object? sender, RoutedEventArgs args)
         {
             this.DeleteFiles(FileCategory.Old);
         }
-        public void ToggleAllOldFilesSelectionClicked(object sender, RoutedEventArgs args)
+        public void ToggleAllOldFilesSelectionClicked(object? sender, RoutedEventArgs args)
         {
             this.ToggleAllFilesSelection(FileCategory.Old);
         }
 
-        public void NewFilesDropped(object sender, DragEventArgs args)
+        public void NewFilesDropped(object? sender, DragEventArgs args)
         {
             if (args.Data.Contains(DataFormats.FileNames))
             {
@@ -271,7 +248,7 @@ namespace xdelta3_cross_gui
                 this.AddFiles(url.ToArray(), FileCategory.New);
             }
         }
-        public async void AddNewFileClicked(object sender, RoutedEventArgs args)
+        public async void AddNewFileClicked(object? sender, RoutedEventArgs args)
         {
             try
             {
@@ -284,19 +261,19 @@ namespace xdelta3_cross_gui
                 Debug.WriteLine(e);
             }
         }
-        public void MoveNewFileUpClicked(object sender, RoutedEventArgs args)
+        public void MoveNewFileUpClicked(object? sender, RoutedEventArgs args)
         {
             this.MoveFilesUp(FileCategory.New);
         }
-        public void MoveNewFileDownClicked(object sender, RoutedEventArgs args)
+        public void MoveNewFileDownClicked(object? sender, RoutedEventArgs args)
         {
             this.MoveFilesDown(FileCategory.New);
         }
-        public void DeleteNewFilesClicked(object sender, RoutedEventArgs args)
+        public void DeleteNewFilesClicked(object? sender, RoutedEventArgs args)
         {
             this.DeleteFiles(FileCategory.New);
         }
-        public void ToggleAllNewFilesSelectionClicked(object sender, RoutedEventArgs args)
+        public void ToggleAllNewFilesSelectionClicked(object? sender, RoutedEventArgs args)
         {
             this.ToggleAllFilesSelection(FileCategory.New);
         }
@@ -332,23 +309,23 @@ namespace xdelta3_cross_gui
             sp.Children.AddRange(components);
         }
 
-        public void SaveSettingsClicked(object sender, RoutedEventArgs args)
+        public void SaveSettingsClicked(object? sender, RoutedEventArgs args)
         {
             this.Options.SaveCurrent();
         }
-        public void ResetDefaultsClicked(object sender, RoutedEventArgs args)
+        public void ResetDefaultsClicked(object? sender, RoutedEventArgs args)
         {
             this.Options.ResetToDefault();
             //this.Options.SaveCurrent();
         }
 
-        public void OpenInfoClicked(object sender, RoutedEventArgs args)
+        public void OpenInfoClicked(object? sender, RoutedEventArgs args)
         {
             var info = new InfoDialog();
             info.Show();
         }
 
-        public void GoClicked(object sender, RoutedEventArgs args)
+        public void GoClicked(object? sender, RoutedEventArgs args)
         {
             bool failed = false;
             List<string> missingOldFiles = new List<string>();
@@ -398,7 +375,7 @@ namespace xdelta3_cross_gui
             }
         }
 
-        public async void BrowseOutputDirectory(object sender, RoutedEventArgs args)
+        public async void BrowseOutputDirectory(object? sender, RoutedEventArgs args)
         {
             try
             {
@@ -414,7 +391,7 @@ namespace xdelta3_cross_gui
             }
         }
 
-        public void UseShortNamesChecked(object sender, RoutedEventArgs args)
+        public void UseShortNamesChecked(object? sender, RoutedEventArgs args)
         {
             this.ReloadFiles(FileCategory.New, true);
             this.ReloadFiles(FileCategory.Old, true);
@@ -439,39 +416,9 @@ namespace xdelta3_cross_gui
         #endregion
 
         #region private
-        private void InitializeComponent()
-        {
-            Localizer.Instance.LoadLanguage();
-            AvaloniaXamlLoader.Load(this);
-        }
         private void BindUI()
         {
             this.Title = TITLE;
-
-            // Button Click event does not compile in XAML, so has to be manually added https://github.com/AvaloniaUI/Avalonia/issues/3898
-            this.btn_ToggleAllOldFilesSelection = this.FindControl<Button>("btn_ToggleAllOldFilesSelection");
-            this.btn_ToggleAllNewFilesSelection = this.FindControl<Button>("btn_ToggleAllNewFilesSelection");
-            this.btn_AddOld = this.FindControl<Button>("btn_AddOld");
-            this.btn_UpOld = this.FindControl<Button>("btn_UpOld");
-            this.btn_DownOld = this.FindControl<Button>("btn_DownOld");
-            this.btn_DeleteOld = this.FindControl<Button>("btn_DeleteOld");
-            this.btn_AddNew = this.FindControl<Button>("btn_AddNew");
-            this.btn_UpNew = this.FindControl<Button>("btn_UpNew");
-            this.btn_DownNew = this.FindControl<Button>("btn_DownNew");
-            this.btn_DeleteNew = this.FindControl<Button>("btn_DeleteNew");
-            this.btn_BrowsePathDestination = this.FindControl<Button>("btn_BrowsePathDestination");
-            this.sp_OldFilesDisplay = this.FindControl<StackPanel>("sp_OldFilesDisplay");
-            this.sp_NewFilesDisplay = this.FindControl<StackPanel>("sp_NewFilesDisplay");
-            this.sv_OldFilesDisplay = this.FindControl<ScrollViewer>("sv_OldFilesDisplay");
-            this.sv_NewFilesDisplay = this.FindControl<ScrollViewer>("sv_NewFilesDisplay");
-            this.chk_UseShortNames = this.FindControl<CheckBox>("chk_UseShortNames");
-            this.txt_bx_PatchDestination = this.FindControl<TextBox>("txt_bx_PatchDestination");
-            this.btn_SaveSettings = this.FindControl<Button>("btn_SaveSettings");
-            this.btn_ResetDefaults = this.FindControl<Button>("btn_ResetDefaults");
-            this.btn_OpenInfo = this.FindControl<Button>("btn_OpenInfo");
-            this.btn_Go = this.FindControl<Button>("btn_Go");
-            this.pb_Progress = this.FindControl<ProgressBar>("pb_Progress");
-            this.cb_LanguageOptions = this.FindControl<ComboBox>("cb_LanguageOptions");
 
             // Bindings
             this.btn_ToggleAllOldFilesSelection.Click += ToggleAllOldFilesSelectionClicked;
@@ -517,7 +464,7 @@ namespace xdelta3_cross_gui
             this.CheckForUpdates();
         }
 
-        private void Language_Changed(object sender, PropertyChangedEventArgs e)
+        private void Language_Changed(object? sender, PropertyChangedEventArgs e)
         {
             OnPropertyChanged(nameof(OldFilesHeader));
             OnPropertyChanged(nameof(NewFilesHeader));
@@ -712,9 +659,9 @@ namespace xdelta3_cross_gui
                 item.Content = language;
                 items.Add(item);
             }
-            cb_LanguageOptions.Items = items;
+            cb_LanguageOptions.ItemsSource = items;
         }
-        private void ChangeLanguageSelection(object sender, SelectionChangedEventArgs e)
+        private void ChangeLanguageSelection(object? sender, SelectionChangedEventArgs e)
         {
             string language = (string)((ComboBoxItem)cb_LanguageOptions.SelectedItem).Content;
             ChangeLanguage(language);
@@ -834,7 +781,7 @@ namespace xdelta3_cross_gui
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        protected override void OnClosing(CancelEventArgs e)
+        protected override void OnClosing(WindowClosingEventArgs e)
         {
             this.Console.CanClose = true;
             this.Console.Close();

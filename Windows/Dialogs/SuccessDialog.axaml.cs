@@ -21,18 +21,11 @@ using System.IO;
 
 namespace xdelta3_cross_gui
 {
-    public class SuccessDialog : Window
+    public partial class SuccessDialog : Window
     {
         private MainWindow MainParent;
 
-        Button btn_Dismiss;
-        Button btn_OpenDestination;
-
         private string _Destination = "";
-        public SuccessDialog()
-        {
-            this.InitializeComponent();
-        }
 
         public SuccessDialog(MainWindow MainParent)
         {
@@ -50,18 +43,16 @@ namespace xdelta3_cross_gui
             {
                 this._Destination = this.MainParent.Options.PatchFileDestination;
             }
-            this.btn_Dismiss = this.FindControl<Button>("btn_Dismiss");
-            this.btn_OpenDestination = this.FindControl<Button>("btn_OpenDestination");
 
             this.btn_Dismiss.Click += DismissClicked;
             this.btn_OpenDestination.Click += OpenDestinationClicked;
         }
 
-        private void DismissClicked(object sender, RoutedEventArgs args)
+        private void DismissClicked(object? sender, RoutedEventArgs args)
         {
             this.Close();
         }
-        private void OpenDestinationClicked(object sender, RoutedEventArgs args)
+        private void OpenDestinationClicked(object? sender, RoutedEventArgs args)
         {
             try
             {
@@ -75,10 +66,6 @@ namespace xdelta3_cross_gui
             {
                 Debug.WriteLine(e);
             }
-        }
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
         }
     }
 }

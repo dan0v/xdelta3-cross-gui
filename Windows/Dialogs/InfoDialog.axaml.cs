@@ -18,11 +18,8 @@ using Avalonia.Markup.Xaml;
 
 namespace xdelta3_cross_gui
 {
-    public class InfoDialog : Window
+    public partial class InfoDialog : Window
     {
-        Button btn_Dismiss;
-        Button btn_OpenLicense;
-        Button btn_OpenNotice;
 
         public InfoDialog()
         {
@@ -31,27 +28,22 @@ namespace xdelta3_cross_gui
         }
         private void Configure()
         {
-            this.btn_Dismiss = this.FindControl<Button>("btn_Dismiss");
             this.btn_Dismiss.Click += DismissClicked;
-
-            this.btn_OpenLicense = this.FindControl<Button>("btn_OpenLicense");
             this.btn_OpenLicense.Click += OpenLicense;
-
-            this.btn_OpenNotice = this.FindControl<Button>("btn_OpenNotice");
             this.btn_OpenNotice.Click += OpenNotice;
         }
 
-        private void DismissClicked(object sender, RoutedEventArgs args)
+        private void DismissClicked(object? sender, RoutedEventArgs args)
         {
             this.Close();
         }
 
-        private void OpenLicense(object sender, RoutedEventArgs args)
+        private void OpenLicense(object? sender, RoutedEventArgs args)
         {
             OpenInfoTextDialog(InfoTextDialog.InfoTextType.LICENSE);
         }
 
-        private void OpenNotice(object sender, RoutedEventArgs args)
+        private void OpenNotice(object? sender, RoutedEventArgs args)
         {
             OpenInfoTextDialog(InfoTextDialog.InfoTextType.NOTICE);
         }
@@ -60,11 +52,6 @@ namespace xdelta3_cross_gui
         {
             Window infoTextDialog = new InfoTextDialog(type);
             infoTextDialog.Show();
-        }
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
         }
     }
 }

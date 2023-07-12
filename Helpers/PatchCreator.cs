@@ -260,7 +260,7 @@ namespace xdelta3_cross_gui
             { IsBackground = true }.Start();
         }
 
-        private void HandleCMDOutput(object sender, DataReceivedEventArgs e)
+        private void HandleCMDOutput(object? sender, DataReceivedEventArgs e)
         {
             if (e != null && e.Data != null && (e.Data + "").Trim() != "")
             {
@@ -278,7 +278,7 @@ namespace xdelta3_cross_gui
             }
         }
 
-        private void HandleCMDError(object sender, DataReceivedEventArgs e)
+        private void HandleCMDError(object? sender, DataReceivedEventArgs e)
         {
             if (e != null && e.Data != null && (e.Data + "").Trim() != "")
             {
