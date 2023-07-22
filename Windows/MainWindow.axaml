@@ -49,22 +49,22 @@ limitations under the License.-->
             </ScrollViewer>
           </Border>
           <Grid Grid.Row="2" ColumnDefinitions="*,*,*,*" Margin="0,5,0,0">
-            <Button x:Name="btn_AddOld" Grid.Column="0" MinHeight="30">
+            <Button x:Name="btn_AddOld" Grid.Column="0" MinHeight="30" HorizontalAlignment="Stretch">
               <Panel>
                 <Image Source="avares://xdelta3_cross_gui/Assets/img/add.png" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" />
               </Panel>
             </Button>
-            <Button x:Name="btn_UpOld" Grid.Column="1" MinHeight="30">
+            <Button x:Name="btn_UpOld" Grid.Column="1" MinHeight="30" HorizontalAlignment="Stretch">
               <Panel>
                 <Image Source="avares://xdelta3_cross_gui/Assets/img/up.png" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" />
               </Panel>
             </Button>
-            <Button x:Name="btn_DownOld" Grid.Column="2" MinHeight="30">
+            <Button x:Name="btn_DownOld" Grid.Column="2" MinHeight="30" HorizontalAlignment="Stretch">
               <Panel>
                 <Image Source="avares://xdelta3_cross_gui/Assets/img/down.png" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" />
               </Panel>
             </Button>
-            <Button x:Name="btn_DeleteOld" Grid.Column="3" MinHeight="30">
+            <Button x:Name="btn_DeleteOld" Grid.Column="3" MinHeight="30" HorizontalAlignment="Stretch">
               <Panel>
                 <Image Source="avares://xdelta3_cross_gui/Assets/img/delete.png" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" />
               </Panel>
@@ -88,22 +88,22 @@ limitations under the License.-->
             </ScrollViewer>
           </Border>
           <Grid Grid.Row="2" ColumnDefinitions="*,*,*,*" Margin="0,5,0,0">
-            <Button x:Name="btn_AddNew" Grid.Column="0"  MinHeight="30">
+            <Button x:Name="btn_AddNew" Grid.Column="0"  MinHeight="30" HorizontalAlignment="Stretch">
               <Panel>
                 <Image Source="avares://xdelta3_cross_gui/Assets/img/add.png" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" />
               </Panel>
             </Button>
-            <Button x:Name="btn_UpNew" Grid.Column="1"  MinHeight="30">
+            <Button x:Name="btn_UpNew" Grid.Column="1"  MinHeight="30" HorizontalAlignment="Stretch">
               <Panel>
                 <Image Source="avares://xdelta3_cross_gui/Assets/img/up.png" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" />
               </Panel>
             </Button>
-            <Button x:Name="btn_DownNew" Grid.Column="2"  MinHeight="30">
+            <Button x:Name="btn_DownNew" Grid.Column="2"  MinHeight="30" HorizontalAlignment="Stretch">
               <Panel>
                 <Image Source="avares://xdelta3_cross_gui/Assets/img/down.png" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" />
               </Panel>
             </Button>
-            <Button x:Name="btn_DeleteNew" Grid.Column="3"  MinHeight="30">
+            <Button x:Name="btn_DeleteNew" Grid.Column="3"  MinHeight="30" HorizontalAlignment="Stretch">
               <Panel>
                 <Image Source="avares://xdelta3_cross_gui/Assets/img/delete.png" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" />
               </Panel>
