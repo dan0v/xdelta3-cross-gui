@@ -12,12 +12,13 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.*/
 
-using Newtonsoft.Json;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.CompilerServices;
+using System.Text.Json;
 
 namespace xdelta3_cross_gui
 {
@@ -148,6 +149,7 @@ namespace xdelta3_cross_gui
             this.ResetToDefault();
         }
 
+        [RequiresUnreferencedCode("")]
         public void LoadSaved()
         {
             try
@@ -155,7 +157,7 @@ namespace xdelta3_cross_gui
                 string savedSettings = "";
                 savedSettings = File.ReadAllText(Path.Combine(MainWindow.XDELTA3_APP_STORAGE, "options.json"));
 
-                Options json = (Options)JsonConvert.DeserializeObject(savedSettings, typeof(Options));
+                Options json = JsonSerializer.Deserialize(savedSettings, typeof(Options)) as Options ?? new();
 
                 this.Language = json.Language;
                 this.PatchExtention = json.PatchExtention;
@@ -174,9 +176,10 @@ namespace xdelta3_cross_gui
             }
         }
 
+        [RequiresUnreferencedCode("")]
         public async void SaveCurrent()
         {
-            string json = JsonConvert.SerializeObject(this, Formatting.Indented);
+            string json = JsonSerializer.Serialize(this, typeof(Options), new JsonSerializerOptions { WriteIndented = true });
 
             try
             {

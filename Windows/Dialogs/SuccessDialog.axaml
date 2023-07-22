@@ -19,7 +19,7 @@ limitations under the License.-->
         xmlns:i18n="clr-namespace:xdelta3_cross_gui.Localization"
         mc:Ignorable="d" d:DesignWidth="350" d:DesignHeight="150"
         x:Class="xdelta3_cross_gui.SuccessDialog"
-        Title="Success" MinWidth="320" MinHeight="150"
+        Title="Success" MinWidth="340" MinHeight="200"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         Width="350" Height="150"
         Icon="avares://xdelta3_cross_gui/Assets/img/Icon.png">

@@ -16,6 +16,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Avalonia.Platform.Storage;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -186,10 +187,10 @@ namespace xdelta3_cross_gui
         private bool _AllOldFilesSelected = false;
         private bool _AllNewFilesSelected = false;
 
-        private Console _Console = new Console();
+        private Console _Console = new();
         public Console Console => _Console;
 
-        private Options _Options = new Options();
+        private readonly Options _Options = new();
         public Options Options { get { return this._Options; } }
 
         public enum FileCategory { New, Old };
@@ -205,11 +206,7 @@ namespace xdelta3_cross_gui
         #region public
         public void OldFilesDropped(object? sender, DragEventArgs args)
         {
-            if (args.Data.Contains(DataFormats.FileNames))
-            {
-                List<string> url = new List<string>(args.Data.GetFileNames());
-                this.AddFiles(url.ToArray(), FileCategory.Old);
-            }
+            HandleFileDrop(args, FileCategory.Old);
         }
         public async void AddOldFileClicked(object? sender, RoutedEventArgs args)
         {
@@ -242,12 +239,9 @@ namespace xdelta3_cross_gui
 
         public void NewFilesDropped(object? sender, DragEventArgs args)
         {
-            if (args.Data.Contains(DataFormats.FileNames))
-            {
-                List<string> url = new List<string>(args.Data.GetFileNames());
-                this.AddFiles(url.ToArray(), FileCategory.New);
-            }
+            HandleFileDrop(args, FileCategory.New);
         }
+
         public async void AddNewFileClicked(object? sender, RoutedEventArgs args)
         {
             try
@@ -514,6 +508,16 @@ namespace xdelta3_cross_gui
                 }
             }
         }
+
+        private void HandleFileDrop(DragEventArgs args, FileCategory fileCategory)
+        {
+            if (args.Data.Contains(DataFormats.Files))
+            {
+                List<String> url = args.Data?.GetFiles()?.Select(f => f.Path.AbsolutePath).ToList() ?? new();
+                this.AddFiles(url.ToArray(), fileCategory);
+            }
+        }
+
         private void MoveFilesUp(FileCategory category)
         {
             List<PathFileComponent> list = this.NewFilesList;

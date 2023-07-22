@@ -17,9 +17,9 @@ limitations under the License.-->
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:i18n="clr-namespace:xdelta3_cross_gui.Localization"
-        mc:Ignorable="d" d:DesignWidth="350" d:DesignHeight="150"
+        mc:Ignorable="d" d:DesignWidth="350" d:DesignHeight="200"
         x:Class="xdelta3_cross_gui.ErrorDialog"
-        Title="Error" MinWidth="320" MinHeight="150"
+        Title="Error" MinWidth="340" MinHeight="200"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         Width="350" Height="200"
         Icon="avares://xdelta3_cross_gui/Assets/img/Icon.png">

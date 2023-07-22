@@ -16,7 +16,6 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using System;
-using System.Diagnostics;
 using System.IO;
 
 namespace xdelta3_cross_gui
@@ -70,9 +69,7 @@ namespace xdelta3_cross_gui
 
         private void Configure()
         {
-            AvaloniaXamlLoader.Load(this);
             this.btn_Dismiss.Click += DismissClicked;
-
         }
     }
 }

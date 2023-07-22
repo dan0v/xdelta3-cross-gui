@@ -19,21 +19,21 @@ limitations under the License.-->
         xmlns:i18n="clr-namespace:xdelta3_cross_gui.Localization"
         mc:Ignorable="d" d:DesignWidth="350" d:DesignHeight="185"
         x:Class="xdelta3_cross_gui.InfoDialog"
-        Title="About" MinWidth="320" MinHeight="150"
+        Title="About" MinWidth="340" MinHeight="200"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         Width="350" Height="185"
         Icon="avares://xdelta3_cross_gui/Assets/img/Icon.png">
   
-  <Grid RowDefinitions="Auto,Auto,Auto">
+  <Grid RowDefinitions="*,Auto,Auto">
     <ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Height="100">
       <TextBlock VerticalAlignment="Bottom" TextWrapping="Wrap" Text="{i18n:Localize Credit}" Margin="10,10,10,0"></TextBlock>
     </ScrollViewer>
 
-    <StackPanel Orientation="Horizontal" Grid.Row="1">
-      <Button x:Name="btn_OpenLicense" Content="License" HorizontalAlignment="Left" Margin="10,10,10,0" MinWidth="150"></Button>
-      <Button x:Name="btn_OpenNotice" Content="Notice" HorizontalAlignment="Left" Margin="10,10,10,0" MinWidth="150"></Button>
-    </StackPanel>
+    <Grid ColumnDefinitions="*,*" Grid.Row="1">
+      <Button x:Name="btn_OpenLicense" Grid.Column="0" Content="License" HorizontalAlignment="Stretch" Margin="10,10,10,0" MinWidth="150"></Button>
+      <Button x:Name="btn_OpenNotice" Grid.Column="1" Content="Notice" HorizontalAlignment="Stretch" Margin="10,10,10,0" MinWidth="150"></Button>
+    </Grid>
     
-    <Button x:Name="btn_Dismiss" Grid.Row="2" Content="{i18n:Localize DismissButton}" HorizontalAlignment="Right" Margin="10,10,10,0" Width="80"></Button>
+    <Button x:Name="btn_Dismiss" Grid.Row="2" Content="{i18n:Localize DismissButton}" HorizontalAlignment="Right" Margin="10,10,10,10" Width="80"></Button>
   </Grid>
 </Window>
