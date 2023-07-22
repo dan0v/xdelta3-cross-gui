@@ -8,9 +8,10 @@
     <Authors>dan0v</Authors>
     <Description>A cross-platform graphical user interface for xDelta3 patching</Description>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
-    <Version>1.4.0</Version>
+    <Version>1.4.1</Version>
     <CopyOutputSymbolsToPublishDirectory>false</CopyOutputSymbolsToPublishDirectory>
     <PublishTrimmed>true</PublishTrimmed>
+    <TrimMode>partial</TrimMode>
     <Platforms>AnyCPU;x64</Platforms>
     <Copyright>Copyright (C) 2020-2023 dan0v</Copyright>
     <RepositoryUrl>https://git.dan0v.com/xdelta3-cross-gui</RepositoryUrl>
