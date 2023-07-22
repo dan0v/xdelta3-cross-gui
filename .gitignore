@@ -30,6 +30,7 @@ bld/
 [Pp]ublish/MacOS/Output/*
 [Pp]ublish/Windows/Build/*
 [Pp]ublish/Linux/Build/*
+.avalonia-build-tasks/*
 
 # Debug tools
 [Pp]ublish.ps1

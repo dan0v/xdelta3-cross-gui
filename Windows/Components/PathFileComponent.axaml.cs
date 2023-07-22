@@ -22,7 +22,7 @@ using System.Runtime.CompilerServices;
 
 namespace xdelta3_cross_gui
 {
-    public class PathFileComponent : UserControl
+    public partial class PathFileComponent : UserControl
     {
         private MainWindow MainParent { get; set; }
         public string FullPath { get; set; }
@@ -47,10 +47,6 @@ namespace xdelta3_cross_gui
             }
         }
 
-        TextBlock txt_blk_Index;
-        TextBox txt_bx_Path;
-        CheckBox chk_IsChecked;
-
         public PathFileComponent()
         {
             this.InitializeComponent();
@@ -58,11 +54,6 @@ namespace xdelta3_cross_gui
         public PathFileComponent(MainWindow parent, string url, int index, MainWindow.FileCategory fileCategory)
         {
             this.InitializeComponent();
-
-
-            this.txt_blk_Index = this.FindControl<TextBlock>("txt_blk_Index");
-            this.txt_bx_Path = this.FindControl<TextBox>("txt_bx_Path");
-            this.chk_IsChecked = this.FindControl<CheckBox>("chk_IsChecked");
 
             this.MainParent = parent;
             this.FullPath = "";
@@ -84,15 +75,8 @@ namespace xdelta3_cross_gui
         public void UpdateValues()
         {
             txt_blk_Index.Text = this.Index + "";
-
             txt_bx_Path.Text = this.MainParent.Options.ShowFullPaths ? this.FullPath : this.ShortName;
-
             chk_IsChecked.IsChecked = this.IsSelected;
-        }
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

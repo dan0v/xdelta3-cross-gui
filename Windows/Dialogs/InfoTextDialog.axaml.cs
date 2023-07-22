@@ -16,16 +16,12 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using System;
-using System.Diagnostics;
 using System.IO;
 
 namespace xdelta3_cross_gui
 {
-    public class InfoTextDialog : Window
+    public partial class InfoTextDialog : Window
     {
-        Button btn_Dismiss;
-        TextBlock txt_blk_Info;
-
         public enum InfoTextType
         {
             LICENSE,
@@ -35,11 +31,13 @@ namespace xdelta3_cross_gui
         public InfoTextDialog()
         {
             this.InitializeComponent();
+            this.Configure();
         }
 
         public InfoTextDialog(InfoTextType infoType)
         {
             this.InitializeComponent();
+            this.Configure();
 
             try
             {
@@ -64,19 +62,14 @@ namespace xdelta3_cross_gui
             catch { }
         }
 
-        private void DismissClicked(object sender, RoutedEventArgs args)
+        private void DismissClicked(object? sender, RoutedEventArgs args)
         {
             this.Close();
         }
 
-        private void InitializeComponent()
+        private void Configure()
         {
-            AvaloniaXamlLoader.Load(this);
-
-            this.btn_Dismiss = this.FindControl<Button>("btn_Dismiss");
             this.btn_Dismiss.Click += DismissClicked;
-
-            this.txt_blk_Info = this.FindControl<TextBlock>("txt_blk_Info");
         }
     }
 }

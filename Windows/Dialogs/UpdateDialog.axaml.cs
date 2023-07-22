@@ -21,19 +21,10 @@ using xdelta3_cross_gui.Localization;
 
 namespace xdelta3_cross_gui
 {
-    public class UpdateDialog : Window
+    public partial class UpdateDialog : Window
     {
         private MainWindow MainParent;
         private string newVersion = "";
-
-        TextBlock txt_blk_Prompt;
-        Button btn_Dismiss;
-        Button btn_GoToReleases;
-
-        public UpdateDialog()
-        {
-            this.InitializeComponent();
-        }
 
         public UpdateDialog(MainWindow MainParent, string newVersion)
         {
@@ -44,20 +35,16 @@ namespace xdelta3_cross_gui
         }
         private void Configure()
         {
-            this.btn_Dismiss = this.FindControl<Button>("btn_Dismiss");
-            this.btn_GoToReleases = this.FindControl<Button>("btn_GoToReleases");
-            this.txt_blk_Prompt = this.FindControl<TextBlock>("txt_blk_Prompt");
-
             this.btn_Dismiss.Click += DismissClicked;
             this.btn_GoToReleases.Click += GoToReleasesClicked;
             this.txt_blk_Prompt.Text = string.Format(Localizer.Instance["NewVersionText"], newVersion);
         }
 
-        private void DismissClicked(object sender, RoutedEventArgs args)
+        private void DismissClicked(object? sender, RoutedEventArgs args)
         {
             this.Close();
         }
-        private void GoToReleasesClicked(object sender, RoutedEventArgs args)
+        private void GoToReleasesClicked(object? sender, RoutedEventArgs args)
         {
             try
             {
@@ -72,10 +59,6 @@ namespace xdelta3_cross_gui
             {
                 Debug.WriteLine(e);
             }
-        }
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
         }
     }
 }

@@ -19,16 +19,11 @@ using System.Collections.Generic;
 
 namespace xdelta3_cross_gui
 {
-    public class ErrorDialog : Window
+    public partial class ErrorDialog : Window
     {
         List<string>? missingOldFiles;
         List<string>? missingNewFiles;
         string? errorString;
-        Button btn_Dismiss;
-        TextBlock txt_blk_MissingOld;
-        TextBlock txt_blk_MissingNew;
-        TextBlock txt_blk_ErrorString;
-        Grid grd_MissingFiles;
 
         public ErrorDialog()
         {
@@ -52,14 +47,6 @@ namespace xdelta3_cross_gui
 
         private void Configure()
         {
-            this.btn_Dismiss = this.FindControl<Button>("btn_Dismiss");
-
-            this.txt_blk_MissingOld = this.FindControl<TextBlock>("txt_blk_MissingOld");
-            this.txt_blk_MissingNew = this.FindControl<TextBlock>("txt_blk_MissingNew");
-            this.grd_MissingFiles = this.FindControl<Grid>("grd_MissingFiles");
-
-            this.txt_blk_ErrorString = this.FindControl<TextBlock>("txt_blk_ErrorString");
-
             this.btn_Dismiss.Click += DismissClicked;
 
             if ((this.missingOldFiles?.Count ?? 0) > 0)
@@ -79,14 +66,9 @@ namespace xdelta3_cross_gui
             }
         }
 
-        private void DismissClicked(object sender, RoutedEventArgs args)
+        private void DismissClicked(object? sender, RoutedEventArgs args)
         {
             this.Close();
-        }
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
         }
     }
 }
