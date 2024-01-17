@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo 'Copyright 2020-2023 dan0v
+echo 'Copyright 2020-2024 dan0v
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -21,13 +21,12 @@ cd "../.."
 chmod +x "Assets/exec/xdelta3_x64_linux"
 chmod +x "Assets/exec/xdelta3_mac"
 
-# RUN IN POWERSHELL
-#dotnet publish -r win-x86 -c Release -p:SelfContained=True -p:IncludeAllContentForSelfExtract=True -p:PublishSingleFile=True -o bin/Release/net7.0/publishWin
+dotnet publish -r win-x86 -c Release -p:SelfContained=True -p:IncludeAllContentForSelfExtract=True -p:PublishSingleFile=True -o bin/Release/net8.0/publishWin
 cd "$ORIGIN"
 
 APP_NAME="xDelta3 Cross GUI"
 APP_OUTPUT_PATH="Build"
-PUBLISH_OUTPUT_DIRECTORY="../../bin/Release/net7.0/publishWin/."
+PUBLISH_OUTPUT_DIRECTORY="../../bin/Release/net8.0/publishWin/."
 APP_TAR_NAME="xdelta3-cross-gui_win_x86"
 
 if [ -d "$APP_OUTPUT_PATH" ]

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo 'Copyright 2020-2023 dan0v
+echo 'Copyright 2020-2024 dan0v
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -17,13 +17,13 @@ limitations under the License.
 
 ORIGIN="$(pwd)"
 cd "../.."
-dotnet publish -r osx-x64 -c Release -p:SelfContained=True -o bin/Release/net7.0/publishMac
+dotnet publish -r osx-x64 -c Release -p:SelfContained=True -o bin/Release/net8.0/publishMac
 cd "$ORIGIN"
 
 APP_NAME="xDelta3 Cross GUI.app"
 APP_OUTPUT_PATH="Output"
 APP_TAR_NAME="xdelta3-cross-gui_macOS_x86_64"
-PUBLISH_OUTPUT_DIRECTORY="../../bin/Release/net7.0/publishMac/."
+PUBLISH_OUTPUT_DIRECTORY="../../bin/Release/net8.0/publishMac/."
 INFO_PLIST="Info.plist"
 ICON_FILE="Icon.icns"
 

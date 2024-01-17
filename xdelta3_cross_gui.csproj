@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Nullable>enable</Nullable>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <Authors>dan0v</Authors>
     <RuntimeIdentifiers>win-x86;win-x64;osx-x64;linux-x64;</RuntimeIdentifiers>
     <Authors>dan0v</Authors>
@@ -13,9 +13,10 @@
     <PublishTrimmed>true</PublishTrimmed>
     <TrimMode>partial</TrimMode>
     <Platforms>AnyCPU;x64</Platforms>
-    <Copyright>Copyright (C) 2020-2023 dan0v</Copyright>
+    <Copyright>Copyright (C) 2020-2024 dan0v</Copyright>
     <RepositoryUrl>https://git.dan0v.com/xdelta3-cross-gui</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+    <LangVersion>preview</LangVersion>
   </PropertyGroup>
   
   <Target Name="ConfigureTrimming" BeforeTargets="PrepareForILLink">
@@ -64,9 +65,9 @@
     <AvaloniaResource Include="Assets\img\up.png" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.0.5" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.0.5" />
-    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.5" />
+    <PackageReference Include="Avalonia" Version="11.0.6" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.0.6" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.6" />
   </ItemGroup>
   <ItemGroup>
     <AvaloniaXaml Update="Windows\Dialogs\InfoTextDialog.axaml">
