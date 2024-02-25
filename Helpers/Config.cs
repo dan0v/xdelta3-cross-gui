@@ -196,11 +196,11 @@ namespace xdelta3_cross_gui
                 if (!Directory.Exists(MainWindow.XDELTA3_APP_STORAGE))
                 {
 #if MacOS
-                    var oldLocalAppData = Path.Join(GetFolderPath(SpecialFolder.UserProfile, SpecialFolderOption.DoNotVerify), ".local/share/xdelta3-cross-gui");
+                    var oldLocalAppData = Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile, Environment.SpecialFolderOption.DoNotVerify), ".local/share/xdelta3-cross-gui");
 
                     if (Directory.Exists(oldLocalAppData))
                     {
-                        Directory.Move(oldLocalAppData, XDELTA3_APP_STORAGE);
+                        Directory.Move(oldLocalAppData, MainWindow.XDELTA3_APP_STORAGE);
                     }
                     else
                     {
