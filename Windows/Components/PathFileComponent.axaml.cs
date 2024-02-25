@@ -1,4 +1,4 @@
-﻿/*Copyright 2020-2023 dan0v
+﻿/*Copyright 2020-2024 dan0v
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -24,10 +24,10 @@ namespace xdelta3_cross_gui
 {
     public partial class PathFileComponent : UserControl
     {
-        private MainWindow MainParent { get; set; }
-        public string FullPath { get; set; }
-        public string ShortName { get; set; }
-        public int Index { get; set; }
+        private MainWindow? MainParent { get; set; }
+        public string FullPath { get; set; } = "";
+        public string ShortName { get; set; } = "";
+        public int Index { get; set; } = 0;
 
         public bool _Shifted = false;
 
@@ -75,12 +75,12 @@ namespace xdelta3_cross_gui
         public void UpdateValues()
         {
             txt_blk_Index.Text = this.Index + "";
-            txt_bx_Path.Text = this.MainParent.Options.ShowFullPaths ? this.FullPath : this.ShortName;
+            txt_bx_Path.Text = (this.MainParent?.Config.ShowFullPaths ?? false) ? this.FullPath : this.ShortName;
             chk_IsChecked.IsChecked = this.IsSelected;
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        new public event PropertyChangedEventHandler? PropertyChanged;
+        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

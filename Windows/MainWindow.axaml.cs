@@ -1,4 +1,4 @@
-/*Copyright 2020-2023 dan0v
+/*Copyright 2020-2024 dan0v
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -157,10 +157,10 @@ namespace xdelta3_cross_gui
 
         public bool ShowTerminal
         {
-            get => Options.ShowTerminal;
+            get => Config.ShowTerminal;
             set
             {
-                Options.ShowTerminal = value;
+                Config.ShowTerminal = value;
                 try
                 {
                     if (value)
@@ -190,8 +190,8 @@ namespace xdelta3_cross_gui
         private Console _Console = new();
         public Console Console => _Console;
 
-        private readonly Options _Options = new();
-        public Options Options { get { return this._Options; } }
+        private readonly Config _Config = new();
+        public Config Config { get { return this._Config; } }
 
         public enum FileCategory { New, Old };
 
@@ -212,8 +212,11 @@ namespace xdelta3_cross_gui
         {
             try
             {
-                string[] url = await this.OpenFileBrowser();
-                this.AddFiles(url, FileCategory.Old);
+                string[]? url = await this.OpenFileBrowser();
+                if (url != null)
+                {
+                    this.AddFiles(url, FileCategory.Old);
+                }
             }
             catch (Exception e)
             {
@@ -246,8 +249,11 @@ namespace xdelta3_cross_gui
         {
             try
             {
-                string[] url = await this.OpenFileBrowser();
-                this.AddFiles(url, FileCategory.New);
+                string[]? url = await this.OpenFileBrowser();
+                if (url != null)
+                {
+                    this.AddFiles(url, FileCategory.New);
+                }
 
             }
             catch (Exception e)
@@ -305,12 +311,11 @@ namespace xdelta3_cross_gui
 
         public void SaveSettingsClicked(object? sender, RoutedEventArgs args)
         {
-            this.Options.SaveCurrent();
+            this.Config.SaveCurrent();
         }
         public void ResetDefaultsClicked(object? sender, RoutedEventArgs args)
         {
-            this.Options.ResetToDefault();
-            //this.Options.SaveCurrent();
+            this.Config.ResetToDefault();
         }
 
         public void OpenInfoClicked(object? sender, RoutedEventArgs args)
@@ -343,7 +348,7 @@ namespace xdelta3_cross_gui
                 }
             }
 
-            if (!this.Options.Validate())
+            if (!this.Config.Validate())
             {
                 failed = true;
             }
@@ -361,7 +366,7 @@ namespace xdelta3_cross_gui
                 this.AlreadyBusy = true;
                 patcher.CreateReadme();
                 patcher.CopyNotice();
-                if (this.Options.CopyExecutables)
+                if (this.Config.CopyExecutables)
                 {
                     patcher.CopyExecutables();
                 }
@@ -373,10 +378,10 @@ namespace xdelta3_cross_gui
         {
             try
             {
-                string url = await this.OpenFolderBrowser();
+                string? url = await this.OpenFolderBrowser();
                 if (!string.IsNullOrEmpty(url))
                 {
-                    this.Options.PatchFileDestination = url;
+                    this.Config.PatchFileDestination = url;
                 }
             }
             catch (Exception e)
@@ -396,7 +401,7 @@ namespace xdelta3_cross_gui
             list.Sort((x, y) => x.Index.CompareTo(y.Index));
         }
 
-        public void ChangeLanguage(string language)
+        public void ChangeLanguage(string? language)
         {
             if (language == null || !Localizer.Languages.ContainsKey(language))
             {
@@ -404,7 +409,7 @@ namespace xdelta3_cross_gui
             }
 
             CultureInfo.CurrentUICulture = new CultureInfo(Localizer.Languages[language]);
-            Options.Language = language;
+            Config.Language = language;
             Localizer.Instance.LoadLanguage();
         }
         #endregion
@@ -446,12 +451,12 @@ namespace xdelta3_cross_gui
 
             Localizer.Instance.PropertyChanged += Language_Changed;
 
-            this.Options.LoadSaved();
+            this.Config.LoadSaved();
             this.SetXDeltaLocations();
 
             this.LoadLanguageOptions();
 
-            this.ChangeLanguage(Options.Language);
+            this.ChangeLanguage(Config.Language);
             this.MatchSelectedLanguage();
 
             this.Console.SetParent(this);
@@ -501,9 +506,9 @@ namespace xdelta3_cross_gui
 
                 if (version == FileCategory.New)
                 {
-                    if (this.Options.PatchFileDestination == "")
+                    if (this.Config.PatchFileDestination == "")
                     {
-                        this.Options.PatchFileDestination = Path.Combine(Path.GetDirectoryName(this.NewFilesList[0].FullPath), "xDelta3_Output");
+                        this.Config.PatchFileDestination = Path.Combine(Path.GetDirectoryName(this.NewFilesList[0].FullPath) ?? "", "xDelta3_Output");
                     }
                 }
             }
@@ -513,8 +518,8 @@ namespace xdelta3_cross_gui
         {
             if (args.Data.Contains(DataFormats.Files))
             {
-                List<String> url = args.Data?.GetFiles()?.Select(f => f.Path.AbsolutePath).ToList() ?? new();
-                this.AddFiles(url.ToArray(), fileCategory);
+                List<String> urls = args.Data?.GetFiles()?.Select(f => Uri.UnescapeDataString(f.Path.AbsolutePath)).Where(f => File.Exists(f)).ToList() ?? new();
+                this.AddFiles(urls.ToArray(), fileCategory);
             }
         }
 
@@ -667,13 +672,13 @@ namespace xdelta3_cross_gui
         }
         private void ChangeLanguageSelection(object? sender, SelectionChangedEventArgs e)
         {
-            string language = (string)((ComboBoxItem)cb_LanguageOptions.SelectedItem).Content;
+            string? language = ((ComboBoxItem?)cb_LanguageOptions.SelectedItem)?.Content as string;
             ChangeLanguage(language);
         }
         private void MatchSelectedLanguage()
         {
             var items = cb_LanguageOptions.Items;
-            int index = items.Cast<ComboBoxItem>().ToList().FindIndex(item => (string)item.Content == Options.Language);
+            int index = items.Cast<ComboBoxItem>().ToList().FindIndex(item => (string?)item.Content == Config.Language);
             cb_LanguageOptions.SelectedIndex = index;
         }
 
@@ -713,7 +718,7 @@ namespace xdelta3_cross_gui
             return version;
         }
 
-        private async Task<string[]> OpenFileBrowser()
+        private async Task<string[]?> OpenFileBrowser()
         {
             var dialog = new OpenFileDialog()
             {
@@ -722,7 +727,7 @@ namespace xdelta3_cross_gui
             };
             return await dialog.ShowAsync(GetWindow());
         }
-        private async Task<string> OpenFolderBrowser()
+        private async Task<string?> OpenFolderBrowser()
         {
             var dialog = new OpenFolderDialog()
             {
@@ -732,7 +737,7 @@ namespace xdelta3_cross_gui
             return await dialog.ShowAsync(GetWindow());
         }
 
-        Window GetWindow() => (Window)this.VisualRoot;
+        Window GetWindow() => this.VisualRoot as Window;
 
         private void SetXDeltaLocations()
         {
@@ -745,7 +750,7 @@ namespace xdelta3_cross_gui
             }
 
             var values = Environment.GetEnvironmentVariable("PATH");
-            foreach (var path in values.Split(Path.PathSeparator))
+            foreach (var path in values?.Split(Path.PathSeparator) ?? [])
             {
                 var fullPath = Path.Combine(path, "xdelta3");
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
@@ -779,8 +784,8 @@ namespace xdelta3_cross_gui
         }
         #endregion
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        new public event PropertyChangedEventHandler? PropertyChanged;
+        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

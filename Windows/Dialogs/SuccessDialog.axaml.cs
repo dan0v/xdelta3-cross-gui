@@ -1,4 +1,4 @@
-﻿/*Copyright 2020-2023 dan0v
+﻿/*Copyright 2020-2024 dan0v
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -35,13 +35,13 @@ namespace xdelta3_cross_gui
         }
         private void Configure()
         {
-            if (this.MainParent.Options.ZipFilesWhenDone)
+            if (this.MainParent.Config.ZipFilesWhenDone)
             {
-                this._Destination = Path.Combine(this.MainParent.Options.PatchFileDestination, "..");
+                this._Destination = Path.Combine(this.MainParent.Config.PatchFileDestination, "..");
             }
             else
             {
-                this._Destination = this.MainParent.Options.PatchFileDestination;
+                this._Destination = this.MainParent.Config.PatchFileDestination;
             }
 
             this.btn_Dismiss.Click += DismissClicked;
