@@ -4,11 +4,11 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
     <Authors>dan0v</Authors>
-    <RuntimeIdentifiers>win-x86;win-x64;osx-x64;linux-x64;</RuntimeIdentifiers>
+    <RuntimeIdentifiers>win-x86;</RuntimeIdentifiers>
     <Authors>dan0v</Authors>
     <Description>A cross-platform graphical user interface for xDelta3 patching</Description>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
-    <Version>1.4.2</Version>
+    <Version>1.5.0</Version>
     <CopyOutputSymbolsToPublishDirectory>false</CopyOutputSymbolsToPublishDirectory>
     <PublishTrimmed>true</PublishTrimmed>
     <TrimMode>partial</TrimMode>
@@ -18,7 +18,11 @@
     <RepositoryType>git</RepositoryType>
     <LangVersion>preview</LangVersion>
   </PropertyGroup>
-  
+  <PropertyGroup>
+    <DefineConstants Condition="'$(RuntimeIdentifier)' == 'win-x86'">$(DefineConstants);Windows</DefineConstants>
+    <DefineConstants Condition="'$(RuntimeIdentifier)' == 'osx-x64'">$(DefineConstants);MacOS</DefineConstants>
+    <DefineConstants Condition="'$(RuntimeIdentifier)' == 'linux-x64'">$(DefineConstants);Linux</DefineConstants>
+  </PropertyGroup>
   <Target Name="ConfigureTrimming" BeforeTargets="PrepareForILLink">
     <ItemGroup>
       <ManagedAssemblyToLink Condition="'%(Filename)' == 'System.StubHelpers.InterfaceMarshaler'">
@@ -65,9 +69,9 @@
     <AvaloniaResource Include="Assets\img\up.png" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.0.6" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.0.6" />
-    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.6" />
+    <PackageReference Include="Avalonia" Version="11.0.9" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.0.9" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.9" />
   </ItemGroup>
   <ItemGroup>
     <AvaloniaXaml Update="Windows\Dialogs\InfoTextDialog.axaml">

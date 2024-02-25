@@ -1,0 +1,51 @@
+name: Release .NET Cross Platform Desktop
+
+on:
+  push:
+    branches:
+    - release
+
+jobs:
+
+  build:
+
+    strategy:
+      matrix:
+        configuration: [Release]
+
+    runs-on: ubuntu-latest  # For a list of available runner types, refer to
+                             # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
+
+    steps:
+    # Install the .NET Core workload
+    - name: Install .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+        ref: release
+
+    - name: Publish packages
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y zip unzip libfuse2
+        cd Publish/Windows && /usr/bin/bash ./Windows.sh
+        cd ../Linux && /usr/bin/bash ./Appimage.sh
+        cd ../MacOS && /usr/bin/bash ./MacOS.sh
+        echo "VERSION=$(cat ../version.txt | sed 's/ *$//g' | sed 's/\r//' | sed ':a;N;$!ba;s/\n//g')" >> "$GITHUB_ENV"
+
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      with:
+        name: "Version ${{env.VERSION}}"
+        prerelease: true
+        tag_name: "${{env.VERSION}}"
+        files: |
+          Publish/xdelta3-cross-gui_linux_AppImage_x86_64.tar.gz
+          Publish/xdelta3-cross-gui_macOS_x86_64.tar.gz 
+          Publish/xdelta3-cross-gui_win_x86.zip 
+          Publish/version.txt

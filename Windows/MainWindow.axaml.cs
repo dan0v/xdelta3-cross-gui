@@ -518,8 +518,8 @@ namespace xdelta3_cross_gui
         {
             if (args.Data.Contains(DataFormats.Files))
             {
-                List<String> url = args.Data?.GetFiles()?.Select(f => f.Path.AbsolutePath).ToList() ?? new();
-                this.AddFiles(url.ToArray(), fileCategory);
+                List<String> urls = args.Data?.GetFiles()?.Select(f => Uri.UnescapeDataString(f.Path.AbsolutePath)).Where(f => File.Exists(f)).ToList() ?? new();
+                this.AddFiles(urls.ToArray(), fileCategory);
             }
         }
 
