@@ -23,19 +23,19 @@ namespace xdelta3_cross_gui
 
         public InfoDialog()
         {
-            this.InitializeComponent();
-            this.Configure();
+            InitializeComponent();
+            Configure();
         }
         private void Configure()
         {
-            this.btn_Dismiss.Click += DismissClicked;
-            this.btn_OpenLicense.Click += OpenLicense;
-            this.btn_OpenNotice.Click += OpenNotice;
+            btn_Dismiss.Click += DismissClicked;
+            btn_OpenLicense.Click += OpenLicense;
+            btn_OpenNotice.Click += OpenNotice;
         }
 
         private void DismissClicked(object? sender, RoutedEventArgs args)
         {
-            this.Close();
+            Close();
         }
 
         private void OpenLicense(object? sender, RoutedEventArgs args)

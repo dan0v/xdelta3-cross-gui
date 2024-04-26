@@ -27,37 +27,37 @@ namespace xdelta3_cross_gui
 
         public ErrorDialog()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         public ErrorDialog(List<string> missingOldFiles, List<string> missingNewFiles)
         {
-            this.InitializeComponent();
+            InitializeComponent();
             this.missingNewFiles = missingNewFiles;
             this.missingOldFiles = missingOldFiles;
-            this.Configure();
+            Configure();
         }
 
         public ErrorDialog(string xDeltaFailed)
         {
-            this.InitializeComponent();
-            this.errorString = xDeltaFailed;
-            this.Configure();
+            InitializeComponent();
+            errorString = xDeltaFailed;
+            Configure();
         }
 
         private void Configure()
         {
-            this.btn_Dismiss.Click += DismissClicked;
+            btn_Dismiss.Click += DismissClicked;
 
-            if ((this.missingOldFiles?.Count ?? 0) > 0)
+            if ((missingOldFiles?.Count ?? 0) > 0)
             {
-                this.txt_blk_MissingOld.Text = string.Join("\n", missingOldFiles);
-                this.grd_MissingFiles.IsVisible = true;
+                txt_blk_MissingOld.Text = string.Join("\n", missingOldFiles ?? []);
+                grd_MissingFiles.IsVisible = true;
             }
-            if ((this.missingNewFiles?.Count ?? 0) > 0)
+            if ((missingNewFiles?.Count ?? 0) > 0)
             {
-                this.txt_blk_MissingNew.Text = string.Join("\n", missingNewFiles);
-                this.grd_MissingFiles.IsVisible = true;
+                txt_blk_MissingNew.Text = string.Join("\n", missingNewFiles ?? []);
+                grd_MissingFiles.IsVisible = true;
             }
 
             if (!string.IsNullOrEmpty(errorString))
@@ -68,7 +68,7 @@ namespace xdelta3_cross_gui
 
         private void DismissClicked(object? sender, RoutedEventArgs args)
         {
-            this.Close();
+            Close();
         }
     }
 }
