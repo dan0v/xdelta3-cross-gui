@@ -15,7 +15,6 @@ limitations under the License.*/
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
 using Avalonia.Platform.Storage;
 using System;
 using System.Collections.Generic;
@@ -530,8 +529,8 @@ namespace xdelta3_cross_gui
             }
 
             List<PathFileComponent> selectedList = list.FindAll(c => c.IsSelected == true);
-			if (selectedList.Count > 0)
-			{
+            if (selectedList.Count > 0)
+            {
                 SortListInPlaceByIndex(selectedList);
                 for (int i = 0; i < selectedList.Count; i++)
                 {
@@ -717,15 +716,17 @@ namespace xdelta3_cross_gui
 
         private async Task<string[]?> OpenFileBrowser()
         {
-            return (await StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions {
+            return (await StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+            {
                 Title = "Select file(s)",
                 AllowMultiple = true
-            })).Select( file => Uri.UnescapeDataString(file.Path.AbsolutePath)).Where(f => File.Exists(f)).ToArray();
+            })).Select(file => Uri.UnescapeDataString(file.Path.AbsolutePath)).Where(f => File.Exists(f)).ToArray();
         }
 
         private async Task<string?> OpenFolderBrowser()
         {
-            return (await StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions {
+            return (await StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
+            {
                 Title = "Select output directory"
             })).Select(folder => folder.Path.AbsolutePath).FirstOrDefault();
         }
@@ -797,7 +798,8 @@ namespace xdelta3_cross_gui
                     Directory.CreateDirectory(MainWindow.XDELTA3_APP_STORAGE);
 #endif
                 }
-            } catch(Exception e)
+            }
+            catch (Exception e)
             {
                 Debug.WriteLine(e);
             }

@@ -14,7 +14,6 @@ limitations under the License.*/
 
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
 using System.Collections.Generic;
 
 namespace xdelta3_cross_gui
@@ -62,7 +61,8 @@ namespace xdelta3_cross_gui
             if (grd_MissingFiles.IsVisible)
             {
                 Height = 400;
-            } else
+            }
+            else
             {
                 Height = 200;
             }
