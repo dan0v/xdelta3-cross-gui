@@ -57,6 +57,7 @@ namespace xdelta3_cross_gui
                 {
                     _patchExtention = value;
                     OnPropertyChanged();
+                    SaveCurrent();
                 }
             }
         }
@@ -69,6 +70,7 @@ namespace xdelta3_cross_gui
                 {
                     _patchSubdirectory = value;
                     OnPropertyChanged();
+                    SaveCurrent();
                 }
             }
         }
@@ -81,6 +83,7 @@ namespace xdelta3_cross_gui
                 {
                     _xDeltaArguments = value;
                     OnPropertyChanged();
+                    SaveCurrent();
                 }
             }
         }

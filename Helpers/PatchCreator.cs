@@ -20,8 +20,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Threading.Tasks;
+using xdelta3_cross_gui.Models;
 using static System.Environment;
 
 namespace xdelta3_cross_gui
@@ -75,56 +78,44 @@ namespace xdelta3_cross_gui
         {
             MainParent.PatchProgress = 0;
             _progress = 0;
+            _procFailed = false;
 
             if (!File.Exists(Path.Combine(MainParent.Config.PatchFileDestination, MainParent.Config.PatchSubdirectory)))
             {
                 Directory.CreateDirectory(Path.Combine(MainParent.Config.PatchFileDestination, MainParent.Config.PatchSubdirectory));
             }
 
-            //Batch creation - Windows//
             StreamWriter patchWriterWindows = new(Path.Combine(MainParent.Config.PatchFileDestination, "2.Apply Patch-Windows.bat"));
-            patchWriterWindows.WriteLine("@echo off");
-            patchWriterWindows.WriteLine("CHCP 65001");
-            patchWriterWindows.WriteLine("mkdir output");
-            // Batch creation - Linux //
             StreamWriter patchWriterLinux = new(Path.Combine(MainParent.Config.PatchFileDestination, "2.Apply Patch-Linux.sh"))
             {
                 NewLine = "\n"
             };
-            patchWriterLinux.WriteLine("#!/bin/sh");
-            patchWriterLinux.WriteLine("cd \"$(cd \"$(dirname \"$0\")\" && pwd)\"");
-            patchWriterLinux.WriteLine("mkdir ./output");
-            patchWriterLinux.WriteLine("chmod +x ./exec/" + Path.GetFileName(MainWindow.XDELTA3_BINARY_LINUX));
-            // Batch creation - Mac //
             StreamWriter patchWriterMac = new(Path.Combine(MainParent.Config.PatchFileDestination, "2.Apply Patch-Mac.command"))
             {
                 NewLine = "\n"
             };
+
+            string[] oldFileNames = MainParent.OldFilesList.Select(c => c.ShortName).ToArray();
+            string[] newFileNames = MainParent.NewFilesList.Select(c => c.ShortName).ToArray();
+
+            patchWriterWindows.WriteLine("@echo off");
+            patchWriterWindows.WriteLine("CHCP 65001");
+            patchWriterWindows.WriteLine("mkdir output");
+            patchWriterWindows.WriteLine("echo Place the files to be patched in the \"original\" directory with the following names:");
+            patchWriterWindows.WriteLine("echo --------------------");
+
+            patchWriterLinux.WriteLine("#!/bin/sh");
+            patchWriterLinux.WriteLine("cd \"$(cd \"$(dirname \"$0\")\" && pwd)\"");
+            patchWriterLinux.WriteLine("mkdir ./output");
+            patchWriterLinux.WriteLine("chmod +x ./exec/" + Path.GetFileName(MainWindow.XDELTA3_BINARY_LINUX));
+            patchWriterLinux.WriteLine("echo Place the files to be patched in the \\\"original\\\" directory with the following names:");
+            patchWriterLinux.WriteLine("echo --------------------");
+
             patchWriterMac.WriteLine("#!/bin/sh");
             patchWriterMac.WriteLine("cd \"$(cd \"$(dirname \"$0\")\" && pwd)\"");
             patchWriterMac.WriteLine("mkdir ./output");
             patchWriterMac.WriteLine("chmod +x ./exec/" + Path.GetFileName(MainWindow.XDELTA3_BINARY_MACOS));
-
-            string currentPatchScriptPath = GetTempBatPath();
-
-            StreamWriter currentPatchScript = new(currentPatchScriptPath);
-
-            // Enable UTF in windows
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                currentPatchScript.WriteLine("CHCP 65001\n");
-            }
-
-            List<string> oldFileNames = [];
-            List<string> newFileNames = [];
-            MainParent.OldFilesList.ForEach(c => oldFileNames.Add(c.ShortName));
-            MainParent.NewFilesList.ForEach(c => newFileNames.Add(c.ShortName));
-
-            patchWriterWindows.WriteLine("echo Place the files to be patched in the \"original\" directory with the following names:");
-            patchWriterLinux.WriteLine("echo Place the files to be patched in the \\\"original\\\" directory with the following names:");
             patchWriterMac.WriteLine("echo Place the files to be patched in the \\\"original\\\" directory with the following names:");
-            patchWriterWindows.WriteLine("echo --------------------");
-            patchWriterLinux.WriteLine("echo --------------------");
             patchWriterMac.WriteLine("echo --------------------");
 
             for (int i = 0; i < MainParent.OldFilesList.Count; i++)
@@ -133,70 +124,69 @@ namespace xdelta3_cross_gui
                 patchWriterLinux.WriteLine("echo \"" + oldFileNames[i] + "\"");
                 patchWriterMac.WriteLine("echo \"" + oldFileNames[i] + "\"");
             }
+
             patchWriterWindows.WriteLine("echo --------------------");
-            patchWriterLinux.WriteLine("echo --------------------");
-            patchWriterMac.WriteLine("echo --------------------");
-
             patchWriterWindows.WriteLine("echo Patched files will be in the \"output\" directory");
-            patchWriterLinux.WriteLine("echo Patched files will be in the \\\"output\\\" directory");
-            patchWriterMac.WriteLine("echo Patched files will be in the \\\"output\\\" directory");
-
             patchWriterWindows.WriteLine("pause");
+
+            patchWriterLinux.WriteLine("echo --------------------");
+            patchWriterLinux.WriteLine("echo Patched files will be in the \\\"output\\\" directory");
             patchWriterLinux.WriteLine("read -p \"Press enter to continue...\" inp");
+
+            patchWriterMac.WriteLine("echo --------------------");
+            patchWriterMac.WriteLine("echo Patched files will be in the \\\"output\\\" directory");
             patchWriterMac.WriteLine("read -p \"Press enter to continue...\" inp");
 
-
+            List<PatchCreationJob> patchJobs = [];
             for (int i = 0; i < MainParent.OldFilesList.Count; i++)
             {
-                // Batch creation - Windows
                 patchWriterWindows.WriteLine("exec\\" + Path.GetFileName(MainWindow.XDELTA3_BINARY_WINDOWS) + " -v -d -s \".\\original\\{0}\" " + "\".\\" + MainParent.Config.PatchSubdirectory + "\\" + "{0}." + MainParent.Config.PatchExtention + "\" \".\\output\\{2}\"", oldFileNames[i], MainParent.Config.PatchSubdirectory + "\\" + (i + 1).ToString(), newFileNames[i]);
-                // Batch creation - Linux //
                 patchWriterLinux.WriteLine("./exec/" + Path.GetFileName(MainWindow.XDELTA3_BINARY_LINUX) + " -v -d -s \"./original/{0}\" " + '"' + MainParent.Config.PatchSubdirectory + '/' + "{0}." + MainParent.Config.PatchExtention + "\" \"./output/{2}\"", oldFileNames[i], MainParent.Config.PatchSubdirectory + (i + 1).ToString(), newFileNames[i]);
-                // Batch creation - Mac //
                 patchWriterMac.WriteLine("./exec/" + Path.GetFileName(MainWindow.XDELTA3_BINARY_MACOS) + " -v -d -s \"./original/{0}\" " + '"' + MainParent.Config.PatchSubdirectory + '/' + "{0}." + MainParent.Config.PatchExtention + "\" \"./output/{2}\"", oldFileNames[i], MainParent.Config.PatchSubdirectory + (i + 1).ToString(), newFileNames[i]);
 
                 // Actual script to generate patch files
-                currentPatchScript.WriteLine("\"" + MainWindow.XDELTA3_PATH + "\"" + " " + MainParent.Config.XDeltaArguments + " " + "\"" + MainParent.OldFilesList[i].FullPath + "\" \"" + MainParent.NewFilesList[i].FullPath + "\" \"" + Path.Combine(MainParent.Config.PatchFileDestination, MainParent.Config.PatchSubdirectory, oldFileNames[i]) + "." + MainParent.Config.PatchExtention + "\"");
+                patchJobs.Add(new(MainParent.Config.XDeltaArguments, MainParent.OldFilesList[i].FullPath, MainParent.NewFilesList[i].FullPath, Path.Combine(MainParent.Config.PatchFileDestination, MainParent.Config.PatchSubdirectory, oldFileNames[i]) + "." + MainParent.Config.PatchExtention));
             }
             patchWriterWindows.WriteLine("echo Completed!");
             patchWriterWindows.WriteLine("@pause");
             patchWriterWindows.Close();
             patchWriterLinux.Close();
             patchWriterMac.Close();
-            currentPatchScript.Close();
 
-            var threadId = Guid.NewGuid();
-            var thread = CreateNewXDeltaThread(threadId.ToString(), currentPatchScriptPath);
-            thread.Start();
+            List<Task> tasks = [];
+
+            foreach (var job in patchJobs)
+            {
+                tasks.Add(CreateNewXDeltaTask(Guid.NewGuid().ToString(), job));
+            }
+
+            new Thread(() =>
+            {
+                Task.WaitAll(tasks.ToArray());
+                FinishPatchCreationJob();
+            })
+            {
+                IsBackground = true
+            }.Start();
         }
 
-        private Thread CreateNewXDeltaThread(string threadId, string tempFilePath)
+        private Task CreateNewXDeltaTask(string threadId, PatchCreationJob patchCreationJob)
         {
-            return new Thread(() =>
+            return Task.Run(() =>
             {
-                _procFailed = false;
+                if (_procFailed)
+                {
+                    return;
+                }
+
                 using Process activeCMD = new();
                 activeCMD.OutputDataReceived += HandleCMDOutput;
                 activeCMD.ErrorDataReceived += HandleCMDError;
 
                 ProcessStartInfo info = new();
 
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                {
-                    info.FileName = tempFilePath;
-                }
-                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                {
-                    string escapedArgs = "/bin/bash " + tempFilePath.Replace("\"", "\\\"").Replace(" ", "\\ ").Replace("(", "\\(").Replace(")", "\\)");
-                    info.FileName = "/bin/bash";
-                    info.Arguments = $"-c \"{escapedArgs}\"";
-                }
-                else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-                {
-                    string escapedArgs = "/bin/bash " + tempFilePath.Replace("\"", "\\\"").Replace(" ", "\\ ").Replace("(", "\\(").Replace(")", "\\)");
-                    info.FileName = "/bin/bash";
-                    info.Arguments = $"-c \"{escapedArgs}\"";
-                }
+                info.FileName = MainWindow.XDELTA3_PATH;
+                info.Arguments = $"""{patchCreationJob.Options} "{patchCreationJob.Source}" "{patchCreationJob.Goal}" "{patchCreationJob.PatchDestination}" """;
 
                 info.WindowStyle = ProcessWindowStyle.Hidden;
                 info.CreateNoWindow = true;
@@ -212,47 +202,43 @@ namespace xdelta3_cross_gui
                 activeCMD.BeginOutputReadLine();
                 activeCMD.BeginErrorReadLine();
                 activeCMD.WaitForExit();
+                activeCMD.OutputDataReceived -= HandleCMDOutput;
+                activeCMD.ErrorDataReceived -= HandleCMDError;
                 _activeProcesses.TryRemove(threadId, out var id);
+            });
+        }
+            
 
-                if (_procFailed)
-                {
-                    Dispatcher.UIThread.InvokeAsync(new Action(() =>
-                    {
-                        MainParent.AlreadyBusy = false;
-                        MainParent.PatchProgress = 0;
-                        MainParent.ShowTerminal = true;
-                        ErrorDialog dialog = new(Localization.Localizer.Instance["xDeltaProcessError"]);
-                        dialog.Show();
-                        dialog.Topmost = true;
-                        dialog.Topmost = false;
-                    }));
-                    return;
-                }
-
-                try
-                {
-                    File.Delete(tempFilePath);
-                }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e);
-                }
-
-                if (MainParent.Config.ZipFilesWhenDone)
-                {
-                    ZipFiles();
-                }
+        private void FinishPatchCreationJob()
+        {
+            if (_procFailed)
+            {
                 Dispatcher.UIThread.InvokeAsync(new Action(() =>
                 {
                     MainParent.AlreadyBusy = false;
                     MainParent.PatchProgress = 0;
-                    SuccessDialog dialog = new(MainParent);
+                    MainParent.ShowTerminal = true;
+                    ErrorDialog dialog = new(Localization.Localizer.Instance["xDeltaProcessError"]);
                     dialog.Show();
                     dialog.Topmost = true;
                     dialog.Topmost = false;
                 }));
-            })
-            { IsBackground = true };
+                return;
+            }
+
+            if (MainParent.Config.ZipFilesWhenDone)
+            {
+                ZipFiles();
+            }
+            Dispatcher.UIThread.InvokeAsync(new Action(() =>
+            {
+                MainParent.AlreadyBusy = false;
+                MainParent.PatchProgress = 0;
+                SuccessDialog dialog = new(MainParent);
+                dialog.Show();
+                dialog.Topmost = true;
+                dialog.Topmost = false;
+            }));
         }
 
         private void ZipFiles()
@@ -272,19 +258,19 @@ namespace xdelta3_cross_gui
 
         private void HandleCMDOutput(object? sender, DataReceivedEventArgs e)
         {
-            if (e != null && e.Data != null && (e.Data + "").Trim() != "")
+            if (sender is Process proc)
             {
-                Debug.WriteLine(e.Data);
-                if (e.Data.ToLower().Contains("error") || e.Data.ToLower().Contains("fail"))
+                if (proc.HasExited && proc.ExitCode != 0)
                 {
+                    Debug.WriteLine("Process exited with code: " + proc.ExitCode);
                     _procFailed = true;
                 }
-                _progress++;
-
-                double prog = (_progress / MainParent.OldFilesList.Count) * 100;
-                MainParent.PatchProgress = prog > 100 ? 100 : prog;
-
-                MainParent.Console.AddLine(e.Data);
+                else if(proc.HasExited && proc.ExitCode == 0)
+                {
+                    _progress++;
+                    double prog = (_progress / MainParent.OldFilesList.Count) * 100;
+                    MainParent.PatchProgress = prog > 100 ? 100 : prog;
+                }
             }
         }
 
@@ -301,8 +287,6 @@ namespace xdelta3_cross_gui
                 MainParent.Console.AddLine(e.Data);
             }
         }
-
-        private string GetTempBatPath() =>  Path.Join(MainWindow.TEMPORARY_FILE_STORAGE, $"xdelta3-cross-{DateTimeOffset.Now.ToUnixTimeMilliseconds()}.bat");
 
         public void CopyExecutables()
         {

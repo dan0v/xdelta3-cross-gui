@@ -219,7 +219,7 @@ namespace xdelta3_cross_gui
         {
             try
             {
-                string[]? url = await OpenFileBrowser();
+                var url = await OpenFileBrowser();
                 if (url != null)
                 {
                     AddFiles(url, FileCategory.Old);
@@ -256,7 +256,7 @@ namespace xdelta3_cross_gui
         {
             try
             {
-                string[]? url = await OpenFileBrowser();
+                var url = await OpenFileBrowser();
                 if (url != null)
                 {
                     AddFiles(url, FileCategory.New);
@@ -314,11 +314,6 @@ namespace xdelta3_cross_gui
             }
 
             sp.Children.AddRange(components);
-        }
-
-        public void SaveSettingsClicked(object? sender, RoutedEventArgs args)
-        {
-            Config.SaveCurrent();
         }
         public void ResetDefaultsClicked(object? sender, RoutedEventArgs args)
         {
@@ -436,7 +431,6 @@ namespace xdelta3_cross_gui
             btn_UpNew.Click += MoveNewFileUpClicked;
             btn_DownNew.Click += MoveNewFileDownClicked;
             btn_DeleteNew.Click += DeleteNewFilesClicked;
-            btn_SaveSettings.Click += SaveSettingsClicked;
             btn_ResetDefaults.Click += ResetDefaultsClicked;
             btn_OpenInfo.Click += OpenInfoClicked;
             btn_Go.Click += GoClicked;
@@ -683,6 +677,7 @@ namespace xdelta3_cross_gui
         {
             string? language = ((ComboBoxItem?)cb_LanguageOptions.SelectedItem)?.Content as string;
             ChangeLanguage(language);
+            Config.SaveCurrent();
         }
         private void MatchSelectedLanguage()
         {
@@ -732,7 +727,7 @@ namespace xdelta3_cross_gui
             return (await StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions {
                 Title = "Select file(s)",
                 AllowMultiple = true
-            })).Select( file => file.Path.AbsolutePath).ToArray();
+            })).Select( file => Uri.UnescapeDataString(file.Path.AbsolutePath)).Where(f => File.Exists(f)).ToArray();
         }
 
         private async Task<string?> OpenFolderBrowser()

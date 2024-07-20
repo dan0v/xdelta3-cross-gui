@@ -17,10 +17,10 @@ limitations under the License.-->
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:i18n="clr-namespace:xdelta3_cross_gui.Localization"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="700" d:DesignHeight="750"
         x:Class="xdelta3_cross_gui.MainWindow"
         Title="xdelta3_cross_gui" MinWidth="620" MinHeight="620"
-        Width="900" Height="650"
+        Width="700" Height="750"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         Icon="avares://xdelta3_cross_gui/Assets/img/Icon.png">
   
@@ -139,27 +139,29 @@ limitations under the License.-->
       <Grid ColumnDefinitions="*,*" RowDefinitions="25,Auto,Auto,Auto,Auto,*" Margin="10">
         <TextBlock Text="{i18n:Localize OptionsHeader}" Margin="0,0,0,10" FontWeight="Bold"></TextBlock>
         <!--Row 1-->
-          <CheckBox Grid.Column="0" Grid.Row="1" Content="{i18n:Localize ShowFullPaths}" x:Name="chk_UseShortNames" IsChecked="{Binding Config.ShowFullPaths}"></CheckBox>
-          <CheckBox Grid.Column="1" Grid.Row="1" Content="{i18n:Localize CopyExecutables}" x:Name="chk_CopyExecutables" IsChecked="{Binding Config.CopyExecutables}"></CheckBox>
+        <CheckBox Grid.Column="0" Grid.Row="1" Content="{i18n:Localize ShowFullPaths}" x:Name="chk_UseShortNames" IsChecked="{Binding Config.ShowFullPaths}"></CheckBox>
+        <CheckBox Grid.Column="1" Grid.Row="1" Content="{i18n:Localize CopyExecutables}" x:Name="chk_CopyExecutables" IsChecked="{Binding Config.CopyExecutables}"></CheckBox>
         <!--Row 2-->
-          <CheckBox Grid.Column="1" Grid.Row="2" Margin="0,5,0,0" Content="{i18n:Localize ZipFiles}" x:Name="chk_ZipFiles" IsChecked="{Binding Config.ZipFilesWhenDone}"></CheckBox>
-        <!--Row 3 and 4-->
-        <Grid Grid.Column="0" Grid.Row="3" Grid.RowSpan="2" ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto" Margin="0,10,10,0">
-          <TextBlock Text="{i18n:Localize PatchSubdir}" Grid.Row="0" VerticalAlignment="Center"></TextBlock>
-          <TextBox x:Name="txt_bx_PatchSubdir" Grid.Row="0" Margin="5,0,0,5" Grid.Column="1" Watermark="vcdiff" Text="{Binding Config.PatchSubdirectory}"></TextBox>
-
-          <TextBlock Text="{i18n:Localize PatchExtension}" Grid.Row="1" VerticalAlignment="Center"></TextBlock>
-          <TextBox x:Name="txt_bx_PatchExtension" Grid.Row="1" Margin="5,0,0,0" Grid.Column="1" Watermark="vcdiff" Text="{Binding Config.PatchExtention}"></TextBox>
-        </Grid>
-        <Grid Grid.Column="1" Grid.Row="3" Grid.RowSpan="2" ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto" Margin="0,5,0,0">
+        <CheckBox Grid.Column="0" Grid.Row="2" Margin="0,5,0,0" Content="{i18n:Localize ZipFiles}" x:Name="chk_ZipFiles" IsChecked="{Binding Config.ZipFilesWhenDone}"></CheckBox>
+        <Grid Grid.Column="1" Grid.Row="2" Grid.RowSpan="2" ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto" Margin="0,5,0,0">
           <TextBlock Text="{i18n:Localize ZipName}" Grid.Row="1" VerticalAlignment="Center"></TextBlock>
           <TextBox x:Name="txt_bx_ZipName" IsEnabled="{Binding #chk_ZipFiles.IsChecked}" Grid.Row="1" Margin="5,0,5,0" Grid.Column="1" Watermark="patch" Text="{Binding Config.ZipName}"></TextBox>
           <TextBlock Text=".zip" Grid.Row="1" VerticalAlignment="Center" Grid.Column="2"></TextBlock>
         </Grid>
-        <!--Row 4 real-->
-        <Grid Grid.Column="0" Grid.Row="5" Grid.RowSpan="2" Grid.ColumnSpan="2" ColumnDefinitions="Auto,*" Margin="0,10,0,0">
-          <TextBlock Text="{i18n:Localize xDeltaArguments}" Grid.Row="1" VerticalAlignment="Center"></TextBlock>
-          <TextBox x:Name="txt_bx_xDeltaArguments" Grid.Row="1" Margin="5,0,0,0" Grid.Column="1" Text="{Binding Config.XDeltaArguments}"></TextBox>
+        <!--Row 3 and 4-->
+        <Grid Grid.Column="0" Grid.Row="3" Grid.RowSpan="2" ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto" Margin="0,10,10,0">
+          <TextBlock Text="{i18n:Localize PatchSubdir}" Grid.Row="0" VerticalAlignment="Center"></TextBlock>
+          <TextBox x:Name="txt_bx_PatchSubdir" Grid.Row="0" Margin="5,0,0,5" Grid.Column="1" Watermark="vcdiff" Text="{Binding Config.PatchSubdirectory}"></TextBox>
+        </Grid>
+        <Grid Grid.Column="1" Grid.Row="3" Grid.RowSpan="2" ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto" Margin="0,10,0,0">
+          <TextBlock Text="{i18n:Localize PatchExtension}" Grid.Row="1" VerticalAlignment="Center"></TextBlock>
+          <TextBox x:Name="txt_bx_PatchExtension" Grid.Row="1" Margin="5,0,0,5" Grid.Column="1" Watermark="vcdiff" Text="{Binding Config.PatchExtention}"></TextBox>
+        </Grid>
+        <!--Row 5-->
+        <Grid Grid.Column="0" Grid.Row="5" Grid.RowSpan="2" Grid.ColumnSpan="2" ColumnDefinitions="Auto,*" RowDefinitions="*,*" Margin="0,10,0,0">
+          <TextBlock Text="{i18n:Localize xDeltaArguments}" Grid.Row="0" VerticalAlignment="Center"></TextBlock>
+          <TextBox x:Name="txt_bx_xDeltaArguments" Grid.Row="0" Margin="10,0,0,0" Grid.Column="1" Text="{Binding Config.XDeltaArguments}"></TextBox>
+          <Button Grid.Row="1" Grid.ColumnSpan="2" x:Name="btn_ResetDefaults" VerticalAlignment="Bottom" Margin="10,10,0,0" MinWidth="100" Content="{i18n:Localize ResetDefaults}"></Button>
         </Grid>
       </Grid>
     </Border>
@@ -170,11 +172,7 @@ limitations under the License.-->
           <TextBlock VerticalAlignment="Bottom" TextWrapping="Wrap" Text="{i18n:Localize xDeltaOnPath}" IsVisible="{Binding XDeltaOnSystemPath}" Margin="5,0,5,0"></TextBlock>
           <TextBlock VerticalAlignment="Bottom" TextWrapping="Wrap" Text="{i18n:Localize xDeltaNotOnPath}" IsVisible="{Binding !XDeltaOnSystemPath}" Margin="5,0,5,0"></TextBlock>
         </StackPanel>
-        <Grid Grid.Column="1" RowDefinitions="36,36" VerticalAlignment="Bottom">
-          <Button Grid.Row="0" x:Name="btn_SaveSettings" Content="{i18n:Localize SaveSettings}" Margin="0,0,10,5" VerticalAlignment="Bottom" HorizontalAlignment="Stretch"></Button>
-          <Button Grid.Row="1" x:Name="btn_ResetDefaults" VerticalAlignment="Bottom" Margin="0,0,10,0" MinWidth="100" Content="{i18n:Localize ResetDefaults}" HorizontalAlignment="Stretch"></Button>
-        </Grid>
-        <Button Grid.Column="2" x:Name="btn_Go" MinWidth="100" MinHeight="70" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Content="{i18n:Localize Go}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="0,0,5,0">
+        <Button Grid.Column="2" x:Name="btn_Go" MinWidth="100" MinHeight="40" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Content="{i18n:Localize Go}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="0,0,5,0">
           <Button.IsEnabled>
             <MultiBinding Converter="{x:Static BoolConverters.And}}">
               <Binding Path="EqualFileCount"/>

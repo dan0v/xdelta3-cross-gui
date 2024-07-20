@@ -59,6 +59,13 @@ namespace xdelta3_cross_gui
                 txt_blk_MissingNew.Text = string.Join("\n", missingNewFiles ?? []);
                 grd_MissingFiles.IsVisible = true;
             }
+            if (grd_MissingFiles.IsVisible)
+            {
+                Height = 400;
+            } else
+            {
+                Height = 200;
+            }
 
             if (!string.IsNullOrEmpty(errorString))
             {
