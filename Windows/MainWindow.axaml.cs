@@ -53,6 +53,13 @@ namespace xdelta3_cross_gui
                 return Path.Combine(Environment.GetFolderPath(SpecialFolder.LocalApplicationData, SpecialFolderOption.DoNotVerify), "xdelta3-cross-gui");
             }
         }
+        public static string TEMPORARY_FILE_STORAGE
+        {
+            get
+            {
+                return Path.Combine(XDELTA3_APP_STORAGE, "temp");
+            }
+        }
         public static readonly string VERSION_CHECK_URL = "https://github.com/dan0v/xdelta3-cross-gui/releases/latest/download/version.txt";
         public static readonly string RELEASES_PAGE = "https://github.com/dan0v/xdelta3-cross-gui/releases/latest/";
 
@@ -362,15 +369,14 @@ namespace xdelta3_cross_gui
             }
             else
             {
-                PatchCreator patcher = new(this);
                 AlreadyBusy = true;
-                patcher.CreateReadme();
-                patcher.CopyNotice();
+                PatchCreator.Instance.CreateReadme();
+                PatchCreator.Instance.CopyNotice();
                 if (Config.CopyExecutables)
                 {
-                    patcher.CopyExecutables();
+                    PatchCreator.Instance.CopyExecutables();
                 }
-                patcher.CreatePatchingBatchFiles();
+                PatchCreator.Instance.CreatePatchingBatchFiles();
             }
         }
 
@@ -451,6 +457,7 @@ namespace xdelta3_cross_gui
 
             Localizer.Instance.PropertyChanged += Language_Changed;
 
+            CreateDirectories();
             Config.LoadSaved();
             SetXDeltaLocations();
 
@@ -780,6 +787,38 @@ namespace xdelta3_cross_gui
                 }
             }
         }
+
+        private void CreateDirectories()
+        {
+            try
+            {
+                if (!Directory.Exists(MainWindow.XDELTA3_APP_STORAGE))
+                {
+#if MacOS
+                    var oldLocalAppData = Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile, Environment.SpecialFolderOption.DoNotVerify), ".local/share/xdelta3-cross-gui");
+
+                    if (Directory.Exists(oldLocalAppData))
+                    {
+                        Directory.Move(oldLocalAppData, MainWindow.XDELTA3_APP_STORAGE);
+                    }
+                    else
+                    {
+                         Directory.CreateDirectory(MainWindow.XDELTA3_APP_STORAGE);
+                    }
+#else
+                    Directory.CreateDirectory(MainWindow.XDELTA3_APP_STORAGE);
+#endif
+                }
+                if (!Directory.Exists(MainWindow.TEMPORARY_FILE_STORAGE))
+                {
+                    Directory.CreateDirectory(MainWindow.TEMPORARY_FILE_STORAGE);
+                }
+            } catch(Exception e)
+            {
+                Debug.WriteLine(e);
+            }
+            
+        }
         #endregion
 
         new public event PropertyChangedEventHandler? PropertyChanged;
@@ -792,6 +831,7 @@ namespace xdelta3_cross_gui
         {
             Console.CanClose = true;
             Console.Close();
+            PatchCreator.Instance.OnClosing();
             base.OnClosing(e);
         }
 

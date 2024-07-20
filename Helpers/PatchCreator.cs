@@ -12,20 +12,28 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.*/
 
+using Avalonia.Controls;
 using Avalonia.Threading;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Runtime.InteropServices;
 using System.Threading;
+using static System.Environment;
 
 namespace xdelta3_cross_gui
 {
-    class PatchCreator(MainWindow MainParent)
+    class PatchCreator()
     {
-        private readonly MainWindow MainParent = MainParent;
+        private static PatchCreator? _instance;
+        public static PatchCreator Instance => _instance ??= new PatchCreator();
+
+        private readonly MainWindow MainParent = App.MainWindow ?? new();
+        private ConcurrentDictionary<string, Process?> _activeProcesses = [];
+
         private double _progress = 0;
         private bool _procFailed = false;
 
@@ -42,7 +50,7 @@ namespace xdelta3_cross_gui
                     Directory.CreateDirectory(Path.Combine(MainParent.Config.PatchFileDestination, "original"));
                 }
                 string readmeString = File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "doc", "1.Readme.txt"));
-                readmeString = String.Format(readmeString, MainWindow.VERSION);
+                readmeString = string.Format(readmeString, MainWindow.VERSION);
                 File.WriteAllText(Path.Combine(MainParent.Config.PatchFileDestination, "1.Readme.txt"), readmeString);
             }
             catch (Exception e)
@@ -97,8 +105,10 @@ namespace xdelta3_cross_gui
             patchWriterMac.WriteLine("mkdir ./output");
             patchWriterMac.WriteLine("chmod +x ./exec/" + Path.GetFileName(MainWindow.XDELTA3_BINARY_MACOS));
 
-            StreamWriter currentPatchScript = new(Path.Combine(MainParent.Config.PatchFileDestination, MainParent.Config.PatchSubdirectory, "doNotDelete-In-Progress.bat"));
-            
+            string currentPatchScriptPath = GetTempBatPath();
+
+            StreamWriter currentPatchScript = new(currentPatchScriptPath);
+
             // Enable UTF in windows
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
@@ -155,10 +165,12 @@ namespace xdelta3_cross_gui
             patchWriterMac.Close();
             currentPatchScript.Close();
 
-            CreateNewXDeltaThread().Start();
+            var threadId = Guid.NewGuid();
+            var thread = CreateNewXDeltaThread(threadId.ToString(), currentPatchScriptPath);
+            thread.Start();
         }
 
-        private Thread CreateNewXDeltaThread()
+        private Thread CreateNewXDeltaThread(string threadId, string tempFilePath)
         {
             return new Thread(() =>
             {
@@ -171,19 +183,17 @@ namespace xdelta3_cross_gui
 
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 {
-                    info.FileName = Path.Combine(MainParent.Config.PatchFileDestination, MainParent.Config.PatchSubdirectory, "doNotDelete-In-Progress.bat");
+                    info.FileName = tempFilePath;
                 }
                 else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
                 {
-                    string args = Path.Combine(MainParent.Config.PatchFileDestination, MainParent.Config.PatchSubdirectory, "doNotDelete-In-Progress.bat");
-                    string escapedArgs = "/bin/bash " + args.Replace("\"", "\\\"").Replace(" ", "\\ ").Replace("(", "\\(").Replace(")", "\\)");
+                    string escapedArgs = "/bin/bash " + tempFilePath.Replace("\"", "\\\"").Replace(" ", "\\ ").Replace("(", "\\(").Replace(")", "\\)");
                     info.FileName = "/bin/bash";
                     info.Arguments = $"-c \"{escapedArgs}\"";
                 }
                 else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
                 {
-                    string args = Path.Combine(MainParent.Config.PatchFileDestination, MainParent.Config.PatchSubdirectory, "doNotDelete-In-Progress.bat");
-                    string escapedArgs = "/bin/bash " + args.Replace("\"", "\\\"").Replace(" ", "\\ ").Replace("(", "\\(").Replace(")", "\\)");
+                    string escapedArgs = "/bin/bash " + tempFilePath.Replace("\"", "\\\"").Replace(" ", "\\ ").Replace("(", "\\(").Replace(")", "\\)");
                     info.FileName = "/bin/bash";
                     info.Arguments = $"-c \"{escapedArgs}\"";
                 }
@@ -197,10 +207,12 @@ namespace xdelta3_cross_gui
                 activeCMD.StartInfo = info;
                 activeCMD.EnableRaisingEvents = true;
 
+                _activeProcesses.TryAdd(threadId, activeCMD);
                 activeCMD.Start();
                 activeCMD.BeginOutputReadLine();
                 activeCMD.BeginErrorReadLine();
                 activeCMD.WaitForExit();
+                _activeProcesses.TryRemove(threadId, out var id);
 
                 if (_procFailed)
                 {
@@ -219,7 +231,7 @@ namespace xdelta3_cross_gui
 
                 try
                 {
-                    File.Delete(Path.Combine(MainParent.Config.PatchFileDestination, MainParent.Config.PatchSubdirectory, "doNotDelete-In-Progress.bat"));
+                    File.Delete(tempFilePath);
                 }
                 catch (Exception e)
                 {
@@ -230,10 +242,10 @@ namespace xdelta3_cross_gui
                 {
                     ZipFiles();
                 }
-                MainParent.AlreadyBusy = false;
-                MainParent.PatchProgress = 0;
                 Dispatcher.UIThread.InvokeAsync(new Action(() =>
                 {
+                    MainParent.AlreadyBusy = false;
+                    MainParent.PatchProgress = 0;
                     SuccessDialog dialog = new(MainParent);
                     dialog.Show();
                     dialog.Topmost = true;
@@ -290,6 +302,8 @@ namespace xdelta3_cross_gui
             }
         }
 
+        private string GetTempBatPath() =>  Path.Join(MainWindow.TEMPORARY_FILE_STORAGE, $"xdelta3-cross-{DateTimeOffset.Now.ToUnixTimeMilliseconds()}.bat");
+
         public void CopyExecutables()
         {
             if (!File.Exists(Path.Combine(MainParent.Config.PatchFileDestination, "exec")))
@@ -319,6 +333,22 @@ namespace xdelta3_cross_gui
             catch (Exception e)
             {
                 Debug.WriteLine(e);
+            }
+        }
+
+        public void OnClosing()
+        {
+            var threads = _activeProcesses;
+            foreach (var item in threads)
+            {
+                try
+                {
+                    item.Value?.Kill();
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e);
+                }
             }
         }
     }

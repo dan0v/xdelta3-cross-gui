@@ -193,23 +193,6 @@ namespace xdelta3_cross_gui
 
             try
             {
-                if (!Directory.Exists(MainWindow.XDELTA3_APP_STORAGE))
-                {
-#if MacOS
-                    var oldLocalAppData = Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile, Environment.SpecialFolderOption.DoNotVerify), ".local/share/xdelta3-cross-gui");
-
-                    if (Directory.Exists(oldLocalAppData))
-                    {
-                        Directory.Move(oldLocalAppData, MainWindow.XDELTA3_APP_STORAGE);
-                    }
-                    else
-                    {
-                         Directory.CreateDirectory(MainWindow.XDELTA3_APP_STORAGE);
-                    }
-#else
-                    Directory.CreateDirectory(MainWindow.XDELTA3_APP_STORAGE);
-#endif
-                }
                 await File.WriteAllTextAsync(Path.Combine(MainWindow.XDELTA3_APP_STORAGE, "options.json"), json);
             }
             catch (Exception e)
