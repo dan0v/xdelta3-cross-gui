@@ -15,7 +15,6 @@ limitations under the License.*/
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
@@ -29,7 +28,8 @@ namespace xdelta3_cross_gui
     public class Config : INotifyPropertyChanged
     {
         [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
-        private readonly JsonSerializerOptions jsonSerializerOptions = new() {
+        private readonly JsonSerializerOptions jsonSerializerOptions = new()
+        {
             WriteIndented = true,
             IncludeFields = true,
             TypeInfoResolver = JsonTypeInfoResolver.Combine(

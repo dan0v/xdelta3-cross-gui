@@ -12,7 +12,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.*/
 
-using Avalonia.Controls;
 using Avalonia.Threading;
 using System;
 using System.Collections.Concurrent;
@@ -21,11 +20,9 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using xdelta3_cross_gui.Models;
-using static System.Environment;
 
 namespace xdelta3_cross_gui
 {
@@ -37,7 +34,9 @@ namespace xdelta3_cross_gui
         private readonly MainWindow MainParent = App.MainWindow ?? new();
         private ConcurrentDictionary<string, Process?> _activeProcesses = [];
 
+        private static object _lock_progress = new();
         private double _progress = 0;
+        private static object _lock_procFailed = new();
         private bool _procFailed = false;
 
         public void CreateReadme()
@@ -60,7 +59,7 @@ namespace xdelta3_cross_gui
             {
                 Debug.WriteLine(e);
             }
-		}
+        }
 
         public void CopyNotice()
         {
@@ -207,7 +206,7 @@ namespace xdelta3_cross_gui
                 _activeProcesses.TryRemove(threadId, out var id);
             });
         }
-            
+
 
         private void FinishPatchCreationJob()
         {
@@ -263,13 +262,19 @@ namespace xdelta3_cross_gui
                 if (proc.HasExited && proc.ExitCode != 0)
                 {
                     Debug.WriteLine("Process exited with code: " + proc.ExitCode);
-                    _procFailed = true;
+                    lock (_lock_procFailed)
+                    {
+                        _procFailed = true;
+                    }
                 }
-                else if(proc.HasExited && proc.ExitCode == 0)
+                else if (proc.HasExited && proc.ExitCode == 0)
                 {
-                    _progress++;
-                    double prog = (_progress / MainParent.OldFilesList.Count) * 100;
-                    MainParent.PatchProgress = prog > 100 ? 100 : prog;
+                    lock (_lock_progress)
+                    {
+                        _progress++;
+                        double prog = (_progress / MainParent.OldFilesList.Count) * 100;
+                        MainParent.PatchProgress = prog > 100 ? 100 : prog;
+                    }
                 }
             }
         }
@@ -281,7 +286,10 @@ namespace xdelta3_cross_gui
                 Debug.WriteLine(e.Data);
                 if (e.Data.ToLower().Contains("error") || e.Data.ToLower().Contains("fail"))
                 {
-                    _procFailed = true;
+                    lock (_lock_procFailed)
+                    {
+                        _procFailed = true;
+                    }
                 }
 
                 MainParent.Console.AddLine(e.Data);

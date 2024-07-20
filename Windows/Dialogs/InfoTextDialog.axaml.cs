@@ -14,7 +14,6 @@ limitations under the License.*/
 
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
 using System;
 using System.IO;
 

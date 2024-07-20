@@ -14,10 +14,8 @@ limitations under the License.*/
 
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
 using System;
-using System.ComponentModel;
 using System.Diagnostics;
 
 namespace xdelta3_cross_gui
