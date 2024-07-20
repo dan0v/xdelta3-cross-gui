@@ -53,13 +53,6 @@ namespace xdelta3_cross_gui
                 return Path.Combine(Environment.GetFolderPath(SpecialFolder.LocalApplicationData, SpecialFolderOption.DoNotVerify), "xdelta3-cross-gui");
             }
         }
-        public static string TEMPORARY_FILE_STORAGE
-        {
-            get
-            {
-                return Path.Combine(XDELTA3_APP_STORAGE, "temp");
-            }
-        }
         public static readonly string VERSION_CHECK_URL = "https://github.com/dan0v/xdelta3-cross-gui/releases/latest/download/version.txt";
         public static readonly string RELEASES_PAGE = "https://github.com/dan0v/xdelta3-cross-gui/releases/latest/";
 
@@ -804,15 +797,10 @@ namespace xdelta3_cross_gui
                     Directory.CreateDirectory(MainWindow.XDELTA3_APP_STORAGE);
 #endif
                 }
-                if (!Directory.Exists(MainWindow.TEMPORARY_FILE_STORAGE))
-                {
-                    Directory.CreateDirectory(MainWindow.TEMPORARY_FILE_STORAGE);
-                }
             } catch(Exception e)
             {
                 Debug.WriteLine(e);
             }
-            
         }
         #endregion
 
