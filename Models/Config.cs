@@ -38,127 +38,130 @@ namespace xdelta3_cross_gui
         };
 
         public string Language { get; set; } = "English";
-        private string _PatchExtention { get; set; } = "vcdiff";
-        private string _PatchSubdirectory { get; set; } = "vcdiff";
-        private string _PatchFileDestination { get; set; } = "";
-        private string _XDeltaArguments { get; set; } = "-B 1073741824 -e -9 -S djw -vfs";
-        private string _ZipName { get; set; } = "patch";
-        private bool _ShowFullPaths { get; set; } = false;
-        private bool _CopyExecutables { get; set; } = true;
-        private bool _ZipFilesWhenDone { get; set; } = false;
-        private bool _ShowTerminal { get; set; } = false;
+        private string _patchExtention { get; set; } = "vcdiff";
+        private string _patchSubdirectory { get; set; } = "vcdiff";
+        private string _patchFileDestination { get; set; } = "";
+        private string _xDeltaArguments { get; set; } = "-B 1073741824 -e -9 -S djw -vfs";
+        private string _zipName { get; set; } = "patch";
+        private bool _showFullPaths { get; set; } = false;
+        private bool _copyExecutables { get; set; } = true;
+        private bool _zipFilesWhenDone { get; set; } = false;
+        private bool _showTerminal { get; set; } = false;
 
         public string PatchExtention
         {
-            get => _PatchExtention;
+            get => _patchExtention;
             set
             {
-                if (value != _PatchExtention)
+                if (value != _patchExtention)
                 {
-                    _PatchExtention = value;
+                    _patchExtention = value;
                     OnPropertyChanged();
+                    SaveCurrent();
                 }
             }
         }
         public string PatchSubdirectory
         {
-            get => _PatchSubdirectory;
+            get => _patchSubdirectory;
             set
             {
-                if (value != _PatchSubdirectory)
+                if (value != _patchSubdirectory)
                 {
-                    _PatchSubdirectory = value;
+                    _patchSubdirectory = value;
                     OnPropertyChanged();
+                    SaveCurrent();
                 }
             }
         }
         public string XDeltaArguments
         {
-            get => _XDeltaArguments;
+            get => _xDeltaArguments;
             set
             {
-                if (value != _XDeltaArguments)
+                if (value != _xDeltaArguments)
                 {
-                    _XDeltaArguments = value;
+                    _xDeltaArguments = value;
                     OnPropertyChanged();
+                    SaveCurrent();
                 }
             }
         }
         public string PatchFileDestination
         {
-            get => _PatchFileDestination;
+            get => _patchFileDestination;
             set
             {
-                if (value != _PatchFileDestination)
+                if (value != _patchFileDestination)
                 {
-                    _PatchFileDestination = value;
+                    _patchFileDestination = value;
                     OnPropertyChanged();
                 }
             }
         }
         public string ZipName
         {
-            get => _ZipName;
+            get => _zipName;
             set
             {
-                if (value != _ZipName)
+                if (value != _zipName)
                 {
-                    _ZipName = value;
+                    _zipName = value;
                     OnPropertyChanged();
                 }
             }
         }
         public bool ShowFullPaths
         {
-            get => _ShowFullPaths;
+            get => _showFullPaths;
             set
             {
-                if (value != _ShowFullPaths)
+                if (value != _showFullPaths)
                 {
-                    _ShowFullPaths = value;
+                    _showFullPaths = value;
                     OnPropertyChanged();
                 }
             }
         }
         public bool CopyExecutables
         {
-            get => _CopyExecutables;
+            get => _copyExecutables;
             set
             {
-                if (value != _CopyExecutables)
+                if (value != _copyExecutables)
                 {
-                    _CopyExecutables = value;
+                    _copyExecutables = value;
                     OnPropertyChanged();
                 }
             }
         }
         public bool ZipFilesWhenDone
         {
-            get => _ZipFilesWhenDone;
+            get => _zipFilesWhenDone;
             set
             {
-                if (value != _ZipFilesWhenDone)
+                if (value != _zipFilesWhenDone)
                 {
-                    _ZipFilesWhenDone = value;
+                    _zipFilesWhenDone = value;
                     OnPropertyChanged();
                 }
             }
         }
         public bool ShowTerminal
         {
-            get => _ShowTerminal;
+            get => _showTerminal;
             set
             {
-                if (value != _ShowTerminal)
+                if (value != _showTerminal)
                 {
-                    _ShowTerminal = value;
+                    _showTerminal = value;
                     OnPropertyChanged();
                 }
             }
         }
         public Config()
         {
-            this.ResetToDefault();
+            ResetToDefault();
         }
 
         public void LoadSaved()
@@ -170,16 +173,16 @@ namespace xdelta3_cross_gui
 
                 var json = JsonSerializer.Deserialize<Config>(savedSettings, jsonSerializerOptions) ?? new();
 
-                this.Language = json.Language;
-                this.PatchExtention = json.PatchExtention;
-                this.PatchSubdirectory = json.PatchSubdirectory;
-                this.PatchFileDestination = json.PatchFileDestination;
-                this.XDeltaArguments = json.XDeltaArguments;
-                this.ZipName = json.ZipName;
-                this.ShowFullPaths = json.ShowFullPaths;
-                this.CopyExecutables = json.CopyExecutables;
-                this.ZipFilesWhenDone = json.ZipFilesWhenDone;
-                this.ShowTerminal = json.ShowTerminal;
+                Language = json.Language;
+                PatchExtention = json.PatchExtention;
+                PatchSubdirectory = json.PatchSubdirectory;
+                PatchFileDestination = json.PatchFileDestination;
+                XDeltaArguments = json.XDeltaArguments;
+                ZipName = json.ZipName;
+                ShowFullPaths = json.ShowFullPaths;
+                CopyExecutables = json.CopyExecutables;
+                ZipFilesWhenDone = json.ZipFilesWhenDone;
+                ShowTerminal = json.ShowTerminal;
             }
             catch (Exception e)
             {
@@ -193,23 +196,6 @@ namespace xdelta3_cross_gui
 
             try
             {
-                if (!Directory.Exists(MainWindow.XDELTA3_APP_STORAGE))
-                {
-#if MacOS
-                    var oldLocalAppData = Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile, Environment.SpecialFolderOption.DoNotVerify), ".local/share/xdelta3-cross-gui");
-
-                    if (Directory.Exists(oldLocalAppData))
-                    {
-                        Directory.Move(oldLocalAppData, MainWindow.XDELTA3_APP_STORAGE);
-                    }
-                    else
-                    {
-                         Directory.CreateDirectory(MainWindow.XDELTA3_APP_STORAGE);
-                    }
-#else
-                    Directory.CreateDirectory(MainWindow.XDELTA3_APP_STORAGE);
-#endif
-                }
                 await File.WriteAllTextAsync(Path.Combine(MainWindow.XDELTA3_APP_STORAGE, "options.json"), json);
             }
             catch (Exception e)
@@ -220,39 +206,39 @@ namespace xdelta3_cross_gui
 
         public void ResetToDefault()
         {
-            this.PatchExtention = "vcdiff";
-            this.PatchSubdirectory = "vcdiff";
-            this.XDeltaArguments = "-B 1073741824 -e -9 -S djw -vfs";
-            this.ZipName = "patch";
-            this.PatchFileDestination = "";
-            this.ShowFullPaths = false;
-            this.CopyExecutables = true;
-            this.ZipFilesWhenDone = false;
-            this.ShowTerminal = false;
+            PatchExtention = "vcdiff";
+            PatchSubdirectory = "vcdiff";
+            XDeltaArguments = "-B 1073741824 -e -9 -S djw -vfs";
+            ZipName = "patch";
+            PatchFileDestination = "";
+            ShowFullPaths = false;
+            CopyExecutables = true;
+            ZipFilesWhenDone = false;
+            ShowTerminal = false;
         }
 
         public bool Validate()
         {
             bool valid = true;
 
-            if (string.IsNullOrEmpty(this.PatchFileDestination))
+            if (string.IsNullOrEmpty(PatchFileDestination))
             {
                 valid = false;
             }
 
-            if (string.IsNullOrEmpty(this.PatchExtention) || !IsValidFilePath(this.PatchExtention))
+            if (string.IsNullOrEmpty(PatchExtention) || !IsValidFilePath(PatchExtention))
             {
-                this.PatchExtention = "vcdiff";
+                PatchExtention = "vcdiff";
                 valid = false;
             }
-            if (string.IsNullOrEmpty(this.PatchSubdirectory) || !IsValidFilePath(this.PatchSubdirectory))
+            if (string.IsNullOrEmpty(PatchSubdirectory) || !IsValidFilePath(PatchSubdirectory))
             {
-                this.PatchSubdirectory = "vcdiff";
+                PatchSubdirectory = "vcdiff";
                 valid = false;
             }
-            if (this.ZipFilesWhenDone && (string.IsNullOrEmpty(this.ZipName) || !IsValidFilePath(this.ZipName)))
+            if (ZipFilesWhenDone && (string.IsNullOrEmpty(ZipName) || !IsValidFilePath(ZipName)))
             {
-                this.ZipName = "patch";
+                ZipName = "patch";
                 valid = false;
             }
 

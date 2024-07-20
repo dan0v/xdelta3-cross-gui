@@ -28,27 +28,27 @@ namespace xdelta3_cross_gui
 
         public UpdateDialog(MainWindow MainParent, string newVersion)
         {
-            this.InitializeComponent();
+            InitializeComponent();
             this.MainParent = MainParent;
             this.newVersion = newVersion;
-            this.Configure();
+            Configure();
         }
         private void Configure()
         {
-            this.btn_Dismiss.Click += DismissClicked;
-            this.btn_GoToReleases.Click += GoToReleasesClicked;
-            this.txt_blk_Prompt.Text = string.Format(Localizer.Instance["NewVersionText"], newVersion);
+            btn_Dismiss.Click += DismissClicked;
+            btn_GoToReleases.Click += GoToReleasesClicked;
+            txt_blk_Prompt.Text = string.Format(Localizer.Instance["NewVersionText"], newVersion);
         }
 
         private void DismissClicked(object? sender, RoutedEventArgs args)
         {
-            this.Close();
+            Close();
         }
         private void GoToReleasesClicked(object? sender, RoutedEventArgs args)
         {
             try
             {
-                ProcessStartInfo url = new ProcessStartInfo
+                ProcessStartInfo url = new()
                 {
                     FileName = MainWindow.RELEASES_PAGE,
                     UseShellExecute = true

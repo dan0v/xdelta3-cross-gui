@@ -29,28 +29,28 @@ namespace xdelta3_cross_gui
 
         public SuccessDialog(MainWindow MainParent)
         {
-            this.InitializeComponent();
+            InitializeComponent();
             this.MainParent = MainParent;
-            this.Configure();
+            Configure();
         }
         private void Configure()
         {
-            if (this.MainParent.Config.ZipFilesWhenDone)
+            if (MainParent.Config.ZipFilesWhenDone)
             {
-                this._Destination = Path.Combine(this.MainParent.Config.PatchFileDestination, "..");
+                _Destination = Path.Combine(MainParent.Config.PatchFileDestination, "..");
             }
             else
             {
-                this._Destination = this.MainParent.Config.PatchFileDestination;
+                _Destination = MainParent.Config.PatchFileDestination;
             }
 
-            this.btn_Dismiss.Click += DismissClicked;
-            this.btn_OpenDestination.Click += OpenDestinationClicked;
+            btn_Dismiss.Click += DismissClicked;
+            btn_OpenDestination.Click += OpenDestinationClicked;
         }
 
         private void DismissClicked(object? sender, RoutedEventArgs args)
         {
-            this.Close();
+            Close();
         }
         private void OpenDestinationClicked(object? sender, RoutedEventArgs args)
         {
@@ -58,7 +58,7 @@ namespace xdelta3_cross_gui
             {
                 Process.Start(new ProcessStartInfo
                 {
-                    FileName = this._Destination + Path.DirectorySeparatorChar,
+                    FileName = _Destination + Path.DirectorySeparatorChar,
                     UseShellExecute = true
                 });
             }

@@ -5,22 +5,19 @@ using System;
 
 namespace xdelta3_cross_gui.Localization
 {
-    class LocalizeExtension : MarkupExtension
+    class LocalizeExtension(string key) : MarkupExtension
     {
-        public LocalizeExtension(string key)
-        {
-            this.Key = key;
-        }
+        public string Key { get; set; } = key;
 
-        public string Key { get; set; }
-
-        public string Context { get; set; }
+        public string? Context { get; set; }
 
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
             var keyToUse = Key;
             if (!string.IsNullOrWhiteSpace(Context))
+            {
                 keyToUse = $"{Context}/{Key}";
+            }
 
             var binding = new ReflectionBindingExtension($"[{keyToUse}]")
             {

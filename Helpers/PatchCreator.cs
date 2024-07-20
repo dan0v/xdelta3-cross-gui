@@ -12,41 +12,48 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.*/
 
+using Avalonia.Controls;
 using Avalonia.Threading;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Threading.Tasks;
+using xdelta3_cross_gui.Models;
+using static System.Environment;
 
 namespace xdelta3_cross_gui
 {
-    class PatchCreator
+    class PatchCreator()
     {
-        private MainWindow MainParent;
-        private double _Progress = 0;
-        private bool _ProcFailed = false;
+        private static PatchCreator? _instance;
+        public static PatchCreator Instance => _instance ??= new PatchCreator();
 
-        public PatchCreator(MainWindow MainParent)
-        {
-            this.MainParent = MainParent;
-        }
+        private readonly MainWindow MainParent = App.MainWindow ?? new();
+        private ConcurrentDictionary<string, Process?> _activeProcesses = [];
+
+        private double _progress = 0;
+        private bool _procFailed = false;
+
         public void CreateReadme()
         {
             try
             {
-                if (!File.Exists(Path.Combine(this.MainParent.Config.PatchFileDestination, "exec")))
+                if (!File.Exists(Path.Combine(MainParent.Config.PatchFileDestination, "exec")))
                 {
-                    Directory.CreateDirectory(Path.Combine(this.MainParent.Config.PatchFileDestination, "exec"));
+                    Directory.CreateDirectory(Path.Combine(MainParent.Config.PatchFileDestination, "exec"));
                 }
-                if (!File.Exists(Path.Combine(this.MainParent.Config.PatchFileDestination, "original")))
+                if (!File.Exists(Path.Combine(MainParent.Config.PatchFileDestination, "original")))
                 {
-                    Directory.CreateDirectory(Path.Combine(this.MainParent.Config.PatchFileDestination, "original"));
+                    Directory.CreateDirectory(Path.Combine(MainParent.Config.PatchFileDestination, "original"));
                 }
                 string readmeString = File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "doc", "1.Readme.txt"));
-                readmeString = String.Format(readmeString, MainWindow.VERSION);
+                readmeString = string.Format(readmeString, MainWindow.VERSION);
                 File.WriteAllText(Path.Combine(MainParent.Config.PatchFileDestination, "1.Readme.txt"), readmeString);
             }
             catch (Exception e)
@@ -69,212 +76,201 @@ namespace xdelta3_cross_gui
 
         public void CreatePatchingBatchFiles()
         {
-            this.MainParent.PatchProgress = 0;
-            this._Progress = 0;
+            MainParent.PatchProgress = 0;
+            _progress = 0;
+            _procFailed = false;
 
-            if (!File.Exists(Path.Combine(MainParent.Config.PatchFileDestination, this.MainParent.Config.PatchSubdirectory)))
+            if (!File.Exists(Path.Combine(MainParent.Config.PatchFileDestination, MainParent.Config.PatchSubdirectory)))
             {
-                Directory.CreateDirectory(Path.Combine(MainParent.Config.PatchFileDestination, this.MainParent.Config.PatchSubdirectory));
+                Directory.CreateDirectory(Path.Combine(MainParent.Config.PatchFileDestination, MainParent.Config.PatchSubdirectory));
             }
 
-            //Batch creation - Windows//
-            StreamWriter patchWriterWindows = new StreamWriter(Path.Combine(MainParent.Config.PatchFileDestination, "2.Apply Patch-Windows.bat"));
+            StreamWriter patchWriterWindows = new(Path.Combine(MainParent.Config.PatchFileDestination, "2.Apply Patch-Windows.bat"));
+            StreamWriter patchWriterLinux = new(Path.Combine(MainParent.Config.PatchFileDestination, "2.Apply Patch-Linux.sh"))
+            {
+                NewLine = "\n"
+            };
+            StreamWriter patchWriterMac = new(Path.Combine(MainParent.Config.PatchFileDestination, "2.Apply Patch-Mac.command"))
+            {
+                NewLine = "\n"
+            };
+
+            string[] oldFileNames = MainParent.OldFilesList.Select(c => c.ShortName).ToArray();
+            string[] newFileNames = MainParent.NewFilesList.Select(c => c.ShortName).ToArray();
+
             patchWriterWindows.WriteLine("@echo off");
             patchWriterWindows.WriteLine("CHCP 65001");
             patchWriterWindows.WriteLine("mkdir output");
-            // Batch creation - Linux //
-            StreamWriter patchWriterLinux = new StreamWriter(Path.Combine(MainParent.Config.PatchFileDestination, "2.Apply Patch-Linux.sh"));
-            patchWriterLinux.NewLine = "\n";
+            patchWriterWindows.WriteLine("echo Place the files to be patched in the \"original\" directory with the following names:");
+            patchWriterWindows.WriteLine("echo --------------------");
+
             patchWriterLinux.WriteLine("#!/bin/sh");
             patchWriterLinux.WriteLine("cd \"$(cd \"$(dirname \"$0\")\" && pwd)\"");
             patchWriterLinux.WriteLine("mkdir ./output");
             patchWriterLinux.WriteLine("chmod +x ./exec/" + Path.GetFileName(MainWindow.XDELTA3_BINARY_LINUX));
-            // Batch creation - Mac //
-            StreamWriter patchWriterMac = new StreamWriter(Path.Combine(MainParent.Config.PatchFileDestination, "2.Apply Patch-Mac.command"));
-            patchWriterMac.NewLine = "\n";
+            patchWriterLinux.WriteLine("echo Place the files to be patched in the \\\"original\\\" directory with the following names:");
+            patchWriterLinux.WriteLine("echo --------------------");
+
             patchWriterMac.WriteLine("#!/bin/sh");
             patchWriterMac.WriteLine("cd \"$(cd \"$(dirname \"$0\")\" && pwd)\"");
             patchWriterMac.WriteLine("mkdir ./output");
             patchWriterMac.WriteLine("chmod +x ./exec/" + Path.GetFileName(MainWindow.XDELTA3_BINARY_MACOS));
-
-            StreamWriter currentPatchScript = new StreamWriter(Path.Combine(MainParent.Config.PatchFileDestination, this.MainParent.Config.PatchSubdirectory, "doNotDelete-In-Progress.bat"));
-            
-            // Enable UTF in windows
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                currentPatchScript.WriteLine("CHCP 65001\n");
-            }
-
-            List<string> oldFileNames = new List<string>();
-            List<string> newFileNames = new List<string>();
-            this.MainParent.OldFilesList.ForEach(c => oldFileNames.Add(c.ShortName));
-            this.MainParent.NewFilesList.ForEach(c => newFileNames.Add(c.ShortName));
-
-            patchWriterWindows.WriteLine("echo Place the files to be patched in the \"original\" directory with the following names:");
-            patchWriterLinux.WriteLine("echo Place the files to be patched in the \\\"original\\\" directory with the following names:");
             patchWriterMac.WriteLine("echo Place the files to be patched in the \\\"original\\\" directory with the following names:");
-            patchWriterWindows.WriteLine("echo --------------------");
-            patchWriterLinux.WriteLine("echo --------------------");
             patchWriterMac.WriteLine("echo --------------------");
 
-            for (int i = 0; i < this.MainParent.OldFilesList.Count; i++)
+            for (int i = 0; i < MainParent.OldFilesList.Count; i++)
             {
                 patchWriterWindows.WriteLine("echo " + oldFileNames[i]);
                 patchWriterLinux.WriteLine("echo \"" + oldFileNames[i] + "\"");
                 patchWriterMac.WriteLine("echo \"" + oldFileNames[i] + "\"");
             }
+
             patchWriterWindows.WriteLine("echo --------------------");
-            patchWriterLinux.WriteLine("echo --------------------");
-            patchWriterMac.WriteLine("echo --------------------");
-
             patchWriterWindows.WriteLine("echo Patched files will be in the \"output\" directory");
-            patchWriterLinux.WriteLine("echo Patched files will be in the \\\"output\\\" directory");
-            patchWriterMac.WriteLine("echo Patched files will be in the \\\"output\\\" directory");
-
             patchWriterWindows.WriteLine("pause");
+
+            patchWriterLinux.WriteLine("echo --------------------");
+            patchWriterLinux.WriteLine("echo Patched files will be in the \\\"output\\\" directory");
             patchWriterLinux.WriteLine("read -p \"Press enter to continue...\" inp");
+
+            patchWriterMac.WriteLine("echo --------------------");
+            patchWriterMac.WriteLine("echo Patched files will be in the \\\"output\\\" directory");
             patchWriterMac.WriteLine("read -p \"Press enter to continue...\" inp");
 
-
-            for (int i = 0; i < this.MainParent.OldFilesList.Count; i++)
+            List<PatchCreationJob> patchJobs = [];
+            for (int i = 0; i < MainParent.OldFilesList.Count; i++)
             {
-                // Batch creation - Windows
-                patchWriterWindows.WriteLine("exec\\" + Path.GetFileName(MainWindow.XDELTA3_BINARY_WINDOWS) + " -v -d -s \".\\original\\{0}\" " + "\".\\" + this.MainParent.Config.PatchSubdirectory + "\\" + "{0}." + this.MainParent.Config.PatchExtention + "\" \".\\output\\{2}\"", oldFileNames[i], this.MainParent.Config.PatchSubdirectory + "\\" + (i + 1).ToString(), newFileNames[i]);
-                // Batch creation - Linux //
-                patchWriterLinux.WriteLine("./exec/" + Path.GetFileName(MainWindow.XDELTA3_BINARY_LINUX) + " -v -d -s \"./original/{0}\" " + '"' + this.MainParent.Config.PatchSubdirectory + '/' + "{0}." + this.MainParent.Config.PatchExtention + "\" \"./output/{2}\"", oldFileNames[i], this.MainParent.Config.PatchSubdirectory + (i + 1).ToString(), newFileNames[i]);
-                // Batch creation - Mac //
-                patchWriterMac.WriteLine("./exec/" + Path.GetFileName(MainWindow.XDELTA3_BINARY_MACOS) + " -v -d -s \"./original/{0}\" " + '"' + this.MainParent.Config.PatchSubdirectory + '/' + "{0}." + this.MainParent.Config.PatchExtention + "\" \"./output/{2}\"", oldFileNames[i], this.MainParent.Config.PatchSubdirectory + (i + 1).ToString(), newFileNames[i]);
+                patchWriterWindows.WriteLine("exec\\" + Path.GetFileName(MainWindow.XDELTA3_BINARY_WINDOWS) + " -v -d -s \".\\original\\{0}\" " + "\".\\" + MainParent.Config.PatchSubdirectory + "\\" + "{0}." + MainParent.Config.PatchExtention + "\" \".\\output\\{2}\"", oldFileNames[i], MainParent.Config.PatchSubdirectory + "\\" + (i + 1).ToString(), newFileNames[i]);
+                patchWriterLinux.WriteLine("./exec/" + Path.GetFileName(MainWindow.XDELTA3_BINARY_LINUX) + " -v -d -s \"./original/{0}\" " + '"' + MainParent.Config.PatchSubdirectory + '/' + "{0}." + MainParent.Config.PatchExtention + "\" \"./output/{2}\"", oldFileNames[i], MainParent.Config.PatchSubdirectory + (i + 1).ToString(), newFileNames[i]);
+                patchWriterMac.WriteLine("./exec/" + Path.GetFileName(MainWindow.XDELTA3_BINARY_MACOS) + " -v -d -s \"./original/{0}\" " + '"' + MainParent.Config.PatchSubdirectory + '/' + "{0}." + MainParent.Config.PatchExtention + "\" \"./output/{2}\"", oldFileNames[i], MainParent.Config.PatchSubdirectory + (i + 1).ToString(), newFileNames[i]);
 
                 // Actual script to generate patch files
-                currentPatchScript.WriteLine("\"" + MainWindow.XDELTA3_PATH + "\"" + " " + this.MainParent.Config.XDeltaArguments + " " + "\"" + this.MainParent.OldFilesList[i].FullPath + "\" \"" + this.MainParent.NewFilesList[i].FullPath + "\" \"" + Path.Combine(this.MainParent.Config.PatchFileDestination, this.MainParent.Config.PatchSubdirectory, oldFileNames[i]) + "." + this.MainParent.Config.PatchExtention + "\"");
+                patchJobs.Add(new(MainParent.Config.XDeltaArguments, MainParent.OldFilesList[i].FullPath, MainParent.NewFilesList[i].FullPath, Path.Combine(MainParent.Config.PatchFileDestination, MainParent.Config.PatchSubdirectory, oldFileNames[i]) + "." + MainParent.Config.PatchExtention));
             }
             patchWriterWindows.WriteLine("echo Completed!");
             patchWriterWindows.WriteLine("@pause");
             patchWriterWindows.Close();
             patchWriterLinux.Close();
             patchWriterMac.Close();
-            currentPatchScript.Close();
 
-            CreateNewXDeltaThread().Start();
+            List<Task> tasks = [];
+
+            foreach (var job in patchJobs)
+            {
+                tasks.Add(CreateNewXDeltaTask(Guid.NewGuid().ToString(), job));
+            }
+
+            new Thread(() =>
+            {
+                Task.WaitAll(tasks.ToArray());
+                FinishPatchCreationJob();
+            })
+            {
+                IsBackground = true
+            }.Start();
         }
 
-        private Thread CreateNewXDeltaThread()
+        private Task CreateNewXDeltaTask(string threadId, PatchCreationJob patchCreationJob)
         {
-            return new Thread(() =>
+            return Task.Run(() =>
             {
-                _ProcFailed = false;
-                using (Process activeCMD = new Process())
+                if (_procFailed)
                 {
-                    activeCMD.OutputDataReceived += HandleCMDOutput;
-                    activeCMD.ErrorDataReceived += HandleCMDError;
-
-                    ProcessStartInfo info = new ProcessStartInfo();
-
-                    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                    {
-                        info.FileName = Path.Combine(this.MainParent.Config.PatchFileDestination, this.MainParent.Config.PatchSubdirectory, "doNotDelete-In-Progress.bat");
-                    }
-                    else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                    {
-                        string args = Path.Combine(this.MainParent.Config.PatchFileDestination, this.MainParent.Config.PatchSubdirectory, "doNotDelete-In-Progress.bat");
-                        string escapedArgs = "/bin/bash " + args.Replace("\"", "\\\"").Replace(" ", "\\ ").Replace("(", "\\(").Replace(")", "\\)");
-                        info.FileName = "/bin/bash";
-                        info.Arguments = $"-c \"{escapedArgs}\"";
-                    }
-                    else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-                    {
-                        string args = Path.Combine(this.MainParent.Config.PatchFileDestination, this.MainParent.Config.PatchSubdirectory, "doNotDelete-In-Progress.bat");
-                        string escapedArgs = "/bin/bash " + args.Replace("\"", "\\\"").Replace(" ", "\\ ").Replace("(", "\\(").Replace(")", "\\)");
-                        info.FileName = "/bin/bash";
-                        info.Arguments = $"-c \"{escapedArgs}\"";
-                    }
-
-                    info.WindowStyle = ProcessWindowStyle.Hidden;
-                    info.CreateNoWindow = true;
-                    info.UseShellExecute = false;
-                    info.RedirectStandardOutput = true;
-                    info.RedirectStandardError = true;
-
-                    activeCMD.StartInfo = info;
-                    activeCMD.EnableRaisingEvents = true;
-
-                    activeCMD.Start();
-                    activeCMD.BeginOutputReadLine();
-                    activeCMD.BeginErrorReadLine();
-                    activeCMD.WaitForExit();
-
-                    if (_ProcFailed)
-                    {
-                        Dispatcher.UIThread.InvokeAsync(new Action(() =>
-                        {
-                            this.MainParent.AlreadyBusy = false;
-                            this.MainParent.PatchProgress = 0;
-                            MainParent.ShowTerminal = true;
-                            ErrorDialog dialog = new ErrorDialog(Localization.Localizer.Instance["xDeltaProcessError"]);
-                            dialog.Show();
-                            dialog.Topmost = true;
-                            dialog.Topmost = false;
-                        }));
-                        return;
-                    }
-
-                    try
-                    {
-                        File.Delete(Path.Combine(this.MainParent.Config.PatchFileDestination, this.MainParent.Config.PatchSubdirectory, "doNotDelete-In-Progress.bat"));
-                    }
-                    catch (Exception e)
-                    {
-                        Debug.WriteLine(e);
-                    }
-
-                    if (this.MainParent.Config.ZipFilesWhenDone)
-                    {
-                        this.ZipFiles();
-                    }
-                    this.MainParent.AlreadyBusy = false;
-                    this.MainParent.PatchProgress = 0;
-                    Dispatcher.UIThread.InvokeAsync(new Action(() =>
-                    {
-                        SuccessDialog dialog = new SuccessDialog(this.MainParent);
-                        dialog.Show();
-                        dialog.Topmost = true;
-                        dialog.Topmost = false;
-                    }));
+                    return;
                 }
-            })
-            { IsBackground = true };
+
+                using Process activeCMD = new();
+                activeCMD.OutputDataReceived += HandleCMDOutput;
+                activeCMD.ErrorDataReceived += HandleCMDError;
+
+                ProcessStartInfo info = new();
+
+                info.FileName = MainWindow.XDELTA3_PATH;
+                info.Arguments = $"""{patchCreationJob.Options} "{patchCreationJob.Source}" "{patchCreationJob.Goal}" "{patchCreationJob.PatchDestination}" """;
+
+                info.WindowStyle = ProcessWindowStyle.Hidden;
+                info.CreateNoWindow = true;
+                info.UseShellExecute = false;
+                info.RedirectStandardOutput = true;
+                info.RedirectStandardError = true;
+
+                activeCMD.StartInfo = info;
+                activeCMD.EnableRaisingEvents = true;
+
+                _activeProcesses.TryAdd(threadId, activeCMD);
+                activeCMD.Start();
+                activeCMD.BeginOutputReadLine();
+                activeCMD.BeginErrorReadLine();
+                activeCMD.WaitForExit();
+                activeCMD.OutputDataReceived -= HandleCMDOutput;
+                activeCMD.ErrorDataReceived -= HandleCMDError;
+                _activeProcesses.TryRemove(threadId, out var id);
+            });
+        }
+            
+
+        private void FinishPatchCreationJob()
+        {
+            if (_procFailed)
+            {
+                Dispatcher.UIThread.InvokeAsync(new Action(() =>
+                {
+                    MainParent.AlreadyBusy = false;
+                    MainParent.PatchProgress = 0;
+                    MainParent.ShowTerminal = true;
+                    ErrorDialog dialog = new(Localization.Localizer.Instance["xDeltaProcessError"]);
+                    dialog.Show();
+                    dialog.Topmost = true;
+                    dialog.Topmost = false;
+                }));
+                return;
+            }
+
+            if (MainParent.Config.ZipFilesWhenDone)
+            {
+                ZipFiles();
+            }
+            Dispatcher.UIThread.InvokeAsync(new Action(() =>
+            {
+                MainParent.AlreadyBusy = false;
+                MainParent.PatchProgress = 0;
+                SuccessDialog dialog = new(MainParent);
+                dialog.Show();
+                dialog.Topmost = true;
+                dialog.Topmost = false;
+            }));
         }
 
         private void ZipFiles()
         {
             new Thread(() =>
             {
-                this.MainParent.PatchProgressIsIndeterminate = true;
-                if (File.Exists(Path.Combine(this.MainParent.Config.PatchFileDestination, "..", this.MainParent.Config.ZipName + ".zip")))
+                MainParent.PatchProgressIsIndeterminate = true;
+                if (File.Exists(Path.Combine(MainParent.Config.PatchFileDestination, "..", MainParent.Config.ZipName + ".zip")))
                 {
-                    File.Delete(Path.Combine(this.MainParent.Config.PatchFileDestination, "..", this.MainParent.Config.ZipName + ".zip"));
+                    File.Delete(Path.Combine(MainParent.Config.PatchFileDestination, "..", MainParent.Config.ZipName + ".zip"));
                 }
-                ZipFile.CreateFromDirectory(this.MainParent.Config.PatchFileDestination, Path.Combine(this.MainParent.Config.PatchFileDestination, "..", this.MainParent.Config.ZipName + ".zip"));
-                this.MainParent.PatchProgressIsIndeterminate = false;
+                ZipFile.CreateFromDirectory(MainParent.Config.PatchFileDestination, Path.Combine(MainParent.Config.PatchFileDestination, "..", MainParent.Config.ZipName + ".zip"));
+                MainParent.PatchProgressIsIndeterminate = false;
             })
             { IsBackground = true }.Start();
         }
 
         private void HandleCMDOutput(object? sender, DataReceivedEventArgs e)
         {
-            if (e != null && e.Data != null && (e.Data + "").Trim() != "")
+            if (sender is Process proc)
             {
-                Debug.WriteLine(e.Data);
-                if (e.Data.ToLower().Contains("error") || e.Data.ToLower().Contains("fail"))
+                if (proc.HasExited && proc.ExitCode != 0)
                 {
-                    _ProcFailed = true;
+                    Debug.WriteLine("Process exited with code: " + proc.ExitCode);
+                    _procFailed = true;
                 }
-                this._Progress++;
-
-                double prog = (this._Progress / this.MainParent.OldFilesList.Count) * 100;
-                this.MainParent.PatchProgress = prog > 100 ? 100 : prog;
-
-                this.MainParent.Console.AddLine(e.Data);
+                else if(proc.HasExited && proc.ExitCode == 0)
+                {
+                    _progress++;
+                    double prog = (_progress / MainParent.OldFilesList.Count) * 100;
+                    MainParent.PatchProgress = prog > 100 ? 100 : prog;
+                }
             }
         }
 
@@ -285,22 +281,22 @@ namespace xdelta3_cross_gui
                 Debug.WriteLine(e.Data);
                 if (e.Data.ToLower().Contains("error") || e.Data.ToLower().Contains("fail"))
                 {
-                    _ProcFailed = true;
+                    _procFailed = true;
                 }
 
-                this.MainParent.Console.AddLine(e.Data);
+                MainParent.Console.AddLine(e.Data);
             }
         }
 
         public void CopyExecutables()
         {
-            if (!File.Exists(Path.Combine(this.MainParent.Config.PatchFileDestination, "exec")))
+            if (!File.Exists(Path.Combine(MainParent.Config.PatchFileDestination, "exec")))
             {
-                Directory.CreateDirectory(Path.Combine(this.MainParent.Config.PatchFileDestination, "exec"));
+                Directory.CreateDirectory(Path.Combine(MainParent.Config.PatchFileDestination, "exec"));
             }
             try
             {
-                File.Copy(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "exec", MainWindow.XDELTA3_BINARY_WINDOWS), Path.Combine(this.MainParent.Config.PatchFileDestination, "exec", MainWindow.XDELTA3_BINARY_WINDOWS), true);
+                File.Copy(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "exec", MainWindow.XDELTA3_BINARY_WINDOWS), Path.Combine(MainParent.Config.PatchFileDestination, "exec", MainWindow.XDELTA3_BINARY_WINDOWS), true);
             }
             catch (Exception e)
             {
@@ -308,7 +304,7 @@ namespace xdelta3_cross_gui
             }
             try
             {
-                File.Copy(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "exec", MainWindow.XDELTA3_BINARY_LINUX), Path.Combine(this.MainParent.Config.PatchFileDestination, "exec", MainWindow.XDELTA3_BINARY_LINUX), true);
+                File.Copy(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "exec", MainWindow.XDELTA3_BINARY_LINUX), Path.Combine(MainParent.Config.PatchFileDestination, "exec", MainWindow.XDELTA3_BINARY_LINUX), true);
             }
             catch (Exception e)
             {
@@ -316,11 +312,27 @@ namespace xdelta3_cross_gui
             }
             try
             {
-                File.Copy(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "exec", MainWindow.XDELTA3_BINARY_MACOS), Path.Combine(this.MainParent.Config.PatchFileDestination, "exec", MainWindow.XDELTA3_BINARY_MACOS), true);
+                File.Copy(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "exec", MainWindow.XDELTA3_BINARY_MACOS), Path.Combine(MainParent.Config.PatchFileDestination, "exec", MainWindow.XDELTA3_BINARY_MACOS), true);
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e);
+            }
+        }
+
+        public void OnClosing()
+        {
+            var threads = _activeProcesses;
+            foreach (var item in threads)
+            {
+                try
+                {
+                    item.Value?.Kill();
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e);
+                }
             }
         }
     }

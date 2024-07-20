@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Resources;
+using System.Runtime.CompilerServices;
 
 namespace xdelta3_cross_gui.Localization
 {
     class Localizer : INotifyPropertyChanged
     {
-        public static readonly Dictionary<string, string> Languages = new Dictionary<string, string>
+        public static readonly Dictionary<string, string> Languages = new()
         {
             { "Deutsch", "de"},
             { "English", "en-US" },
@@ -18,7 +19,7 @@ namespace xdelta3_cross_gui.Localization
 
         private const string IndexerName = "Item";
         private const string IndexerArrayName = "Item[]";
-        private ResourceManager resources;
+        private ResourceManager? resources;
 
         private Localizer()
         {
@@ -30,20 +31,23 @@ namespace xdelta3_cross_gui.Localization
             Invalidate();
         }
 
-        public string Language { get; private set; }
-
         public string this[string key]
         {
             get
             {
-                return resources.GetString(key)?.Replace(@"\\n", "\n") ?? $"Missing:{key}";
+                return resources?.GetString(key)?.Replace(@"\\n", "\n") ?? $"Missing:{key}";
             }
         }
 
-        private static Localizer _instance;
+        private static Localizer? _instance;
         public static Localizer Instance => _instance ??= new Localizer();
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
 
         public void Invalidate()
         {

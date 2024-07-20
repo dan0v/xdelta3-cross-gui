@@ -49,34 +49,34 @@ namespace xdelta3_cross_gui
 
         public PathFileComponent()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
         public PathFileComponent(MainWindow parent, string url, int index, MainWindow.FileCategory fileCategory)
         {
-            this.InitializeComponent();
+            InitializeComponent();
 
-            this.MainParent = parent;
-            this.FullPath = "";
-            this.ShortName = "";
-            this.Index = index;
-            this._FileCategory = fileCategory;
+            MainParent = parent;
+            FullPath = "";
+            ShortName = "";
+            Index = index;
+            _FileCategory = fileCategory;
 
 
             try
             {
-                this.FullPath = Path.GetFullPath(url);
-                this.ShortName = Path.GetFileName(url);
+                FullPath = Path.GetFullPath(url);
+                ShortName = Path.GetFileName(url);
             }
             catch (Exception e) { Debug.WriteLine(e); }
 
-            this.UpdateValues();
+            UpdateValues();
         }
 
         public void UpdateValues()
         {
-            txt_blk_Index.Text = this.Index + "";
-            txt_bx_Path.Text = (this.MainParent?.Config.ShowFullPaths ?? false) ? this.FullPath : this.ShortName;
-            chk_IsChecked.IsChecked = this.IsSelected;
+            txt_blk_Index.Text = Index + "";
+            txt_bx_Path.Text = (MainParent?.Config.ShowFullPaths ?? false) ? FullPath : ShortName;
+            chk_IsChecked.IsChecked = IsSelected;
         }
 
         new public event PropertyChangedEventHandler? PropertyChanged;

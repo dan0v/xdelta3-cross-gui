@@ -24,30 +24,30 @@ namespace xdelta3_cross_gui
 {
     public partial class Console : Window
     {
-        private static MainWindow _Parent;
+        private static MainWindow? _parent;
 
         public bool CanClose = false;
 
         public Console()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         public void SetParent(MainWindow parent)
         {
-            _Parent = parent;
+            _parent = parent;
         }
 
         protected override void OnClosing(WindowClosingEventArgs e)
         {
-            e.Cancel = !this.CanClose;
+            e.Cancel = !CanClose;
 
             // Hide window instead of closing
-            if (!this.CanClose)
+            if (!CanClose && _parent != null)
             {
                 try
                 {
-                    _Parent.ShowTerminal = false;
+                    _parent.ShowTerminal = false;
                 }
                 catch (Exception e1)
                 {
@@ -60,7 +60,7 @@ namespace xdelta3_cross_gui
         {
             if (e.Pointer.IsPrimary)
             {
-                this.BeginMoveDrag(e);
+                BeginMoveDrag(e);
             }
             base.OnPointerPressed(e);
         }
@@ -69,15 +69,19 @@ namespace xdelta3_cross_gui
         {
             Dispatcher.UIThread.InvokeAsync(new Action(() =>
             {
-                if (this.txt_blk_Output?.Text == null)
+                if (txt_blk_Output == null)
                 {
-                    this.txt_blk_Output.Text = "";
+                    return;
                 }
-                if (this.txt_blk_Output.Text.Length > 20000)
+                if (txt_blk_Output.Text == null)
                 {
-                    this.txt_blk_Output.Text = this.txt_blk_Output.Text.Substring(15000, this.txt_blk_Output.Text.Length - 15000);
+                    txt_blk_Output.Text = "";
                 }
-                this.txt_blk_Output.Text += input + "\n\n";
+                if (txt_blk_Output.Text?.Length > 20000)
+                {
+                    txt_blk_Output.Text = txt_blk_Output.Text[15000..];
+                }
+                txt_blk_Output.Text += input + "\n\n";
             }));
         }
     }
