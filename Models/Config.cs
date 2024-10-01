@@ -87,6 +87,8 @@ namespace xdelta3_cross_gui
                 }
             }
         }
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
         public string PatchFileDestination
         {
             get => _patchFileDestination;
@@ -120,6 +122,7 @@ namespace xdelta3_cross_gui
                 {
                     _showFullPaths = value;
                     OnPropertyChanged();
+                    SaveCurrent();
                 }
             }
         }
@@ -132,6 +135,7 @@ namespace xdelta3_cross_gui
                 {
                     _copyExecutables = value;
                     OnPropertyChanged();
+                    SaveCurrent();
                 }
             }
         }
@@ -144,6 +148,7 @@ namespace xdelta3_cross_gui
                 {
                     _zipFilesWhenDone = value;
                     OnPropertyChanged();
+                    SaveCurrent();
                 }
             }
         }
@@ -176,7 +181,6 @@ namespace xdelta3_cross_gui
                 Language = json.Language;
                 PatchExtention = json.PatchExtention;
                 PatchSubdirectory = json.PatchSubdirectory;
-                PatchFileDestination = json.PatchFileDestination;
                 XDeltaArguments = json.XDeltaArguments;
                 ZipName = json.ZipName;
                 ShowFullPaths = json.ShowFullPaths;

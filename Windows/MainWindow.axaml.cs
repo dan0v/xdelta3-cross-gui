@@ -728,7 +728,7 @@ namespace xdelta3_cross_gui
             return (await StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
             {
                 Title = "Select output directory"
-            })).Select(folder => folder.Path.AbsolutePath).FirstOrDefault();
+            })).Select(folder => Uri.UnescapeDataString(folder.Path.AbsolutePath)).Where(f => Directory.Exists(f)).FirstOrDefault();
         }
 
         Window? GetWindow() => VisualRoot as Window;
