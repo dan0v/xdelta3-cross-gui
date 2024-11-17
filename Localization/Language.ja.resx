@@ -153,6 +153,9 @@
     <value>開始!</value>
     <comment>MainWindow</comment>
   </data>
+  <data name="MaximumThreads" xml:space="preserve">
+    <value>最大同時実行数</value>
+  </data>
   <data name="NewFilesHeader" xml:space="preserve">
     <value>{0} 新しいファイル</value>
     <comment>MainWindow</comment>

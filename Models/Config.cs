@@ -47,6 +47,7 @@ namespace xdelta3_cross_gui
         private bool _copyExecutables { get; set; } = true;
         private bool _zipFilesWhenDone { get; set; } = false;
         private bool _showTerminal { get; set; } = false;
+        private int _maximumThreads { get; set; } = 2;
 
         public string PatchExtention
         {
@@ -164,6 +165,27 @@ namespace xdelta3_cross_gui
                 }
             }
         }
+        public int MaximumThreads
+        {
+            get => _maximumThreads;
+            set
+            {
+                if (value != _maximumThreads)
+                {
+                    if (value >= 1)
+                    {
+                        _maximumThreads = value;
+                        OnPropertyChanged();
+                        SaveCurrent();
+                    }
+                    else
+                    {
+                        OnPropertyChanged();
+                    }
+                }
+            }
+        }
+
         public Config()
         {
             ResetToDefault();
@@ -186,6 +208,7 @@ namespace xdelta3_cross_gui
                 ShowFullPaths = json.ShowFullPaths;
                 CopyExecutables = json.CopyExecutables;
                 ZipFilesWhenDone = json.ZipFilesWhenDone;
+                MaximumThreads = json.MaximumThreads;
                 ShowTerminal = json.ShowTerminal;
             }
             catch (Exception e)
@@ -218,6 +241,7 @@ namespace xdelta3_cross_gui
             ShowFullPaths = false;
             CopyExecutables = true;
             ZipFilesWhenDone = false;
+            MaximumThreads = 2;
             ShowTerminal = false;
         }
 

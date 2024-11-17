@@ -33,6 +33,9 @@ namespace xdelta3_cross_gui
 
         private readonly MainWindow MainParent = App.MainWindow ?? new();
         private ConcurrentDictionary<string, Process?> _activeProcesses = [];
+        private volatile bool _patchingDone = false;
+        private volatile object _patchingDoneLock = new();
+        private volatile int _remainingTasks = 0;
 
         private static object _lock_progress = new();
         private double _progress = 0;
@@ -78,6 +81,7 @@ namespace xdelta3_cross_gui
             MainParent.PatchProgress = 0;
             _progress = 0;
             _procFailed = false;
+            _patchingDone = false;
 
             if (!File.Exists(Path.Combine(MainParent.Config.PatchFileDestination, MainParent.Config.PatchSubdirectory)))
             {
@@ -136,7 +140,7 @@ namespace xdelta3_cross_gui
             patchWriterMac.WriteLine("echo Patched files will be in the \\\"output\\\" directory");
             patchWriterMac.WriteLine("read -p \"Press enter to continue...\" inp");
 
-            List<PatchCreationJob> patchJobs = [];
+            ConcurrentBag<PatchCreationJob> patchJobs = [];
             for (int i = 0; i < MainParent.OldFilesList.Count; i++)
             {
                 patchWriterWindows.WriteLine("exec\\" + Path.GetFileName(MainWindow.XDELTA3_BINARY_WINDOWS) + " -v -d -s \".\\original\\{0}\" " + "\".\\" + MainParent.Config.PatchSubdirectory + "\\" + "{0}." + MainParent.Config.PatchExtention + "\" \".\\output\\{2}\"", oldFileNames[i], MainParent.Config.PatchSubdirectory + "\\" + (i + 1).ToString(), newFileNames[i]);
@@ -144,8 +148,9 @@ namespace xdelta3_cross_gui
                 patchWriterMac.WriteLine("./exec/" + Path.GetFileName(MainWindow.XDELTA3_BINARY_MACOS) + " -v -d -s \"./original/{0}\" " + '"' + MainParent.Config.PatchSubdirectory + '/' + "{0}." + MainParent.Config.PatchExtention + "\" \"./output/{2}\"", oldFileNames[i], MainParent.Config.PatchSubdirectory + (i + 1).ToString(), newFileNames[i]);
 
                 // Actual script to generate patch files
-                patchJobs.Add(new(MainParent.Config.XDeltaArguments, MainParent.OldFilesList[i].FullPath, MainParent.NewFilesList[i].FullPath, Path.Combine(MainParent.Config.PatchFileDestination, MainParent.Config.PatchSubdirectory, oldFileNames[i]) + "." + MainParent.Config.PatchExtention));
+                patchJobs.Add(new(Guid.NewGuid().ToString(), MainParent.Config.XDeltaArguments, MainParent.OldFilesList[i].FullPath, MainParent.NewFilesList[i].FullPath, Path.Combine(MainParent.Config.PatchFileDestination, MainParent.Config.PatchSubdirectory, oldFileNames[i]) + "." + MainParent.Config.PatchExtention));
             }
+
             patchWriterWindows.WriteLine("echo Completed!");
             patchWriterWindows.WriteLine("@pause");
             patchWriterWindows.Close();
@@ -154,57 +159,73 @@ namespace xdelta3_cross_gui
 
             List<Task> tasks = [];
 
-            foreach (var job in patchJobs)
-            {
-                tasks.Add(CreateNewXDeltaTask(Guid.NewGuid().ToString(), job));
-            }
+            _remainingTasks = patchJobs.Count;
 
-            new Thread(() =>
+            for (int i = 0; i < (patchJobs.Count < MainParent.Config.MaximumThreads ? patchJobs.Count : MainParent.Config.MaximumThreads); i++)
             {
-                Task.WaitAll(tasks.ToArray());
-                FinishPatchCreationJob();
-            })
-            {
-                IsBackground = true
-            }.Start();
+                new Thread(() =>
+                {
+                    while (patchJobs.TryTake(out var nextJob))
+                    {
+                        CreateNewXDeltaTask(i, nextJob);
+                    }
+
+                    lock (_patchingDoneLock)
+                    {
+                        if (!_patchingDone && _remainingTasks == 0)
+                        {
+                            _patchingDone = true;
+                            Debug.WriteLine("Patching done, wrapping up...");
+                            FinishPatchCreationJob();
+                        }
+                    }  
+                })
+                {
+                    IsBackground = true
+                }.Start();
+            }
         }
 
-        private Task CreateNewXDeltaTask(string threadId, PatchCreationJob patchCreationJob)
+        private void CreateNewXDeltaTask(int threadNumber, PatchCreationJob patchCreationJob)
         {
-            return Task.Run(() =>
+            Debug.WriteLine($"Running job on thread number: {threadNumber}");
+
+            if (_procFailed)
             {
-                if (_procFailed)
-                {
-                    return;
-                }
+                return;
+            }
 
-                using Process activeCMD = new();
-                activeCMD.OutputDataReceived += HandleCMDOutput;
-                activeCMD.ErrorDataReceived += HandleCMDError;
+            using Process activeCMD = new();
+            activeCMD.OutputDataReceived += HandleCMDOutput;
+            activeCMD.ErrorDataReceived += HandleCMDError;
 
-                ProcessStartInfo info = new();
+            ProcessStartInfo info = new()
+            {
+                FileName = MainWindow.XDELTA3_PATH,
+                Arguments = $"""{patchCreationJob.Options} "{patchCreationJob.Source}" "{patchCreationJob.Goal}" "{patchCreationJob.PatchDestination}" """,
 
-                info.FileName = MainWindow.XDELTA3_PATH;
-                info.Arguments = $"""{patchCreationJob.Options} "{patchCreationJob.Source}" "{patchCreationJob.Goal}" "{patchCreationJob.PatchDestination}" """;
+                WindowStyle = ProcessWindowStyle.Hidden,
+                CreateNoWindow = true,
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true
+            };
 
-                info.WindowStyle = ProcessWindowStyle.Hidden;
-                info.CreateNoWindow = true;
-                info.UseShellExecute = false;
-                info.RedirectStandardOutput = true;
-                info.RedirectStandardError = true;
+            activeCMD.StartInfo = info;
+            activeCMD.EnableRaisingEvents = true;
 
-                activeCMD.StartInfo = info;
-                activeCMD.EnableRaisingEvents = true;
-
-                _activeProcesses.TryAdd(threadId, activeCMD);
-                activeCMD.Start();
-                activeCMD.BeginOutputReadLine();
-                activeCMD.BeginErrorReadLine();
-                activeCMD.WaitForExit();
-                activeCMD.OutputDataReceived -= HandleCMDOutput;
-                activeCMD.ErrorDataReceived -= HandleCMDError;
-                _activeProcesses.TryRemove(threadId, out var id);
-            });
+            _activeProcesses.TryAdd(patchCreationJob.id, activeCMD);
+            activeCMD.Start();
+            activeCMD.BeginOutputReadLine();
+            activeCMD.BeginErrorReadLine();
+            activeCMD.WaitForExit();
+            activeCMD.OutputDataReceived -= HandleCMDOutput;
+            activeCMD.ErrorDataReceived -= HandleCMDError;
+            _activeProcesses.TryRemove(patchCreationJob.id, out var id);
+            lock(_patchingDoneLock)
+            {
+                _remainingTasks--;
+            }
         }
 
 
@@ -229,15 +250,10 @@ namespace xdelta3_cross_gui
             {
                 ZipFiles();
             }
-            Dispatcher.UIThread.InvokeAsync(new Action(() =>
+            else
             {
-                MainParent.AlreadyBusy = false;
-                MainParent.PatchProgress = 0;
-                SuccessDialog dialog = new(MainParent);
-                dialog.Show();
-                dialog.Topmost = true;
-                dialog.Topmost = false;
-            }));
+                DisplaySuccess();
+            }
         }
 
         private void ZipFiles()
@@ -251,8 +267,22 @@ namespace xdelta3_cross_gui
                 }
                 ZipFile.CreateFromDirectory(MainParent.Config.PatchFileDestination, Path.Combine(MainParent.Config.PatchFileDestination, "..", MainParent.Config.ZipName + ".zip"));
                 MainParent.PatchProgressIsIndeterminate = false;
+                DisplaySuccess();
             })
             { IsBackground = true }.Start();
+        }
+
+        private void DisplaySuccess()
+        {
+            Dispatcher.UIThread.InvokeAsync(new Action(() =>
+            {
+                MainParent.AlreadyBusy = false;
+                MainParent.PatchProgress = 0;
+                SuccessDialog dialog = new(MainParent);
+                dialog.Show();
+                dialog.Topmost = true;
+                dialog.Topmost = false;
+            }));
         }
 
         private void HandleCMDOutput(object? sender, DataReceivedEventArgs e)
@@ -330,6 +360,8 @@ namespace xdelta3_cross_gui
 
         public void OnClosing()
         {
+            _patchingDone = true;
+            _procFailed = true;
             var threads = _activeProcesses;
             foreach (var item in threads)
             {

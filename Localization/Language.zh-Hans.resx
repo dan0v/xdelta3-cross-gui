@@ -153,6 +153,9 @@
     <value>创建补丁！</value>
     <comment>MainWindow</comment>
   </data>
+  <data name="MaximumThreads" xml:space="preserve">
+    <value>最大并发数</value>
+  </data>
   <data name="NewFilesHeader" xml:space="preserve">
     <value>{0} 个新文件</value>
     <comment>MainWindow</comment>
