@@ -143,22 +143,26 @@ limitations under the License.-->
         <CheckBox Grid.Column="1" Grid.Row="1" Content="{i18n:Localize CopyExecutables}" x:Name="chk_CopyExecutables" IsChecked="{Binding Config.CopyExecutables}"></CheckBox>
         <!--Row 2-->
         <CheckBox Grid.Column="0" Grid.Row="2" Margin="0,5,0,0" Content="{i18n:Localize ZipFiles}" x:Name="chk_ZipFiles" IsChecked="{Binding Config.ZipFilesWhenDone}"></CheckBox>
-        <Grid Grid.Column="1" Grid.Row="2" Grid.RowSpan="2" ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto" Margin="0,5,0,0">
+        <Grid Grid.Column="1" Grid.Row="2" ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto" Margin="0,5,0,0">
           <TextBlock Text="{i18n:Localize ZipName}" Grid.Row="1" VerticalAlignment="Center"></TextBlock>
           <TextBox x:Name="txt_bx_ZipName" IsEnabled="{Binding #chk_ZipFiles.IsChecked}" Grid.Row="1" Margin="5,0,5,0" Grid.Column="1" Watermark="patch" Text="{Binding Config.ZipName}"></TextBox>
           <TextBlock Text=".zip" Grid.Row="1" VerticalAlignment="Center" Grid.Column="2"></TextBlock>
         </Grid>
         <!--Row 3 and 4-->
-        <Grid Grid.Column="0" Grid.Row="3" Grid.RowSpan="2" ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto" Margin="0,10,10,0">
+        <Grid Grid.Column="0" Grid.Row="3" ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto" Margin="0,10,10,0">
           <TextBlock Text="{i18n:Localize PatchSubdir}" Grid.Row="0" VerticalAlignment="Center"></TextBlock>
           <TextBox x:Name="txt_bx_PatchSubdir" Grid.Row="0" Margin="5,0,0,5" Grid.Column="1" Watermark="vcdiff" Text="{Binding Config.PatchSubdirectory}"></TextBox>
         </Grid>
-        <Grid Grid.Column="1" Grid.Row="3" Grid.RowSpan="2" ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto" Margin="0,10,0,0">
+        <Grid Grid.Column="1" Grid.Row="3" ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto" Margin="0,10,0,0">
           <TextBlock Text="{i18n:Localize PatchExtension}" Grid.Row="1" VerticalAlignment="Center"></TextBlock>
           <TextBox x:Name="txt_bx_PatchExtension" Grid.Row="1" Margin="5,0,0,5" Grid.Column="1" Watermark="vcdiff" Text="{Binding Config.PatchExtention}"></TextBox>
         </Grid>
+        <Grid Grid.Column="0" Grid.Row="4" ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto" Margin="0,10,0,0">
+          <TextBlock Text="{i18n:Localize MaximumThreads}" Grid.Row="1" VerticalAlignment="Center"></TextBlock>
+          <NumericUpDown x:Name="num_maximumThreads" Grid.Row="1" Margin="5,0,0,5" Grid.Column="1" Watermark="2" Value="{Binding Config.MaximumThreads}" FormatString="0" Increment="1" Minimum="1" Maximum="64"></NumericUpDown>
+        </Grid>
         <!--Row 5-->
-        <Grid Grid.Column="0" Grid.Row="5" Grid.RowSpan="2" Grid.ColumnSpan="2" ColumnDefinitions="Auto,*" RowDefinitions="*,*" Margin="0,10,0,0">
+        <Grid Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" Grid.RowSpan="2" ColumnDefinitions="Auto,*" RowDefinitions="*,*" Margin="0,10,0,0">
           <TextBlock Text="{i18n:Localize xDeltaArguments}" Grid.Row="0" VerticalAlignment="Center"></TextBlock>
           <TextBox x:Name="txt_bx_xDeltaArguments" Grid.Row="0" Margin="10,0,0,0" Grid.Column="1" Text="{Binding Config.XDeltaArguments}"></TextBox>
           <Button Grid.Row="1" Grid.ColumnSpan="2" x:Name="btn_ResetDefaults" VerticalAlignment="Bottom" Margin="10,10,0,0" MinWidth="100" Content="{i18n:Localize ResetDefaults}"></Button>

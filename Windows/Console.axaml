@@ -25,7 +25,7 @@ limitations under the License.-->
   
   <Border BorderThickness="2,2,2,2" BorderBrush="Gray">
     <Grid RowDefinitions="*">
-      <ScrollViewer Grid.Row="1" Background="Black" x:Name="sv_ScrollConsole" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+      <ScrollViewer x:Name="sv_ScrollConsole" Grid.Row="1" Background="Black" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
         <TextBlock x:Name="txt_blk_Output" Foreground="White" Margin="5" TextWrapping="Wrap"></TextBlock>
       </ScrollViewer>
     </Grid>
