@@ -14,5 +14,5 @@ limitations under the License.*/
 
 namespace xdelta3_cross_gui.Models
 {
-    public record struct PatchCreationJob(string Options, string Source, string Goal, string PatchDestination);
+    public record struct PatchCreationJob(string id, string Options, string Source, string Goal, string PatchDestination);
 }

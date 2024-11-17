@@ -80,6 +80,7 @@ namespace xdelta3_cross_gui
                     txt_blk_Output.Text = txt_blk_Output.Text[15000..];
                 }
                 txt_blk_Output.Text += input + "\n\n";
+                sv_ScrollConsole.ScrollToEnd();
             }));
         }
     }

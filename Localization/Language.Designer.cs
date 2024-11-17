@@ -142,6 +142,15 @@ namespace xdelta3_cross_gui.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Maximum multithreading.
+        /// </summary>
+        internal static string MaximumThreads {
+            get {
+                return ResourceManager.GetString("MaximumThreads", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} new File(s).
         /// </summary>
         internal static string NewFilesHeader {
