@@ -30,6 +30,7 @@ bld/
 [Pp]ublish/MacOS/Output/*
 [Pp]ublish/Windows/Build/*
 [Pp]ublish/Linux/Build/*
+[Pp]ublish/Linux/Sources/appimagetool-x86_64.AppImage
 .avalonia-build-tasks/*
 
 # Debug tools

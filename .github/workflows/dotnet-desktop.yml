@@ -21,7 +21,7 @@ jobs:
     - name: Install .NET Core
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 8.0.x
+        dotnet-version: 10.0.x
 
     - name: Checkout
       uses: actions/checkout@v3
@@ -45,7 +45,7 @@ jobs:
         prerelease: true
         tag_name: "${{env.VERSION}}"
         files: |
-          Publish/xdelta3-cross-gui_linux_AppImage_x86_64.tar.gz
+          Publish/xDelta3_Cross_Gui-x86_64.AppImage
           Publish/xdelta3-cross-gui_macOS_x86_64.tar.gz 
           Publish/xdelta3-cross-gui_win_x86.zip 
           Publish/version.txt

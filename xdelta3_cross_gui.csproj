@@ -2,21 +2,21 @@
   <PropertyGroup>
     <Nullable>enable</Nullable>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Authors>dan0v</Authors>
     <RuntimeIdentifiers>win-x86;</RuntimeIdentifiers>
     <Authors>dan0v</Authors>
     <Description>A cross-platform graphical user interface for xDelta3 patching</Description>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
-    <Version>1.7.1</Version>
+    <Version>1.7.2</Version>
     <CopyOutputSymbolsToPublishDirectory>false</CopyOutputSymbolsToPublishDirectory>
     <PublishTrimmed>true</PublishTrimmed>
     <TrimMode>partial</TrimMode>
     <Platforms>AnyCPU;x64</Platforms>
-    <Copyright>Copyright (C) 2020-2024 dan0v</Copyright>
+    <Copyright>Copyright (C) 2020-2026 dan0v</Copyright>
     <RepositoryUrl>https://git.dan0v.com/xdelta3-cross-gui</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <LangVersion>preview</LangVersion>
+    <LangVersion>14.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <DefineConstants Condition="'$(RuntimeIdentifier)' == 'win-x86'">$(DefineConstants);Windows</DefineConstants>
@@ -69,9 +69,9 @@
     <AvaloniaResource Include="Assets\img\up.png" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.2.1" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.2.1" />
-    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.2.1" />
+    <PackageReference Include="Avalonia" Version="11.3.11" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.3.11" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.11" />
   </ItemGroup>
   <ItemGroup>
     <AvaloniaXaml Update="Windows\Dialogs\InfoTextDialog.axaml">
