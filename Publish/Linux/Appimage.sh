@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo 'Copyright 2020-2024 dan0v
+echo 'Copyright 2020-2026 dan0v
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ limitations under the License.
 
 ORIGIN="$(pwd)"
 cd "../.."
-dotnet publish -r linux-x64 -c Release -p:SelfContained=True -o bin/Release/net8.0/publishLinux
+dotnet publish -r linux-x64 -c Release -p:SelfContained=True -o bin/Release/net10.0/publishLinux
 
 cd "$ORIGIN"
 cd "Sources"
@@ -29,7 +29,7 @@ chmod +x Sources/appimagetool-x86_64.AppImage
 
 APP_NAME="xDelta3 Cross GUI"
 APP_OUTPUT_PATH="Build"
-PUBLISH_OUTPUT_DIRECTORY="../../bin/Release/net8.0/publishLinux/."
+PUBLISH_OUTPUT_DIRECTORY="../../bin/Release/net10.0/publishLinux/."
 APP_TAR_NAME="xdelta3-cross-gui_linux_AppImage_x86_64"
 
 chmod +x "$PUBLISH_OUTPUT_DIRECTORY/Assets/exec/xdelta3_x64_linux"
@@ -58,5 +58,4 @@ cd "$APP_OUTPUT_PATH"
 
 ARCH=x86_64 ../Sources/appimagetool-x86_64.AppImage -n "$APP_NAME"
 
-tar -czvf "$APP_TAR_NAME.tar.gz" "xDelta3_Cross_Gui-x86_64.AppImage" "LICENSE.txt" "NOTICE.txt"
-mv "$APP_TAR_NAME.tar.gz" ../../"$APP_TAR_NAME.tar.gz"
+mv "xDelta3_Cross_Gui-x86_64.AppImage" ../../"xDelta3_Cross_Gui-x86_64.AppImage"

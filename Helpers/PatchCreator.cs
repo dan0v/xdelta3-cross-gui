@@ -1,4 +1,4 @@
-/*Copyright 2020-2024 dan0v
+/*Copyright 2020-2026 dan0v
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -178,7 +178,7 @@ namespace xdelta3_cross_gui
                             Debug.WriteLine("Patching done, wrapping up...");
                             FinishPatchCreationJob();
                         }
-                    }  
+                    }
                 })
                 {
                     IsBackground = true
@@ -222,7 +222,7 @@ namespace xdelta3_cross_gui
             activeCMD.OutputDataReceived -= HandleCMDOutput;
             activeCMD.ErrorDataReceived -= HandleCMDError;
             _activeProcesses.TryRemove(patchCreationJob.id, out var id);
-            lock(_patchingDoneLock)
+            lock (_patchingDoneLock)
             {
                 _remainingTasks--;
             }
