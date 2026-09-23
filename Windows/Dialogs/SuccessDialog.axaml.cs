@@ -22,25 +22,24 @@ namespace xdelta3_cross_gui
 {
     public partial class SuccessDialog : Window
     {
-        private MainWindow MainParent;
+        private readonly string _Destination = "";
 
-        private string _Destination = "";
-
-        public SuccessDialog(MainWindow MainParent)
+        public SuccessDialog()
         {
             InitializeComponent();
-            this.MainParent = MainParent;
-            Configure();
         }
-        private void Configure()
+
+        public SuccessDialog(bool zipFilesWhenDone, string PatchFileDestination)
         {
-            if (MainParent.Config.ZipFilesWhenDone)
+            InitializeComponent();
+
+            if (zipFilesWhenDone)
             {
-                _Destination = Path.Combine(MainParent.Config.PatchFileDestination, "..");
+                _Destination = Path.Combine(PatchFileDestination, "..");
             }
             else
             {
-                _Destination = MainParent.Config.PatchFileDestination;
+                _Destination = PatchFileDestination;
             }
 
             btn_Dismiss.Click += DismissClicked;

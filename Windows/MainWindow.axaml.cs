@@ -509,9 +509,9 @@ namespace xdelta3_cross_gui
 
         private void HandleFileDrop(DragEventArgs args, FileCategory fileCategory)
         {
-            if (args.Data.Contains(DataFormats.Files))
+            if (args.DataTransfer.Contains(DataFormat.File))
             {
-                List<String> urls = args.Data?.GetFiles()?.Select(f => Uri.UnescapeDataString(f.Path.AbsolutePath)).Where(f => File.Exists(f)).ToList() ?? [];
+                List<String> urls = args.DataTransfer.TryGetFiles()?.Select(f => Uri.UnescapeDataString(f.Path.AbsolutePath)).Where(f => File.Exists(f)).ToList() ?? [];
                 AddFiles(urls.ToArray(), fileCategory);
             }
         }
@@ -687,7 +687,7 @@ namespace xdelta3_cross_gui
                 string newVer = await response.Content.ReadAsStringAsync();
                 if (newVer.Trim() != VERSION.Trim())
                 {
-                    UpdateDialog updateDialog = new(this, newVer);
+                    UpdateDialog updateDialog = new(newVer);
                     updateDialog.Show();
                     updateDialog.Activate();
                 }

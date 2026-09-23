@@ -278,7 +278,7 @@ namespace xdelta3_cross_gui
             {
                 MainParent.AlreadyBusy = false;
                 MainParent.PatchProgress = 0;
-                SuccessDialog dialog = new(MainParent);
+                SuccessDialog dialog = new(MainParent.Config.ZipFilesWhenDone, MainParent.Config.PatchFileDestination);
                 dialog.Show();
                 dialog.Topmost = true;
                 dialog.Topmost = false;
