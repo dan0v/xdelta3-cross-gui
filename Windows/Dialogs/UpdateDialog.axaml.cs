@@ -22,21 +22,24 @@ namespace xdelta3_cross_gui
 {
     public partial class UpdateDialog : Window
     {
-        private MainWindow MainParent;
-        private string newVersion = "";
+        private readonly string _NewVersion = "";
 
-        public UpdateDialog(MainWindow MainParent, string newVersion)
+        public UpdateDialog()
         {
             InitializeComponent();
-            this.MainParent = MainParent;
-            this.newVersion = newVersion;
+        }
+
+        public UpdateDialog(string newVersion)
+        {
+            InitializeComponent();
+            _NewVersion = newVersion;
             Configure();
         }
         private void Configure()
         {
             btn_Dismiss.Click += DismissClicked;
             btn_GoToReleases.Click += GoToReleasesClicked;
-            txt_blk_Prompt.Text = string.Format(Localizer.Instance["NewVersionText"], newVersion);
+            txt_blk_Prompt.Text = string.Format(Localizer.Instance["NewVersionText"], _NewVersion);
         }
 
         private void DismissClicked(object? sender, RoutedEventArgs args)
